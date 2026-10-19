@@ -107,7 +107,7 @@ class Settings(BaseSettings):
     rag_rerank_top_k: int = Field(default=8, ge=1, le=50)
     rag_context_top_k: int = Field(default=5, ge=1, le=20)
     rag_min_score: float = 0.0
-    rag_rerank_min_score: float = 0.0
+    rag_rerank_min_score: float = -2.0  # overwritten by `make calibrate` results (see .env.example)
     rag_product_boost: float = Field(default=0.0, ge=0.0)
     ingest_user_agent: str = "GetnetSupportAgentBot/1.0 (+evaluation crawler; respects robots.txt)"
     ingest_rate_limit_seconds: float = Field(default=1.0, ge=0.0)

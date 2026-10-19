@@ -108,3 +108,86 @@ def ctx_2077() -> AuthContext:
 @pytest.fixture(scope="session")
 def anyio_backend() -> Iterator[str]:
     return "asyncio"
+
+
+async def ensure_test_corpus(settings: Settings) -> None:
+    """Index the committed snapshot into the test collection once (skipped when already complete)."""
+    from app.rag.models import RetrievalModels
+    from app.rag.qdrant_store import QdrantStore
+    from ingestion.pipeline import index_chunks
+    from ingestion.snapshot import load_snapshot
+
+    chunks = load_snapshot()
+    store = QdrantStore(settings.qdrant_url, settings.qdrant_collection)
+    try:
+        if await store.count() != len(chunks):
+            await index_chunks(chunks, RetrievalModels(settings, offline=False), store, recreate=True)
+    finally:
+        await store.close()
+
+
+@pytest.fixture(scope="session")
+async def container(settings: Settings, db: Database) -> AsyncIterator[object]:
+    from app.container import build_container
+    from app.llm.fake import FakeLLMProvider
+    from tests.fakes import FakeWebSearch
+
+    await ensure_test_corpus(settings)
+    c = await build_container(settings, llm=FakeLLMProvider(), web=FakeWebSearch())
+    await c.checkpointer.setup()
+    yield c
+    await c.close()
+
+
+@pytest.fixture
+def fake_llm(container):  # type: ignore[no-untyped-def]
+    container.llm.reset()
+    return container.llm
+
+
+@pytest.fixture
+def fake_web(container):  # type: ignore[no-untyped-def]
+    container.web.down = False
+    return container.web
+
+
+@pytest.fixture(scope="session")
+def dev_keys() -> str:
+    from app.api.dev_idp import generate_keys
+
+    generate_keys(".dev-keys/test")
+    return ".dev-keys/test"
+
+
+@pytest.fixture(scope="session")
+async def api(container, settings: Settings, dev_keys: str) -> AsyncIterator[object]:  # type: ignore[no-untyped-def]
+    """ASGI client running the real app (lifespan included) against the test container."""
+    import httpx
+
+    from app.main import create_app
+
+    app = create_app(settings, container=container)
+    async with app.router.lifespan_context(app):
+        for _ in range(600):
+            if app.state.models_warm:
+                break
+            await asyncio.sleep(0.1)
+        transport = httpx.ASGITransport(app=app)
+        async with httpx.AsyncClient(transport=transport, base_url="http://test", timeout=120) as client:
+            client.app = app  # type: ignore[attr-defined]
+            yield client
+
+
+def token_for(sub: str, scope: str = "chat conversations:read conversations:delete", **kw: object) -> str:
+    from app.api.dev_idp import mint
+
+    return mint(sub, scope, settings=make_test_settings(), private_key_path=".dev-keys/test/dev-private.pem", **kw)  # type: ignore[arg-type]
+
+
+def auth_headers(
+    sub: str = "cliente1988", scope: str = "chat conversations:read conversations:delete"
+) -> dict[str, str]:
+    return {"Authorization": f"Bearer {token_for(sub, scope)}"}
+
+
+OPERATOR_SCOPE = "cases:read cases:write approvals:write"

@@ -1,0 +1,46 @@
+{
+  "started_at": "2026-10-19T18:47:14.330349+00:00",
+  "pages_fetched": 150,
+  "html_pages": 146,
+  "pdf_documents": 4,
+  "unchanged": 0,
+  "rendered_pages": 0,
+  "render_requested": 2,
+  "render_unavailable": 2,
+  "documents_indexed": 147,
+  "chunks_total": 925,
+  "chunks_upserted": 925,
+  "chunks_deleted": 0,
+  "boilerplate_blocks_removed": 846,
+  "skipped": {
+    "http_404": 5
+  },
+  "categories": {
+    "account": 76,
+    "faq": 169,
+    "contact": 15,
+    "settlement": 38,
+    "receivables_advance": 30,
+    "sales_management": 33,
+    "terminal_troubleshooting": 110,
+    "card_machines": 139,
+    "pix": 64,
+    "fees": 27,
+    "getnet_overview": 147,
+    "payment_link": 61,
+    "crediario": 15,
+    "manuals": 1
+  },
+  "products": {
+    "Pix": 85,
+    "Get Clássica": 30,
+    "Get Lite": 13,
+    "Get Mini": 21,
+    "Get Tap": 42,
+    "Link de Pagamento": 42,
+    "Get Smart": 62,
+    "Crediário": 13
+  },
+  "stale_documents": 0,
+  "finished_at": "2026-10-19T18:51:12.300169+00:00"
+}

@@ -1,0 +1,232 @@
+# Getnet knowledge-base catalogue (official public sources only).
+# The crawler starts from `seeds`, follows links inside `allowed_domains` that match `allow` and do not
+# match `deny`, up to `max_depth` and `max_pages`. robots.txt is honoured; requests are rate limited.
+# Categories/products are assigned by the first matching rule in `categories` / `products`
+# (URL pattern or title/heading keyword). Do not hardcode the catalogue in Python.
+
+version: 5
+user_agent_env: INGEST_USER_AGENT
+max_depth: 2
+max_pages: 220
+freshness_days: 14         # documents not re-validated within this window count as stale
+
+allowed_domains:
+  - site.getnet.com.br
+  - www.getnet.net
+
+allow:
+  - '^https://site\.getnet\.com\.br/(duvidas|get-ajuda|boas-vindas|todas-as-maquininhas|pix|link-de-pagamento|crediario|get-tap|getcheckout|pagamentos-pelo-whatsapp|pagamentos-recorrentes|emprestimo|split|conta-digital|get-ajuda-reserva-financeira|bandeiras|fale-conosco|ouvidoria|taxas-personalizadas|proteja-seu-negocio-e-venda-com-seguranca|recargas|conversor-de-moedas|portal-do-cliente|tef|maquininha|get-)'
+  - '^https://site\.getnet\.com\.br/wp-content/uploads/.*\.pdf$'
+  - '^https://www\.getnet\.net/en/(our-solutions|contact|corporate/about-us|developers|partners)'
+  - '^https://www\.getnet\.net/en/?$'
+  - '^https://www\.getnet\.net/pt/(suporte|as-nossas-solucoes|tarifas|contacto)'
+
+deny:
+  - '/wp-json/'
+  - '/feed/?$'
+  - '/(carreiras|carreira|imprensa|patrocinios|sustentabilidade|report-vulnerability|partners/)'
+  - 'regulamento|denuncia'
+  - '/duvidas/(carreira|superdigital|algar|politica-de-privacidade)/'
+  - '\.(png|jpe?g|gif|svg|webp|css|js|ico|zip|mp4)(\?|$)'
+  - '/(blog|post|tag|category|author)/'
+  - '/wp-content/uploads/.*(Codigo-de-Conduta|Termo_|Contrato)'
+  - '[?#]'
+
+seeds:
+  # --- Brazil (primary: products, FAQs, manuals) -------------------------------------------
+  - url: https://site.getnet.com.br/
+    category: getnet_overview
+    language: pt
+  - url: https://site.getnet.com.br/todas-as-maquininhas/
+    category: card_machines
+    language: pt
+  - url: https://site.getnet.com.br/duvidas/
+    category: faq
+    language: pt
+  - url: https://site.getnet.com.br/get-ajuda/
+    category: help_center
+    language: pt
+    render: js           # help widgets are populated client-side; static capture is partial
+  - url: https://site.getnet.com.br/boas-vindas/manual-maquinas/
+    category: manuals
+    language: pt
+  - url: https://site.getnet.com.br/maquininha/get-smart/
+    category: card_machines
+    product: Get Smart
+    language: pt
+  - url: https://site.getnet.com.br/maquininha/get-classica/
+    category: card_machines
+    product: Get Clássica
+    language: pt
+  - url: https://site.getnet.com.br/maquininha/get-mini/
+    category: card_machines
+    product: Get Mini
+    language: pt
+  - url: https://site.getnet.com.br/taxas/
+    category: fees
+    language: pt
+  - url: https://site.getnet.com.br/duvidas/receba-ja-2-dias/
+    category: settlement
+    language: pt
+  - url: https://site.getnet.com.br/duvidas/antecipacao-de-vendas/
+    category: receivables_advance
+    language: pt
+  - url: https://site.getnet.com.br/pix/
+    category: pix
+    language: pt
+    render: js           # the Pix FAQ list is injected by JavaScript
+  - url: https://site.getnet.com.br/link-de-pagamento/
+    category: payment_link
+    language: pt
+  - url: https://site.getnet.com.br/pagamentos-pelo-whatsapp/
+    category: payment_link
+    language: pt
+  - url: https://site.getnet.com.br/crediario/
+    category: crediario
+    language: pt
+  - url: https://site.getnet.com.br/get-tap/
+    category: card_machines
+    language: pt
+  - url: https://site.getnet.com.br/get-ajuda-reserva-financeira/antecipacao-reserva-financeira/
+    category: receivables_advance
+    language: pt
+  - url: https://site.getnet.com.br/fale-conosco/
+    category: contact
+    language: pt
+  # Official PDF manuals (linked from /boas-vindas/manual-maquinas/)
+  - url: https://site.getnet.com.br/wp-content/uploads/2025/09/Manul-GetSmart.pdf
+    category: manuals
+    product: Get Smart
+    language: pt
+  - url: https://site.getnet.com.br/wp-content/uploads/2026/06/getnet_12_06-26_Manul_GetClassica_V2.pdf
+    category: manuals
+    product: Get Clássica
+    language: pt
+  - url: https://site.getnet.com.br/wp-content/uploads/2026/06/getnet_12_06-26_Manul_GetMini_V2.pdf
+    category: manuals
+    product: Get Mini
+    language: pt
+  - url: https://site.getnet.com.br/wp-content/uploads/2026/07/getnet_19_06-26_Manul_GetLite_V4-1.pdf
+    category: manuals
+    product: Get Lite
+    language: pt
+  # --- Global site (suggested source in the challenge statement) -------------------------
+  - url: https://www.getnet.net/en
+    category: getnet_overview
+    language: en
+  - url: https://www.getnet.net/en/our-solutions/in-person-payments
+    category: card_machines
+    language: en
+  - url: https://www.getnet.net/en/our-solutions/online-payments
+    category: payment_link
+    language: en
+  - url: https://www.getnet.net/en/contact
+    category: contact
+    language: en
+
+# Get Ajuda articles. The Get Ajuda hubs build their article lists with JavaScript, so a static crawl
+# cannot discover them. These URLs were discovered by the JS render profile (ingestion/render.py,
+# Playwright) on 2026-10-19 and are listed here so the static crawl covers them too. The articles
+# themselves are server-rendered.
+discovered_seeds:
+  - https://site.getnet.com.br/get-ajuda-antecipacao-de-venda/como-antecipar-sua-vendas-pelo-app/
+  - https://site.getnet.com.br/get-ajuda-antecipacao-de-venda/como-habilitar-antecipacao-automatica-pelo-app/
+  - https://site.getnet.com.br/get-ajuda-antecipacao-de-venda/como-habilitar-antecipacao-automatica-pelo-portal/
+  - https://site.getnet.com.br/get-ajuda-cadastro/como-atualizar-seus-dados-cadastrais-no-aplicativo-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-cadastro/como-finalizar-seu-cadastro-no-aplicativo-getnet-brasil-e-comecar-a-aceitar-pagamentos/
+  - https://site.getnet.com.br/get-ajuda-cadastro/como-redefinir-a-senha-aplicativo/
+  - https://site.getnet.com.br/get-ajuda-cadastro/como-trocar-o-domicilio-bancario/
+  - https://site.getnet.com.br/get-ajuda-cancelamento/como-cancelar-a-parceria/
+  - https://site.getnet.com.br/get-ajuda-cancelamento/como-cancelar-produtos-e-servicos/
+  - https://site.getnet.com.br/get-ajuda-conciliador-essencial/sobre-o-conciliador-essencial/
+  - https://site.getnet.com.br/get-ajuda-configuracoes/como-configurar-o-wi-fi-na-sua-maquininha-getnet/
+  - https://site.getnet.com.br/get-ajuda-configuracoes/como-consultar-minhas-vendas/
+  - https://site.getnet.com.br/get-ajuda-configuracoes/configuracoes-da-sua-maquininha/
+  - https://site.getnet.com.br/get-ajuda-configuracoes/funcionalidades-portal-minha-conta-e-app-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-conversor-de-moedas/sobre-o-conversor-de-moedas/
+  - https://site.getnet.com.br/get-ajuda-ecommerce/plugins-digitais-que-a-getnet-trabalha/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-02/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-06/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-07/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-18/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-19/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-21/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-33/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-50/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-84/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-85/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-1-87/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-3-30/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-4-23/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-4-27/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-4-30/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-4-83/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-adq-4-91/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-idl-1-04/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-idl-1-08/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-idl-1-36/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-nfc/
+  - https://site.getnet.com.br/get-ajuda-erros-maquininha/erro-s-2074/
+  - https://site.getnet.com.br/get-ajuda-estorno/como-estornar-uma-venda-na-maquininha-getnet/
+  - https://site.getnet.com.br/get-ajuda-estorno/como-estornar-uma-venda-pelo-aplicativo-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-estorno/o-que-e-chargeback/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/como-acessar-as-minhas-vendas-realizadas/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/como-cancelar-minhas-vendas/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/como-consultar-os-status-das-minhas-vendas/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/como-emitir-carta-status/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/como-exportar-minhas-vendas-pix/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/entenda-o-que-e-venda-autorizada-aprovada-e-desfeita/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/onde-consultar-uma-venda-cancelada/
+  - https://site.getnet.com.br/get-ajuda-gestao-de-vendas/quais-possiveis-status-das-minhas-vendas/
+  - https://site.getnet.com.br/get-ajuda-get-conta/como-acesso-a-minha-get-conta/
+  - https://site.getnet.com.br/get-ajuda-get-conta/como-realizo-uma-transferencia-e-quais-os-limites-diarios/
+  - https://site.getnet.com.br/get-ajuda-get-conta/o-que-e-a-get-conta/
+  - https://site.getnet.com.br/get-ajuda-get-tap/como-habilitar-e-vender-com-pix-no-get-tap/
+  - https://site.getnet.com.br/get-ajuda-get-tap/como-utilizar-o-get-tap/
+  - https://site.getnet.com.br/get-ajuda-get-tap/o-que-e-o-get-tap-e-como-funciona/
+  - https://site.getnet.com.br/get-ajuda-maquininha/adquirindo-nossos-produtos-e-servicos/
+  - https://site.getnet.com.br/get-ajuda-maquininha/como-acessa-o-manual-da-sua-maquininha-getnet/
+  - https://site.getnet.com.br/get-ajuda-maquininha/como-fazer-uma-venda-na-maquininha-getnet/
+  - https://site.getnet.com.br/get-ajuda-maquininha/como-pedir-uma-maquininha-adicional/
+  - https://site.getnet.com.br/get-ajuda-maquininha/como-solicitar-a-manutencao-da-maquininha-getnet/
+  - https://site.getnet.com.br/get-ajuda-maquininha/simulador-calculadora-de-vendas/
+  - https://site.getnet.com.br/get-ajuda-maquininha/solucoes-get-smart/
+  - https://site.getnet.com.br/get-ajuda-pix/como-desabilitar-o-recebimento-de-vendas-via-pix-no-aplicativo-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-pix/como-fazer-uma-venda-com-pix-na-maquininha/
+  - https://site.getnet.com.br/get-ajuda-pix/como-habilitar-o-recebimento-de-vendas-via-pix-no-aplicativo-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-pix/como-habilitar-pix-pelo-portal/
+  - https://site.getnet.com.br/get-ajuda-pix/como-utilizo-o-pix-por-biometria/
+  - https://site.getnet.com.br/get-ajuda-rastreamento/como-acompanhar-entrega-get-mini/
+  - https://site.getnet.com.br/get-ajuda-receba-ja/plano-de-recebimento-reduzido/
+  - https://site.getnet.com.br/get-ajuda-reserva-financeira/antecipacao-reserva-financeira/
+  - https://site.getnet.com.br/get-ajuda-reserva-financeira/reserva-financeira/
+  - https://site.getnet.com.br/get-ajuda-taxas/taxas-por-transacao/
+  - https://site.getnet.com.br/get-ajuda-voucher/como-habilitar-vale-refeicao-va-e-vale-alimentacao-vr-no-aplicativo-getnet-brasil/
+  - https://site.getnet.com.br/get-ajuda-voucher/o-que-e-o-pat/
+
+# First matching rule wins. `match` is a regex over the URL; `keywords` match title/heading text.
+categories:
+  - {category: receivables_advance, match: 'antecipa|reserva-financeira', keywords: ['antecipação', 'antecipacao', 'receba já']}
+  - {category: terminal_troubleshooting, match: 'get-ajuda-erros-maquininha|get-ajuda-configuracoes|solucoes-get-smart|manutencao', keywords: []}
+  - {category: settlement, match: 'repasse|recebimento|agenda|receba-ja', keywords: ['prazo de recebimento', 'repasse', 'agenda de recebíveis', 'quando cai']}
+  - {category: pix, match: '/pix', keywords: ['pix']}
+  - {category: payment_link, match: 'link-de-pagamento|whatsapp|getcheckout|online-payments', keywords: ['link de pagamento', 'payment link']}
+  - {category: crediario, match: 'crediario|parcelado|pagamento-carne', keywords: ['crediário', 'crediario']}
+  - {category: terminal_troubleshooting, match: '/duvidas/operacional|manual|Manul', keywords: ['não conecta', 'conexão', 'wi-fi', 'chip', 'erro', 'reinici']}
+  - {category: fees, match: '/duvidas/taxas|tarifas|taxas', keywords: ['taxa', 'tarifa', 'mdr']}
+  - {category: card_machines, match: 'maquininha|get-smart|get-tap|get-mini|get-classica|in-person|duvidas/(get-smart|get-tap|aluguel|plano-light|pos-digital)', keywords: ['get smart', 'get clássica', 'get mini', 'get tap']}
+  - {category: sales_management, match: 'gestao-de-vendas|estorno|chargeback', keywords: ['status das suas vendas', 'estorno']}
+  - {category: account, match: 'conta-digital|get-conta|app-getnet|portal-do-cliente|cancelamento|get-ajuda-cadastro', keywords: ['conta digital', 'app getnet']}
+  - {category: contact, match: 'fale-conosco|ouvidoria|contact|contacto', keywords: ['central de atendimento', 'ouvidoria']}
+  - {category: faq, match: '/duvidas/', keywords: []}
+
+products:
+  - {product: Get Smart, keywords: ['get smart', 'getsmart']}
+  - {product: Get Clássica, keywords: ['get clássica', 'get classica', 'getclassica', 'get classic']}
+  - {product: Get Mini, keywords: ['get mini', 'getmini']}
+  - {product: Get Lite, keywords: ['get lite', 'getlite']}
+  - {product: Get Renova, keywords: ['get renova']}
+  - {product: Get Tap, keywords: ['get tap', 'tap on phone']}
+  - {product: Link de Pagamento, keywords: ['link de pagamento', 'payment link', 'getpay']}
+  - {product: Pix, keywords: [' pix']}
+  - {product: Crediário, keywords: ['crediário', 'crediario']}

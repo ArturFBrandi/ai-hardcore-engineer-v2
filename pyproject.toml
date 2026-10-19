@@ -71,7 +71,16 @@ ignore = [
   "PLR2004",  # numeric literals in tests and thresholds are explicit
   "RUF001", "RUF002", "RUF003",  # Portuguese text contains ambiguous-looking unicode by design
   "PLR0917",  # keyword-heavy builders (seed rows) read better positionally
+  "E501",     # line length is enforced by `ruff format`; long string literals (prompts, PT text) stay readable
 ]
+
+[tool.ruff.lint.flake8-bugbear]
+extend-immutable-calls = ["fastapi.Depends", "fastapi.Query", "fastapi.Header", "app.api.auth.require_scopes"]
+
+[tool.ruff.lint.pylint]
+max-branches = 22
+max-statements = 80
+max-returns = 10
 
 [tool.ruff.lint.per-file-ignores]
 "tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415", "PT018", "PLR0917", "E501"]

@@ -1,0 +1,30 @@
+# Deterministic decision model (app/orchestration/decision.py).
+# Confidence starts at 1.0 and each observed system signal subtracts its penalty. Below the threshold
+# (ESCALATION_CONFIDENCE_THRESHOLD) the request is escalated. "force" signals escalate regardless.
+# The LLM's self-assessment is never a signal.
+version: 1
+penalties:
+  no_rag_evidence: 0.45
+  low_retrieval_score: 0.15
+  entity_mismatch: 0.35
+  contradictory_information: 0.6
+  customer_data_unavailable: 0.35
+  tool_failure: 0.2
+  llm_failure: 0.3
+  web_search_failure: 0.0        # external-only questions degrade to "unavailable", never to a case
+  guardrail_flag: 0.2
+  unsupported_numeric_claim: 0.3
+  insufficient_evidence: 0.3
+force_escalation:
+  - explicit_human_request
+  - repeated_troubleshooting_failure
+  - high_risk_report
+  - approval_required
+  - contradictory_information
+# Signals that indicate suspected attack traffic: low confidence alone never opens a human case for them.
+attack_signals:
+  - prompt_injection
+  - system_prompt_extraction
+  - cross_customer_access
+  - bulk_data_request
+  - credential_harvest

@@ -1,0 +1,725 @@
+# Golden factuality benchmark — Getnet public knowledge (PT/EN).
+#
+# Each item: the question, supporting sources, a retrieval relevance rule, ATOMIC FACTS the answer must
+# contain and facts it must NOT contain (hallucination traps). Patterns are regexes matched against the
+# answer after lowercasing and accent stripping; a fact is present if ANY of its patterns matches.
+#
+# Labels were DRAFTED from the official sources (snapshot sources_version 5, crawled 2026-10-19) and
+# require human confirmation — see README.md in this folder for the labeling protocol.
+version: 1
+snapshot_sources_version: 5
+default_label:
+  labeled_by: "draft:claude-opus-5.5"
+  labeled_at: "2026-10-19"
+  status: draft_requires_human_confirmation
+
+items:
+  - id: g001
+    question: "What's the difference between the Get Clássica and the Get Smart?"
+    language: en
+    category: card_machines
+    tags: [challenge, comparison]
+    relevant: [{url: "maquininha/get-smart", text: "129"}, {url: "maquininha/get-classica", text: "79"}, {url: "duvidas/get-smart", text: "android|inteligente"}, {url: "Manul-GetSmart", text: "touchscreen"}, {url: "GetClassica", text: "3G"}]
+    facts:
+      - {text: "Get Smart is a smart (Android/touchscreen) machine that runs apps", patterns: ["android", "touch", "aplicativos?|apps?\\b|getstore", "inteligente|smart card machine"]}
+      - {text: "Get Smart usage fee R$ 129,90/month when revenue thresholds are not met", patterns: ["129[,.]90"]}
+      - {text: "Get Clássica usage fee R$ 79,90/month when revenue thresholds are not met", patterns: ["79[,.]90"]}
+    must_not:
+      - {text: "invented price for either machine", patterns: ["(99|59|149|199)[,.]90"]}
+
+  - id: g002
+    question: "Qual a diferença entre a Get Clássica e a Get Smart?"
+    language: pt
+    category: card_machines
+    tags: [challenge, comparison]
+    relevant: [{url: "maquininha/get-smart", text: "129"}, {url: "maquininha/get-classica", text: "79"}, {url: "duvidas/get-smart", text: "android|inteligente"}, {url: "Manul-GetSmart", text: "touchscreen"}, {url: "GetClassica", text: "3G"}]
+    facts:
+      - {text: "Get Smart é inteligente/Android com aplicativos", patterns: ["android", "touch", "aplicativos?|getstore", "inteligente"]}
+      - {text: "Get Smart R$ 129,90/mês", patterns: ["129[,.]90"]}
+      - {text: "Get Clássica R$ 79,90/mês", patterns: ["79[,.]90"]}
+    must_not:
+      - {text: "preço inventado", patterns: ["(99|59|149|199)[,.]90"]}
+
+  - id: g003
+    question: "Do I need a bank account to receive my sales via Pix?"
+    language: en
+    category: pix
+    tags: [challenge]
+    relevant: [{url: "duvidas/pix", text: "chave"}, {url: "get-ajuda-pix", text: "habilit"}]
+    facts:
+      - {text: "a Pix key must be provided", patterns: ["chave|pix key|\\bkey\\b"]}
+      - {text: "the key is linked to the receiving account (bank domicile)", patterns: ["domicilio|conta de recebimento|receiving account|bank account|conta bancaria|account"]}
+    must_not:
+      - {text: "invented Pix fee on machines", patterns: ["pix.{0,40}\\d+[,.]\\d+ ?%"]}
+
+  - id: g004
+    question: "Preciso de conta bancária para receber minhas vendas via Pix?"
+    language: pt
+    category: pix
+    tags: [challenge]
+    relevant: [{url: "duvidas/pix", text: "chave"}, {url: "get-ajuda-pix", text: "habilit"}]
+    facts:
+      - {text: "é preciso informar uma chave Pix", patterns: ["chave"]}
+      - {text: "a chave é vinculada à conta de recebimento/domicílio bancário", patterns: ["domicilio|conta de recebimento|conta bancaria|conta"]}
+    must_not:
+      - {text: "taxa de Pix inventada", patterns: ["pix.{0,40}\\d+[,.]\\d+ ?%"]}
+
+  - id: g005
+    question: "My card machine won't connect to the internet, what should I do?"
+    language: en
+    category: terminal_troubleshooting
+    tags: [challenge, troubleshooting]
+    relevant: [{url: "configurar-o-wi-fi", text: "wi-fi"}, {url: "configuracoes-da-sua-maquininha", text: "chip"}, {url: "Manul-GetSmart", text: "conex"}, {url: "GetClassica", text: "wi-fi|1-18|1-84"}, {url: "erro-adq-1-1", text: "."}]
+    facts:
+      - {text: "configure/reconnect Wi-Fi via the Wi-Fi option and search networks", patterns: ["wi-?fi"]}
+      - {text: "the machine has its own chip / mobile data as an alternative", patterns: ["chip|4g|3g|mobile data|dados moveis|plano de dados"]}
+
+  - id: g006
+    question: "Minha maquininha não conecta na internet, o que eu faço?"
+    language: pt
+    category: terminal_troubleshooting
+    tags: [challenge, troubleshooting]
+    relevant: [{url: "configurar-o-wi-fi", text: "wi-fi"}, {url: "configuracoes-da-sua-maquininha", text: "chip"}, {url: "Manul-GetSmart", text: "conex"}, {url: "GetClassica", text: "wi-fi|1-18|1-84"}, {url: "erro-adq-1-1", text: "."}]
+    facts:
+      - {text: "configurar o Wi-Fi pela opção Wi-Fi / procurar redes", patterns: ["wi-?fi"]}
+      - {text: "a maquininha tem chip e plano de dados próprios", patterns: ["chip|4g|3g|plano de dados"]}
+
+  - id: g007
+    question: "How does receivables advance (antecipação) work with Getnet?"
+    language: en
+    category: receivables_advance
+    tags: [challenge]
+    relevant: [{url: "antecipacao-de-vendas", text: "antecip"}, {url: "get-ajuda-antecipacao", text: "antecip"}, {url: "duvidas/app-getnet", text: "antecip"}]
+    facts:
+      - {text: "credit sales can be received before the settlement date", patterns: ["credit|credito", "advance|antecip|before|antes"]}
+      - {text: "channels: app, call center, POS or automatic", patterns: ["app|aplicativo|central|pos\\b|automatic|automatica|portal"]}
+    must_not:
+      - {text: "invented anticipation rate", patterns: ["(antecipa|advance)[^.]{0,60}\\d+[,.]\\d+ ?%"]}
+
+  - id: g008
+    question: "Como funciona a antecipação de recebíveis na Getnet?"
+    language: pt
+    category: receivables_advance
+    tags: [challenge]
+    relevant: [{url: "antecipacao-de-vendas", text: "antecip"}, {url: "get-ajuda-antecipacao", text: "antecip"}, {url: "duvidas/app-getnet", text: "antecip"}]
+    facts:
+      - {text: "receber antecipadamente vendas no crédito", patterns: ["credito", "antecip"]}
+      - {text: "canais: app, central, POS, automática", patterns: ["aplicativo|app|central|pos\\b|automatica|portal"]}
+    must_not:
+      - {text: "taxa de antecipação inventada", patterns: ["antecipa[^.]{0,60}\\d+[,.]\\d+ ?%"]}
+
+  - id: g009
+    question: "My card machine is showing a transaction decline error."
+    language: en
+    category: sales_management
+    tags: [challenge, troubleshooting]
+    relevant: [{url: "status-das-minhas-vendas|possiveis-status", text: "negada"}, {url: "erro-adq-4-91", text: "."}, {url: "GetClassica", text: "4-91"}]
+    facts:
+      - {text: "a declined sale was not authorized by the card issuer/brand", patterns: ["issuer|emissor|bandeira|card brand|issuing bank|banco"]}
+
+  - id: g010
+    question: "Minha maquininha está mostrando um erro de transação negada."
+    language: pt
+    category: sales_management
+    tags: [challenge, troubleshooting]
+    relevant: [{url: "status-das-minhas-vendas|possiveis-status", text: "negada"}, {url: "erro-adq-4-91", text: "."}, {url: "GetClassica", text: "4-91"}]
+    facts:
+      - {text: "venda negada = não autorizada pelo emissor/bandeira", patterns: ["emissor|bandeira|banco"]}
+
+  - id: g011
+    question: "How many installments can I split a sale into with the crediário?"
+    language: en
+    category: crediario
+    tags: [challenge]
+    relevant: [{url: "crediario", text: "48|parcela|2 dias"}]
+    facts:
+      - {text: "up to 48 installments", patterns: ["48"]}
+      - {text: "limit/interest depend on the card issuer", patterns: ["issuer|emissor|bank|banco"]}
+    must_not:
+      - {text: "wrong installment cap", patterns: ["(up to|ate) (60|72|36)"]}
+
+  - id: g012
+    question: "Em quantas parcelas posso dividir uma venda no crediário?"
+    language: pt
+    category: crediario
+    tags: [challenge]
+    relevant: [{url: "crediario", text: "48|parcela|2 dias"}]
+    facts:
+      - {text: "até 48x", patterns: ["48"]}
+      - {text: "o emissor define limite e juros", patterns: ["emissor|banco"]}
+    must_not:
+      - {text: "teto errado", patterns: ["ate (60|72|36)"]}
+
+  - id: g013
+    question: "Can I sell through WhatsApp using the Payment Link?"
+    language: en
+    category: payment_link
+    tags: [challenge]
+    relevant: [{url: "link-de-pagamento", text: "whatsapp|enviad"}, {url: "online-payments", text: "link"}]
+    facts:
+      - {text: "yes, the link can be sent by WhatsApp", patterns: ["whatsapp"]}
+      - {text: "also social networks, e-mail and SMS", patterns: ["e-?mail|sms|social"]}
+
+  - id: g014
+    question: "Posso vender pelo WhatsApp usando o Link de Pagamento?"
+    language: pt
+    category: payment_link
+    tags: [challenge]
+    relevant: [{url: "link-de-pagamento", text: "whatsapp|enviad"}]
+    facts:
+      - {text: "sim, pode ser enviado pelo WhatsApp", patterns: ["whatsapp"]}
+      - {text: "também redes sociais, e-mail e SMS", patterns: ["e-?mail|sms|redes sociais"]}
+
+  - id: g015
+    question: "O que é a Get Smart?"
+    language: pt
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "inteligente|android"}, {url: "maquininha/get-smart", text: "."}]
+    facts:
+      - {text: "máquina de cartões inteligente", patterns: ["inteligente|android|smart"]}
+      - {text: "controle de estoque/pedidos/nota fiscal na máquina", patterns: ["estoque|pedido|nota fiscal|cardapio"]}
+
+  - id: g016
+    question: "What payment types does the Get Smart accept?"
+    language: en
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "voucher|credito"}, {url: "Manul-GetSmart", text: "pagamento"}]
+    facts:
+      - {text: "credit and debit", patterns: ["credit|credito"]}
+      - {text: "voucher", patterns: ["voucher"]}
+      - {text: "QR Code / Pix", patterns: ["qr|pix"]}
+      - {text: "contactless NFC", patterns: ["nfc|contactless|aproximacao|tap"]}
+
+  - id: g017
+    question: "Quais bandeiras são aceitas na Get Smart?"
+    language: pt
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "mastercard"}, {url: "configuracoes-da-sua-maquininha", text: "mastercard"}]
+    facts:
+      - {text: "Mastercard, Visa, Elo", patterns: ["mastercard"]}
+      - {text: "vouchers (Alelo, Ticket, VR) para PJ", patterns: ["alelo|ticket|\\bvr\\b|pluxee"]}
+
+  - id: g018
+    question: "Fiz uma venda duplicada na minha Get Smart em menos de 5 minutos, preciso estornar?"
+    language: pt
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "duplicada|5 minutos"}]
+    facts:
+      - {text: "a segunda venda é cancelada automaticamente", patterns: ["automatica"]}
+      - {text: "aguardar 5 minutos ou informar outro valor", patterns: ["5 minutos"]}
+
+  - id: g019
+    question: "How do I keep my Get Smart battery lasting longer?"
+    language: en
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "bateria"}]
+    facts:
+      - {text: "charge for at least 3 hours", patterns: ["3 (hours|horas)|three hours"]}
+      - {text: "recharge when at 20%", patterns: ["20 ?%"]}
+
+  - id: g020
+    question: "Como cancelo uma venda da Get Smart feita em dias anteriores?"
+    language: pt
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "duvidas/get-smart", text: "4003"}, {url: "duvidas/operacional", text: "outro dia"}]
+    facts:
+      - {text: "somente pela central de atendimento 4003-4000", patterns: ["4003[ -]?4000|central"]}
+
+  - id: g021
+    question: "What is Get Tap?"
+    language: en
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "celular|aproxima"}]
+    facts:
+      - {text: "turns the phone into a card machine", patterns: ["phone|celular|smartphone|mobile"]}
+      - {text: "contactless/NFC payments", patterns: ["nfc|contactless|aproximacao|tap to pay"]}
+
+  - id: g022
+    question: "What are the minimum requirements to use Get Tap?"
+    language: en
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "android 12"}]
+    facts:
+      - {text: "Android 12 or later", patterns: ["android 12"]}
+      - {text: "NFC", patterns: ["nfc"]}
+
+  - id: g023
+    question: "O Get Tap tem mensalidade?"
+    language: pt
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "mensalidade"}]
+    facts:
+      - {text: "não tem mensalidade", patterns: ["nao (possui|tem|ha|cobra)[^.]{0,30}mensalidade|sem mensalidade|nao possui mensalidade"]}
+      - {text: "apenas taxas por transação", patterns: ["transac"]}
+
+  - id: g024
+    question: "Qual o valor limite por venda no Get Tap?"
+    language: pt
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "200"}]
+    facts:
+      - {text: "não existe limite pré-determinado", patterns: ["nao (existe|ha)[^.]{0,30}limite|sem limite"]}
+      - {text: "acima de R$ 200 pode exigir senha", patterns: ["200"]}
+
+  - id: g025
+    question: "Do I need internet access to use Get Tap?"
+    language: en
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "internet"}]
+    facts:
+      - {text: "yes, an internet connection is required", patterns: ["internet"]}
+
+  - id: g026
+    question: "O que é o Receba Já?"
+    language: pt
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "receba-ja", text: "2 dias|30 dias|d\\+2"}]
+    facts:
+      - {text: "receber em 2 dias (D+2)", patterns: ["2 dias|d\\+2"]}
+      - {text: "ou em 30 dias", patterns: ["30 dias"]}
+
+  - id: g027
+    question: "Depois que eu contratar o Receba Já D+2, as vendas já realizadas serão pagas no novo prazo?"
+    language: pt
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "receba-ja", text: "habilitacao|contratacao"}]
+    facts:
+      - {text: "não; vale só para vendas após a habilitação", patterns: ["(apos|a partir d[ae])[^.]{0,40}(habilitacao|contratacao)|somente para as vendas realizadas a partir"]}
+
+  - id: g028
+    question: "When do I receive the money from debit card sales?"
+    language: en
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "antecipacao-de-vendas", text: "debito"}, {url: "receba-ja", text: "debito"}]
+    facts:
+      - {text: "next (business) day", patterns: ["next (business )?day|following (business )?day|d\\+1|dia (util )?seguinte|one business day|1 business day"]}
+
+  - id: g029
+    question: "Quais planos de recebimento reduzido a Getnet oferece?"
+    language: pt
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "plano-de-recebimento-reduzido", text: "2 dias|30 dias"}]
+    facts:
+      - {text: "receba em 2 dias úteis", patterns: ["2 dias uteis"]}
+      - {text: "receba em 30 dias", patterns: ["30 dias"]}
+
+  - id: g030
+    question: "Does the 2-business-day receiving plan apply to Payment Link sales?"
+    language: en
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "plano-de-recebimento-reduzido", text: "presencia|link"}]
+    facts:
+      - {text: "no — only in-person sales; not for links/e-commerce", patterns: ["in-person|presencia|physical|fisic"]}
+
+  - id: g031
+    question: "Existe mensalidade no plano de recebimento reduzido?"
+    language: pt
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "plano-de-recebimento-reduzido", text: "mensalidade|mdr"}]
+    facts:
+      - {text: "não há mensalidade", patterns: ["nao"]}
+      - {text: "paga MDR e taxa de serviço do plano", patterns: ["mdr|taxa de servico"]}
+
+  - id: g032
+    question: "Como contratar o plano de recebimento reduzido?"
+    language: pt
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "plano-de-recebimento-reduzido", text: "central"}]
+    facts:
+      - {text: "pela Central de Atendimento", patterns: ["central"]}
+      - {text: "telefones 4002-4000 / 4003-4000", patterns: ["400[23][ -]?4000"]}
+
+  - id: g033
+    question: "What is a chargeback?"
+    language: en
+    category: sales_management
+    tags: [operations]
+    relevant: [{url: "operacional|chargeback", text: "chargeback"}]
+    facts:
+      - {text: "the cardholder disputes a transaction with the bank", patterns: ["disput|contest|question|reclama"]}
+      - {text: "the transaction is cancelled and debited from the merchant", patterns: ["debit|cancel|estorn"]}
+
+  - id: g034
+    question: "Como estornar uma venda na maquininha?"
+    language: pt
+    category: sales_management
+    tags: [operations]
+    relevant: [{url: "estornar-uma-venda|operacional", text: "estorno"}]
+    facts:
+      - {text: "apenas no mesmo dia da venda", patterns: ["mesmo dia"]}
+      - {text: "senha do lojista (padrão 0000)", patterns: ["senha|0000"]}
+      - {text: "usar o mesmo cartão da venda", patterns: ["mesmo cartao|cartao"]}
+
+  - id: g035
+    question: "Can I refund a sale from a previous day directly on the card machine?"
+    language: en
+    category: sales_management
+    tags: [operations]
+    relevant: [{url: "estornar-uma-venda|operacional", text: "mesmo dia|outro dia"}, {url: "duvidas/get-smart", text: "4003"}]
+    facts:
+      - {text: "no — contact the Getnet call center", patterns: ["call cent|central|customer service|contact|4002|4003"]}
+
+  - id: g036
+    question: "Como faço a reimpressão do comprovante de venda?"
+    language: pt
+    category: sales_management
+    tags: [operations]
+    relevant: [{url: "operacional", text: "reimprimir"}, {url: "duvidas/pix", text: "reimpress"}, {url: "Manul-GetSmart", text: "reimprimir"}]
+    facts:
+      - {text: "menu Suporte > Reimprimir último", patterns: ["reimprimir|reimpress"]}
+
+  - id: g037
+    question: "Quais modalidades de crédito parcelado estão disponíveis na Getnet?"
+    language: pt
+    category: crediario
+    tags: [product]
+    relevant: [{url: "parcelado", text: "emissor|lojista"}]
+    facts:
+      - {text: "Parcelado Emissor (até 24 parcelas)", patterns: ["emissor"]}
+      - {text: "Parcelado Lojista (até 12 parcelas)", patterns: ["lojista"]}
+      - {text: "limites 24 e 12 parcelas", patterns: ["24"]}
+
+  - id: g038
+    question: "What is pre-authorization and how does it work?"
+    language: en
+    category: faq
+    tags: [product]
+    relevant: [{url: "pre-autorizacao", text: "reservar"}]
+    facts:
+      - {text: "temporarily reserves the amount on the customer's credit card", patterns: ["reserv|hold|block"]}
+      - {text: "confirmation within up to 30 days", patterns: ["30 days|30 dias"]}
+      - {text: "amount can be changed up to four times", patterns: ["four times|4 times|quatro vezes"]}
+
+  - id: g039
+    question: "Como funciona o Plano Light?"
+    language: pt
+    category: fees
+    tags: [fees]
+    relevant: [{url: "plano-light", text: "12 parcelas|12,90"}]
+    facts:
+      - {text: "12 parcelas e depois 100% de desconto", patterns: ["12 parcelas|100 ?%"]}
+      - {text: "R$ 12,90 se faturar pelo menos R$ 1,00 (Getnet)", patterns: ["12[,.]90"]}
+      - {text: "R$ 29,90 se não faturar", patterns: ["29[,.]90"]}
+
+  - id: g040
+    question: "Quero cancelar minha parceria com a Getnet, como faço?"
+    language: pt
+    category: account
+    tags: [account]
+    relevant: [{url: "cancelamento", text: "central|cancel"}]
+    facts:
+      - {text: "contatar a Central de Relacionamento", patterns: ["central"]}
+
+  - id: g041
+    question: "After I request cancellation of my machine, can I keep using it?"
+    language: en
+    category: account
+    tags: [account]
+    relevant: [{url: "cancelamento", text: "nao sera mais possivel|equipamento"}]
+    facts:
+      - {text: "no, the equipment can no longer be used", patterns: ["no longer|not be (possible|able)|cannot|can't|nao sera|won't be able"]}
+
+  - id: g042
+    question: "Como trocar o domicílio bancário?"
+    language: pt
+    category: account
+    tags: [account]
+    relevant: [{url: "domicilio-bancario", text: "dados bancarios|dados do negocio"}, {url: "duvidas/bandeiras", text: "domicilio"}]
+    facts:
+      - {text: "pelo app Getnet Brasil em Dados bancários", patterns: ["dados bancarios|dados do negocio|aplicativo|app"]}
+      - {text: "ou pelo Portal Minha Conta (Financeiro)", patterns: ["portal|minhaconta|minha conta"]}
+
+  - id: g043
+    question: "Can a MEI receive sales in a personal (CPF) bank account?"
+    language: en
+    category: account
+    tags: [account]
+    relevant: [{url: "domicilio-bancario", text: "mei"}]
+    facts:
+      - {text: "yes, a PF account of the owner", patterns: ["owner|propriet|personal|pf\\b|cpf"]}
+      - {text: "but cannot anticipate sales on that account", patterns: ["anticipat|advance|antecip"]}
+
+  - id: g044
+    question: "Como solicitar a manutenção da maquininha Getnet?"
+    language: pt
+    category: terminal_troubleshooting
+    tags: [troubleshooting]
+    relevant: [{url: "manutencao", text: "manutencao"}]
+    facts:
+      - {text: "pelo app (Manutenção de máquina) ou Portal Minha Conta", patterns: ["aplicativo|app|portal"]}
+      - {text: "recebe protocolo de atendimento", patterns: ["protocolo|confirmacao"]}
+
+  - id: g045
+    question: "O que significa o erro ADQ 4-83 na maquininha?"
+    language: pt
+    category: terminal_troubleshooting
+    tags: [troubleshooting, error_code]
+    relevant: [{url: "erro-adq-4-83", text: "."}, {url: "GetClassica|GetMini|GetLite", text: "4-83"}]
+    facts:
+      - {text: "erro de integração com as bandeiras", patterns: ["integracao|bandeiras"]}
+      - {text: "Função 38 > Inicialização", patterns: ["38|inicializa"]}
+      - {text: "fazer venda teste", patterns: ["venda teste|teste"]}
+
+  - id: g046
+    question: "What does error ADQ 1-18 mean on my card machine?"
+    language: en
+    category: terminal_troubleshooting
+    tags: [troubleshooting, error_code]
+    relevant: [{url: "erro-adq-1-18", text: "."}, {url: "GetClassica|GetMini|GetLite", text: "1-18"}]
+    facts:
+      - {text: "communication error / weak signal", patterns: ["communicat|signal|sinal|comunica"]}
+      - {text: "function 25 steps then test sale", patterns: ["25|test"]}
+
+  - id: g047
+    question: "Preciso comprar um chip ou contratar plano de dados para a maquininha funcionar?"
+    language: pt
+    category: terminal_troubleshooting
+    tags: [troubleshooting]
+    relevant: [{url: "configuracoes-da-sua-maquininha", text: "chip"}, {url: "GetClassica", text: "chip"}]
+    facts:
+      - {text: "não; já vem com chip e plano de dados", patterns: ["chip"]}
+
+  - id: g048
+    question: "How do I set up Wi-Fi on my Getnet card machine?"
+    language: en
+    category: terminal_troubleshooting
+    tags: [troubleshooting]
+    relevant: [{url: "configurar-o-wi-fi", text: "wi-fi"}, {url: "GetClassica|GetMini|GetLite", text: "wi-fi"}, {url: "Manul-GetSmart", text: "wi-fi"}]
+    facts:
+      - {text: "open the Wi-Fi option", patterns: ["wi-?fi"]}
+      - {text: "search networks and select yours", patterns: ["search|procurar|network|rede"]}
+      - {text: "enter the password", patterns: ["password|senha"]}
+
+  - id: g049
+    question: "Quais aplicativos vêm instalados na Get Smart?"
+    language: pt
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "solucoes-get-smart", text: "instalados"}]
+    facts:
+      - {text: "Pagamento, Getstore e Configurar", patterns: ["getstore|configurar"]}
+      - {text: "não podem ser removidos", patterns: ["nao podem|removid"]}
+
+  - id: g050
+    question: "What is Get Smart kiosk mode?"
+    language: en
+    category: card_machines
+    product: Get Smart
+    tags: [product]
+    relevant: [{url: "solucoes-get-smart", text: "quiosque"}, {url: "Manul-GetSmart", text: "quiosque"}, {url: "maquininha/get-smart", text: "quiosque"}]
+    facts:
+      - {text: "self-service mode", patterns: ["self-?service|autoatendimento|totem|kiosk"]}
+      - {text: "only one app open at a time", patterns: ["one app|single app|um aplicativo|one application"]}
+
+  - id: g051
+    question: "Posso antecipar o valor da Reserva Financeira?"
+    language: pt
+    category: receivables_advance
+    tags: [settlement]
+    relevant: [{url: "reserva-financeira", text: "antecip"}]
+    facts:
+      - {text: "não pode ser antecipada enquanto retida", patterns: ["nao"]}
+    must_not:
+      - {text: "afirmar que pode antecipar", patterns: ["^sim\\b"]}
+
+  - id: g052
+    question: "What types of fees does Getnet charge?"
+    language: en
+    category: fees
+    tags: [fees]
+    relevant: [{url: "taxas-por-transacao", text: "adesao|transacao"}]
+    facts:
+      - {text: "sign-up (adhesion) fee", patterns: ["adhesion|adesao|sign-?up|onboarding|membership|setup"]}
+      - {text: "per-transaction fee (MDR)", patterns: ["transaction|mdr|transacao"]}
+      - {text: "anticipation fee", patterns: ["anticipat|advance|antecip"]}
+    must_not:
+      - {text: "invented exact MDR", patterns: ["mdr (of|de) \\d"]}
+
+  - id: g053
+    question: "What payment methods does the Getnet Payment Link accept?"
+    language: en
+    category: payment_link
+    tags: [product]
+    relevant: [{url: "link-de-pagamento", text: "pix|credito"}]
+    facts:
+      - {text: "credit and debit cards", patterns: ["credit"]}
+      - {text: "Pix / QR Code", patterns: ["pix|qr"]}
+
+  - id: g054
+    question: "Preciso ter um site para usar o Link de Pagamento?"
+    language: pt
+    category: payment_link
+    tags: [product]
+    relevant: [{url: "link-de-pagamento", text: "site"}]
+    facts:
+      - {text: "não precisa de site", patterns: ["nao"]}
+      - {text: "informar minhaconta.getnet.com.br no campo url", patterns: ["minhaconta"]}
+
+  - id: g055
+    question: "Can individuals (CPF) use the Payment Link, or only companies?"
+    language: en
+    category: payment_link
+    tags: [product]
+    relevant: [{url: "link-de-pagamento", text: "pessoas fisicas"}]
+    facts:
+      - {text: "both individuals and companies", patterns: ["individual|pessoa fisica|natural person|cpf|both"]}
+
+  - id: g056
+    question: "Quanto tempo leva para habilitar o Link de Pagamento?"
+    language: pt
+    category: payment_link
+    tags: [product]
+    relevant: [{url: "link-de-pagamento", text: "mesmo dia"}]
+    facts:
+      - {text: "no mesmo dia", patterns: ["mesmo dia"]}
+
+  - id: g057
+    question: "Cliente do Link de Pagamento pode receber em D+2?"
+    language: pt
+    category: payment_link
+    tags: [product, settlement]
+    relevant: [{url: "link-de-pagamento", text: "d\\+2|6 meses"}]
+    facts:
+      - {text: "após 6 meses de uso pode solicitar, sujeito a análise", patterns: ["6 meses|seis meses"]}
+
+  - id: g058
+    question: "Is there a fee to use Pix with Get Conta?"
+    language: en
+    category: pix
+    tags: [pix]
+    relevant: [{url: "pix-mais-respostas", text: "gratuito"}]
+    facts:
+      - {text: "no, Pix is free", patterns: ["free|gratuit|no fee|no charge|without (any )?(fee|charge)"]}
+
+  - id: g059
+    question: "Como fazer uma venda com Pix na maquininha?"
+    language: pt
+    category: pix
+    tags: [pix]
+    relevant: [{url: "venda-com-pix", text: "pix"}, {url: "Manul", text: "pix"}]
+    facts:
+      - {text: "habilitar o Pix no app ou Portal", patterns: ["habilit"]}
+      - {text: "escolher Pix e o cliente lê o QR Code", patterns: ["qr ?code|qr"]}
+
+  - id: g060
+    question: "Quais são os possíveis status das minhas vendas?"
+    language: pt
+    category: sales_management
+    tags: [operations]
+    relevant: [{url: "status", text: "aprovada|negada"}]
+    facts:
+      - {text: "Aprovada", patterns: ["aprovada"]}
+      - {text: "Negada", patterns: ["negada"]}
+      - {text: "Estornada/Cancelada", patterns: ["estornada|cancelada"]}
+
+  - id: g061
+    question: "When do I receive crediário sales, and is there an anticipation cost?"
+    language: en
+    category: crediario
+    tags: [settlement]
+    relevant: [{url: "crediario", text: "2 dias"}]
+    facts:
+      - {text: "paid in up to 2 business days in a single payment", patterns: ["2 business days|two business days|2 dias uteis|2 working days"]}
+      - {text: "no anticipation cost", patterns: ["no (anticipation|advance|prepayment)|without (any )?(anticipation|advance)|sem custo"]}
+
+  - id: g062
+    question: "Em que horário posso fazer a antecipação de vendas sendo correntista Santander?"
+    language: pt
+    category: receivables_advance
+    tags: [settlement]
+    relevant: [{url: "antecipacao-de-vendas", text: "9h"}]
+    facts:
+      - {text: "segunda a sexta, das 9h às 21h", patterns: ["9h|21h|9 as 21"]}
+      - {text: "exceto feriados", patterns: ["feriado"]}
+
+  - id: g063
+    question: "What is the Getnet customer service phone number?"
+    language: en
+    category: contact
+    tags: [contact]
+    relevant: [{url: ".", text: "4002[ -]?4000|0800[ -]?648"}]
+    facts:
+      - {text: "4002-4000 / 4003-4000 in capitals", patterns: ["400[23][ -]?4000"]}
+
+  - id: g064
+    question: "Qual a garantia da Get Clássica e quanto dura a bateria?"
+    language: pt
+    category: card_machines
+    product: Get Clássica
+    tags: [product]
+    relevant: [{url: "GetClassica", text: "garantia|bateria"}]
+    facts:
+      - {text: "1 ano de garantia", patterns: ["1 ano|um ano"]}
+      - {text: "bateria de 4h a 8h", patterns: ["4 ?h|8 ?h|4 a 8"]}
+
+  - id: g065
+    question: "What's the monthly price of the Getnet Get Ultra Pro card machine?"
+    language: en
+    category: card_machines
+    tags: [hallucination_trap]
+    expect_no_evidence: true
+    relevant: []
+    facts: []
+    must_not:
+      - {text: "any invented price", patterns: ["ultra pro[^.]{0,80}r\\$ ?\\d", "r\\$ ?\\d+[,.]\\d{2}[^.]{0,40}ultra"]}
+
+  - id: g066
+    question: "Qual é a taxa de antecipação do plano Diamante Getnet?"
+    language: pt
+    category: fees
+    tags: [hallucination_trap]
+    expect_no_evidence: true
+    relevant: []
+    facts: []
+    must_not:
+      - {text: "taxa inventada", patterns: ["diamante[^.]{0,80}\\d+[,.]\\d+ ?%", "\\d+[,.]\\d+ ?%[^.]{0,60}diamante"]}
+
+  - id: g067
+    question: "Os clientes precisam digitar a senha nas transações do Get Tap?"
+    language: pt
+    category: card_machines
+    product: Get Tap
+    tags: [product]
+    relevant: [{url: "get-tap", text: "senha"}]
+    facts:
+      - {text: "depende do valor ou da configuração do dispositivo", patterns: ["depende"]}
+      - {text: "teclado com números em ordem aleatória", patterns: ["aleatori"]}
+
+  - id: g068
+    question: "Which card machines are available for the Receba Já condition?"
+    language: en
+    category: settlement
+    tags: [settlement]
+    relevant: [{url: "receba-ja", text: "aluguel|compra"}]
+    facts:
+      - {text: "all rental or purchased equipment", patterns: ["rent|aluguel|leas", "purchas|compra|bought|buy"]}

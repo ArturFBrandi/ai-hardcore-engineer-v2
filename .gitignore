@@ -19,8 +19,7 @@ build/
 models/
 .cache/
 data/crawl/
-data/snapshots/*.jsonl.gz
-!data/snapshots/fixture/
+data/snapshots/*.tmp
 sbom*.json
 # Volatile evaluation outputs (baseline + latest summaries are committed)
 evaluation/results/runs/

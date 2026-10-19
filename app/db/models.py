@@ -403,3 +403,22 @@ class AuditLog(Base):
     after_json: Mapped[dict[str, Any] | None] = mapped_column(JSONB)
     created_at: Mapped[datetime] = mapped_column(DateTime(timezone=True), server_default=_now())
     __table_args__ = (Index("ix_audit_entity", "entity", "entity_id"),)
+
+
+class KBDocument(Base):
+    """Crawl state per source URL (incremental re-crawl via ETag/Last-Modified + content hash)."""
+
+    __tablename__ = "kb_documents"
+    url: Mapped[str] = mapped_column(String(500), primary_key=True)
+    canonical_url: Mapped[str] = mapped_column(String(500))
+    title: Mapped[str] = mapped_column(String(300))
+    category: Mapped[str] = mapped_column(String(48))
+    language: Mapped[str | None] = mapped_column(String(8))
+    content_type: Mapped[str] = mapped_column(String(64))
+    etag: Mapped[str | None] = mapped_column(String(200))
+    last_modified: Mapped[str | None] = mapped_column(String(64))
+    doc_hash: Mapped[str] = mapped_column(String(64))
+    chunk_count: Mapped[int] = mapped_column(Integer, default=0)
+    rendered: Mapped[bool] = mapped_column(Boolean, default=False, server_default="false")
+    last_crawled_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
+    last_changed_at: Mapped[datetime] = mapped_column(DateTime(timezone=True))
