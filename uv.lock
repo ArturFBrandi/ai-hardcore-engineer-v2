@@ -468,6 +468,7 @@ dependencies = [
     { name = "sse-starlette" },
     { name = "structlog" },
     { name = "tenacity" },
+    { name = "tzdata" },
     { name = "uvicorn", extra = ["standard"] },
 ]
 
@@ -516,6 +517,7 @@ requires-dist = [
     { name = "sse-starlette", specifier = ">=3.5.0" },
     { name = "structlog", specifier = ">=26.1.0" },
     { name = "tenacity", specifier = ">=9.2.1" },
+    { name = "tzdata", specifier = ">=2026.5" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.54.0" },
 ]
 

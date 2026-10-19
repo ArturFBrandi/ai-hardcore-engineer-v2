@@ -1,0 +1,107 @@
+# Getnet Multi-Agent Support System — runtime stack.
+# Default stack: api, worker, migrate (one-shot), models-init (one-shot), postgres, qdrant, redis.
+# Optional profiles: observability, proxy (scale test), render (JS crawler).
+# Only the API (and the proxy) are published; datastores bind to 127.0.0.1 for local debugging only.
+
+name: getnet-support
+
+x-app-env: &app-env
+  APP_ENV: ${APP_ENV:-development}
+  LOG_LEVEL: ${LOG_LEVEL:-INFO}
+  AUTH_MODE: ${AUTH_MODE:-jwt}
+  JWT_ISSUER: ${JWT_ISSUER:-https://dev-idp.local}
+  JWT_AUDIENCE: ${JWT_AUDIENCE:-getnet-support-api}
+  JWT_JWKS_URL: ${JWT_JWKS_URL:-file:///keys/jwks.json}
+  JWT_DEV_PRIVATE_KEY_PATH: /keys/dev-private.pem
+  LLM_PROVIDER: ${LLM_PROVIDER:-minimax}
+  MINIMAX_API_KEY: ${MINIMAX_API_KEY:-}
+  MINIMAX_BASE_URL: ${MINIMAX_BASE_URL:-https://api.minimax.io/v1}
+  MINIMAX_MODEL: ${MINIMAX_MODEL:-MiniMax-M3}
+  LLM_TIMEOUT_SECONDS: ${LLM_TIMEOUT_SECONDS:-45}
+  LLM_MAX_RETRIES: ${LLM_MAX_RETRIES:-2}
+  LLM_PRICE_INPUT_PER_MTOK: ${LLM_PRICE_INPUT_PER_MTOK:-0.30}
+  LLM_PRICE_OUTPUT_PER_MTOK: ${LLM_PRICE_OUTPUT_PER_MTOK:-1.20}
+  MAX_TOKENS_PER_REQUEST: ${MAX_TOKENS_PER_REQUEST:-40000}
+  DATABASE_URL: postgresql+asyncpg://getnet:${POSTGRES_PASSWORD:-getnet-dev-only}@postgres:5432/getnet
+  QDRANT_URL: http://qdrant:6333
+  REDIS_URL: redis://redis:6379/0
+  WEB_SEARCH_PROVIDER: ${WEB_SEARCH_PROVIDER:-tavily}
+  WEB_SEARCH_API_KEY: ${WEB_SEARCH_API_KEY:-}
+  MODELS_DIR: /models
+  EMBEDDING_MODEL: ${EMBEDDING_MODEL:-sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2}
+  SPARSE_MODEL: ${SPARSE_MODEL:-Qdrant/bm25}
+  RERANKER_MODEL: ${RERANKER_MODEL:-jinaai/jina-reranker-v2-base-multilingual}
+  RAG_TOP_K: ${RAG_TOP_K:-15}
+  RAG_RERANK_TOP_K: ${RAG_RERANK_TOP_K:-8}
+  RAG_CONTEXT_TOP_K: ${RAG_CONTEXT_TOP_K:-5}
+  RAG_MIN_SCORE: ${RAG_MIN_SCORE:-0.0}
+  RAG_RERANK_MIN_SCORE: ${RAG_RERANK_MIN_SCORE:-0.0}
+  ESCALATION_CONFIDENCE_THRESHOLD: ${ESCALATION_CONFIDENCE_THRESHOLD:-0.55}
+  ESCALATION_PENALTIES_FILE: config/escalation_penalties.yaml
+  TROUBLESHOOTING_MAX_ATTEMPTS: ${TROUBLESHOOTING_MAX_ATTEMPTS:-3}
+  SUPERVISOR_MAX_STEPS: ${SUPERVISOR_MAX_STEPS:-3}
+  MEMORY_WINDOW_TURNS: ${MEMORY_WINDOW_TURNS:-8}
+  MEMORY_TOKEN_BUDGET: ${MEMORY_TOKEN_BUDGET:-1800}
+  CONVERSATION_TTL_DAYS: ${CONVERSATION_TTL_DAYS:-30}
+  HITL_SLA_MINUTES: ${HITL_SLA_MINUTES:-30}
+  OPERATOR_WEBHOOK_URL: ${OPERATOR_WEBHOOK_URL:-}
+  RATE_LIMIT_PER_MINUTE: ${RATE_LIMIT_PER_MINUTE:-30}
+  ENABLE_DEBUG_ENDPOINTS: ${ENABLE_DEBUG_ENDPOINTS:-true}
+  CORS_ALLOW_ORIGINS: ${CORS_ALLOW_ORIGINS:-}
+  OTEL_ENABLED: ${OTEL_ENABLED:-false}
+  OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4318}
+  GIT_SHA: ${GIT_SHA:-unknown}
+
+services:
+  postgres:
+    image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
+    environment:
+      POSTGRES_USER: getnet
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-getnet-dev-only}
+      POSTGRES_DB: getnet
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-55432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U getnet -d getnet"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  qdrant:
+    image: qdrant/qdrant:v1.19.1@sha256:12364fe851b9f17356fc88189fc06d1b521262e04659ec7345975b00c9246a10
+    environment:
+      QDRANT__TELEMETRY_DISABLED: "true"
+    volumes:
+      - qdrant:/qdrant/storage
+    ports:
+      - "127.0.0.1:${QDRANT_PORT:-56333}:6333"
+    healthcheck:
+      # The image has no curl/wget; use bash's /dev/tcp to probe the readiness endpoint.
+      test: ["CMD-SHELL", "bash -c 'exec 3<>/dev/tcp/127.0.0.1/6333 && printf \"GET /readyz HTTP/1.0\\r\\n\\r\\n\" >&3 && grep -q \"200 OK\" <&3'"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+  redis:
+    image: redis:8.2-alpine@sha256:b51665e66f00759be7c3152ad5ac3c66fb2f619c13ef62dea7cc1f9914524635
+    command: ["redis-server", "--appendonly", "yes", "--save", "60", "100"]
+    volumes:
+      - redis:/data
+    ports:
+      - "127.0.0.1:${REDIS_PORT:-56379}:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+    restart: unless-stopped
+
+volumes:
+  pgdata:
+  qdrant:
+  redis:
+  models:

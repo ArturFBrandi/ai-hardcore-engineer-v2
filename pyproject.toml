@@ -33,6 +33,7 @@ dependencies = [
     "sse-starlette>=3.5.0",
     "structlog>=26.1.0",
     "tenacity>=9.2.1",
+    "tzdata>=2026.5",
     "uvicorn[standard]>=0.54.0",
 ]
 
@@ -69,10 +70,11 @@ ignore = [
   "PLR0913",  # agent/tool constructors legitimately take several collaborators
   "PLR2004",  # numeric literals in tests and thresholds are explicit
   "RUF001", "RUF002", "RUF003",  # Portuguese text contains ambiguous-looking unicode by design
+  "PLR0917",  # keyword-heavy builders (seed rows) read better positionally
 ]
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415"]
+"tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415", "PT018", "PLR0917", "E501"]
 "evaluation/**" = ["S101", "S311", "PLR0912", "PLR0915"]
 "scripts/**" = ["S603", "S607", "T201", "PLR0915", "PLC0415"]
 

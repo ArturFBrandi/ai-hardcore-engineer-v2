@@ -26,10 +26,12 @@ A new session must be able to continue from this file alone. Read `docs/initial-
 | Phase | Status | Verified by |
 |---|---|---|
 | 0 Plan | done | `docs/IMPLEMENTATION_PLAN.md` written |
-| 1 Skeleton + config + CI | done | `make lint`, `make typecheck`, `make test-unit` → 10 passed |
+| 1 Skeleton + config + CI | done | `make lint`, `make typecheck`, `make test-unit` → 10 passed; CI run 39300059432 green |
+| 2 DB schema / migrations / seed | done | `alembic upgrade head` → `downgrade base` → `upgrade head`; `alembic check` = no drift; `python -m app.db.seed` twice (idempotent: 2 customers, 3 terminals, 122 txns, 68 settlements) |
+| 3 Tools + policy | done | `uv run pytest tests -q` → 31 passed (21 tool integration tests on real Postgres incl. isolation, approval gate, idempotent case + outbox + audit, append-only audit) |
 
 ## Open issues
-- none yet
+- Host port 5432 is used by another local project → compose publishes datastores on 127.0.0.1:55432/56333/56379.
 
 ## Next step
-- Phase 2: docker-compose datastores, Alembic schema, seed, repositories, integration tests.
+- Phase 4: LLM provider (MiniMax + Fake + reliability), `scripts/llm_test.py`, `make llm-test`.

@@ -34,3 +34,32 @@ jobs:
         with:
           enable-cache: true
       - run: make test-unit
+
+  integration:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
+        env:
+          POSTGRES_USER: getnet
+          POSTGRES_PASSWORD: getnet-dev-only
+          POSTGRES_DB: getnet
+        ports: ["55432:5432"]
+        options: >-
+          --health-cmd "pg_isready -U getnet -d getnet" --health-interval 5s --health-timeout 3s --health-retries 20
+      redis:
+        image: redis:8.2-alpine@sha256:b51665e66f00759be7c3152ad5ac3c66fb2f619c13ef62dea7cc1f9914524635
+        ports: ["56379:6379"]
+        options: >-
+          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
+      qdrant:
+        image: qdrant/qdrant:v1.19.1@sha256:12364fe851b9f17356fc88189fc06d1b521262e04659ec7345975b00c9246a10
+        ports: ["56333:6333"]
+    env:
+      DATASTORES: external
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+      - run: make test-integration

@@ -1,0 +1,110 @@
+"""Shared fixtures.
+
+Datastore-backed tests use dedicated test resources (database ``getnet_test``, Redis DB 15, Qdrant
+collection ``getnet_test``) so they never disturb the demo data. Start the datastores with
+``docker compose up -d postgres qdrant redis`` (``make test`` does it for you).
+"""
+
+from __future__ import annotations
+
+import asyncio
+import os
+from collections.abc import AsyncIterator, Iterator
+
+import asyncpg
+import pytest
+
+from app.config import Settings
+from app.db.base import Database
+from app.tools.context import AuthContext
+
+PG_ADMIN = os.environ.get("TEST_PG_ADMIN_URL", "postgresql://getnet:getnet-dev-only@localhost:55432/getnet")
+TEST_DB_URL = os.environ.get(
+    "TEST_DATABASE_URL", "postgresql+asyncpg://getnet:getnet-dev-only@localhost:55432/getnet_test"
+)
+TEST_REDIS_URL = os.environ.get("TEST_REDIS_URL", "redis://localhost:56379/15")
+TEST_QDRANT_URL = os.environ.get("TEST_QDRANT_URL", "http://localhost:56333")
+
+
+def make_test_settings(**overrides: object) -> Settings:
+    base: dict[str, object] = {
+        "app_env": "test",
+        "llm_provider": "fake",
+        "auth_mode": "jwt",
+        "database_url": TEST_DB_URL,
+        "redis_url": TEST_REDIS_URL,
+        "qdrant_url": TEST_QDRANT_URL,
+        "qdrant_collection": "getnet_test",
+        "web_search_provider": "disabled",
+        "log_json": True,
+        "log_level": "WARNING",
+        "otel_enabled": False,
+        "models_dir": os.environ.get("MODELS_DIR", os.path.expanduser("~/.cache/getnet-models")),
+        "jwt_jwks_url": "file://" + os.path.abspath(".dev-keys/test/jwks.json"),
+        "jwt_dev_private_key_path": os.path.abspath(".dev-keys/test/dev-private.pem"),
+        "rate_limit_per_minute": 1000,
+        "rate_limit_ip_per_minute": 5000,
+    }
+    base.update(overrides)
+    return Settings(**base)  # type: ignore[arg-type]
+
+
+@pytest.fixture(scope="session")
+def settings() -> Settings:
+    return make_test_settings()
+
+
+async def _ensure_database() -> None:
+    try:
+        conn = await asyncpg.connect(PG_ADMIN, timeout=5)
+    except (OSError, asyncpg.PostgresError) as exc:  # pragma: no cover - environment problem
+        pytest.exit(
+            f"PostgreSQL not reachable ({exc}). Start datastores: docker compose up -d postgres qdrant redis",
+            returncode=2,
+        )
+    try:
+        exists = await conn.fetchval("SELECT 1 FROM pg_database WHERE datname = 'getnet_test'")
+        if not exists:
+            await conn.execute("CREATE DATABASE getnet_test")
+    finally:
+        await conn.close()
+
+
+def _migrate(url: str) -> None:
+    from alembic.config import Config
+
+    from alembic import command
+
+    os.environ["DATABASE_URL"] = url
+    from app.config import get_settings
+
+    get_settings.cache_clear()
+    command.upgrade(Config("alembic.ini"), "head")
+
+
+@pytest.fixture(scope="session")
+async def db(settings: Settings) -> AsyncIterator[Database]:
+    await _ensure_database()
+    await asyncio.to_thread(_migrate, settings.database_url)
+    from app.db.seed import seed
+
+    database = Database(settings)
+    async with database.transaction() as s:
+        await seed(s)
+    yield database
+    await database.dispose()
+
+
+@pytest.fixture
+def ctx_1988() -> AuthContext:
+    return AuthContext(customer_id="cliente1988", subject="cliente1988", scopes=frozenset({"chat"}), request_id="req_t")
+
+
+@pytest.fixture
+def ctx_2077() -> AuthContext:
+    return AuthContext(customer_id="cliente2077", subject="cliente2077", scopes=frozenset({"chat"}), request_id="req_t")
+
+
+@pytest.fixture(scope="session")
+def anyio_backend() -> Iterator[str]:
+    return "asyncio"
