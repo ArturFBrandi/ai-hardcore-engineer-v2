@@ -104,6 +104,8 @@ def node(name: str) -> Callable[[NodeFn], NodeFn]:
                     update = {
                         "errors": [f"{name}:{type(exc).__name__}"],
                         "events": [event(name, "node_failed", {"error": type(exc).__name__}, started)],
+                        # A failed specialist step is still *done*: the supervisor must not reschedule it forever.
+                        "completed_steps": [s["id"] for s in state.get("active_steps") or [] if s.get("agent") == name],
                     }
                 elapsed = time.time() - started
                 metrics.AGENT_DURATION.labels(node=name).observe(elapsed)

@@ -96,7 +96,11 @@ class Retriever:
             # Rerank budget (ADR 006, evaluation/results/rerank_budget.md): only the top RAG_RERANK_TOP_K fused
             # candidates, passages truncated to RAG_RERANK_MAX_CHARS — same Recall@5 as reranking all 15, ~2.5x faster.
             head, tail = docs[: self.s.rag_rerank_top_k], docs[self.s.rag_rerank_top_k :]
-            scores = await self.models.arerank(query, [d.text[: self.s.rag_rerank_max_chars] for d in head])
+            try:
+                scores = await self.models.arerank(query, [d.text[: self.s.rag_rerank_max_chars] for d in head])
+            except Exception as exc:  # model missing/corrupt → explicit retrieval error, never a crashed node
+                log.error("rerank_failed", error=type(exc).__name__)
+                raise RetrievalError(f"rerank failed: {type(exc).__name__}") from exc
             for d, sc in zip(head, scores, strict=True):
                 d.rerank_score = sc
             docs = head + tail

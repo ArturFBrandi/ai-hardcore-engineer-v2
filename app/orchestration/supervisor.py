@@ -120,7 +120,7 @@ def evaluate(state: AgentState, *, max_steps: int, budget_ok: bool) -> Superviso
         return SupervisorDecision("escalate", "contradictory_information", signals=["contradictory_information"])
 
     # (1) pending plan steps whose dependencies are satisfied — enrich with upstream findings.
-    ready = ready_steps(plan, completed)
+    ready = [s for s in ready_steps(plan, completed) if visits.get(s["agent"], 0) < MAX_VISITS_PER_AGENT]
     if ready:
         scheduled: list[PlanStep] = []
         detail: dict[str, Any] = {"steps": [s["agent"] for s in ready]}

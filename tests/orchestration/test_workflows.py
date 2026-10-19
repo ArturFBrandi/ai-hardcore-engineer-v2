@@ -126,3 +126,17 @@ async def test_supervisor_step_budget_enforced(turn, container, monkeypatch) -> 
     r = await turn("Minha maquininha está com erro de transação negada, o que faço?")
     s = r.state
     assert s["supervisor_steps"] <= 1
+
+
+async def test_failed_specialist_node_cannot_loop_the_supervisor(turn, container, monkeypatch) -> None:  # type: ignore[no-untyped-def]
+    """Regression: a crashing node used to leave its step pending → rescheduled until the recursion limit."""
+
+    async def boom(query, filters=None, **kw):  # type: ignore[no-untyped-def]
+        raise ValueError("reranker model missing")
+
+    monkeypatch.setattr(container.retriever, "retrieve", boom)
+    r = await turn("Minha maquininha não conecta na internet")
+    s = r.state
+    assert s["final_answer"]
+    assert any(e.startswith("knowledge:") for e in s["errors"])
+    assert s["supervisor_steps"] <= container.settings.supervisor_max_steps

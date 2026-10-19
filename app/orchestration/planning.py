@@ -25,8 +25,15 @@ def _step(
     return PlanStep(id=f"s{idx}", agent=agent, objective=objective, inputs=inputs, depends_on=depends_on, origin=origin)
 
 
+# For settlement questions the Knowledge step's objective is the official settlement TERMS, not the merchant's
+# personal question ("when will MY money arrive?" is answered from their data). Used when the router gave no rewrite.
+SETTLEMENT_POLICY_QUERY = "prazo de recebimento das vendas débito crédito Pix repasse"
+
+
 def knowledge_inputs(intent: str, message: str, query: str | None, product: str | None) -> dict[str, Any]:
     mode = "web" if intent in WEB_INTENTS else "getnet"
+    if intent == "customer_settlement" and (not query or query.strip().startswith(message.strip())):
+        query = SETTLEMENT_POLICY_QUERY
     inputs: dict[str, Any] = {"mode": mode, "query": (query or message) if mode == "getnet" else message}
     if product and mode == "getnet":
         inputs["product_hint"] = product

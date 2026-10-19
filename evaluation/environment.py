@@ -61,11 +61,12 @@ async def seed(settings: Settings) -> None:
 
 
 async def index_snapshot(settings: Settings, *, offline: bool = False) -> int:
-    from app.rag.models import RetrievalModels
+    from app.rag.models import RetrievalModels, download_models
     from app.rag.qdrant_store import QdrantStore
     from ingestion.pipeline import index_chunks
     from ingestion.snapshot import load_snapshot
 
+    await asyncio.to_thread(download_models, settings)  # dense + sparse + reranker into MODELS_DIR (no-op when cached)
     chunks = load_snapshot()
     store = QdrantStore(settings.qdrant_url, settings.qdrant_collection)
     try:
