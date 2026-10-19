@@ -53,6 +53,24 @@ def troubleshooting_category(message: str, tool_results: list[ToolResultEntry]) 
     return "hardware"
 
 
+def pick_terminal(message: str, tool_results: list[ToolResultEntry]) -> dict[str, Any] | None:
+    """The terminal the conversation is about: the model the customer named, else the one with a
+    connectivity issue, else the first one inspected."""
+    statuses = [
+        r["data"]
+        for r in tool_results
+        if r.get("tool") == "get_terminal_status" and r.get("status") == "ok" and r.get("data")
+    ]
+    if not statuses:
+        return None
+    text = message.lower()
+    named = [s for s in statuses if str(s.get("model", "")).lower().replace("á", "a") in text.replace("á", "a")]
+    if named:
+        return named[0]
+    with_issue = [s for s in statuses if (s.get("diagnostics") or {}).get("has_connectivity_issue")]
+    return (with_issue or statuses)[0]
+
+
 def is_failure_report(message: str) -> bool:
     return bool(_FAILURE_REPORT.search(message))
 
@@ -84,14 +102,17 @@ def update_slots(
             slots["last_transaction_ids"] = []
             changes["expired"] = "sales"
 
+    terminal = pick_terminal(message, tool_results)
+    if terminal:
+        slots["active_terminal_id"] = terminal.get("terminal_id")
+        slots["active_terminal_model"] = terminal.get("model")
     for r in tool_results:
         if r.get("status") != "ok" or not r.get("data"):
             continue
         data = r["data"] or {}
         tool = r.get("tool")
         if tool == "get_terminal_status":
-            slots["active_terminal_id"] = data.get("terminal_id")
-            slots["active_terminal_model"] = data.get("model")
+            continue  # handled by pick_terminal
         elif tool == "get_customer_terminals":
             terminals = data.get("terminals") or []
             if len(terminals) == 1 or not slots.get("active_terminal_id"):

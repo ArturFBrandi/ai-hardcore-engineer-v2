@@ -28,7 +28,7 @@ from app.orchestration.supervisor import SupervisorProposal, evaluate, is_ambigu
 @node("load_memory")
 async def load_memory_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
-    started = time.perf_counter()
+    started = time.time()
     loaded = await ctx.memory.load(ctx.auth.customer_id, state["conversation_id"], ctx.settings.memory_window_turns)
     history = loaded["history"][-ctx.settings.memory_window_turns * 2 :]
     slots = loaded["slots"]
@@ -55,7 +55,7 @@ async def load_memory_node(state: AgentState, *, runtime: Runtime[GraphContext])
 @node("input_guard")
 async def input_guard_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
-    started = time.perf_counter()
+    started = time.time()
     recent = [t["content"] for t in state.get("history") or [] if t.get("role") == "customer"]
     screen = screen_input(state["message"], recent, ctx.auth.customer_id)
     update: dict[str, Any] = {"guardrail_flags": screen.flags, "blocked": screen.blocked}
@@ -83,7 +83,7 @@ async def input_guard_node(state: AgentState, *, runtime: Runtime[GraphContext])
 @node("supervisor")
 async def supervisor_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
-    started = time.perf_counter()
+    started = time.time()
     usage = current_usage.get()
     budget_ok = usage is None or usage.total_tokens < usage.budget_tokens * 0.8
     decision = evaluate(state, max_steps=ctx.settings.supervisor_max_steps, budget_ok=budget_ok)
@@ -164,7 +164,7 @@ async def supervisor_node(state: AgentState, *, runtime: Runtime[GraphContext]) 
 @node("decision")
 async def decision_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
-    started = time.perf_counter()
+    started = time.time()
     slots = state.get("slots") or {}
     attempts = 0
     if family(state.get("intent")) == "troubleshooting":
@@ -215,7 +215,7 @@ async def decision_node(state: AgentState, *, runtime: Runtime[GraphContext]) ->
 
 @node("output_guard")
 async def output_guard_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
-    started = time.perf_counter()
+    started = time.time()
     lang = state.get("language", "pt")
     text = state.get("final_answer") or state.get("candidate_answer") or message("no_evidence", lang)
     checked = check_output(text, language=lang)
@@ -237,7 +237,7 @@ async def output_guard_node(state: AgentState, *, runtime: Runtime[GraphContext]
 @node("save_memory")
 async def save_memory_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
-    started = time.perf_counter()
+    started = time.time()
     conv_id = state["conversation_id"]
     turn = state.get("turn", 1)
     lang = state.get("language", "pt")

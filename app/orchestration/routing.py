@@ -146,25 +146,25 @@ def rule_route(message: str) -> RuleMatch | None:
 # Deterministic fallback classifier used only when the LLM is unavailable/invalid. Deliberately small.
 _FALLBACK: list[tuple[str, re.Pattern[str]]] = [
     (
-        "technical_support",
+        "customer_settlement",
         re.compile(
-            r"\b(nao conecta|sem conexao|wi-?fi|internet|erro|error|nao liga|travad|quebrad|won'?t connect|not connect|offline|broken|reinici|restart)\b"
+            r"\b(deposit\w*|cai (o|na)|cair|repasse\w*|recebo|receber|recebimento\w*|settle\w*|paid out|dinheiro das vendas|liquidac\w*)"
         ),
     ),
     (
-        "customer_settlement",
+        "technical_support",
         re.compile(
-            r"\b(deposit|cai (o|na)|repasse|recebo|receber|recebimento|settlement|paid out|dinheiro das vendas|liquidac)\b"
+            r"\b(nao conecta|sem conexao|wi-?fi|internet|erro\w*|error\w*|nao liga|travad\w*|quebrad\w*|won'?t connect|not connect\w*|offline|broken|reinici\w*|restart\w*)"
         ),
     ),
     (
         "customer_transaction",
         re.compile(
-            r"\b(minhas vendas|my sales|transac|venda (de )?(ontem|hoje)|negad|recusad|declin|estorno|refund|anteontem|ontem|yesterday)\b"
+            r"\b(minhas vendas|my sales|transac\w*|venda\w* (de )?(ontem|hoje)|negad\w*|recusad\w*|declin\w*|estorn\w*|refund\w*|anteontem|ontem|yesterday)"
         ),
     ),
-    ("customer_terminal", re.compile(r"\b(minha(s)? maquininha|my (card )?machine|meu terminal|my terminal)\b")),
-    ("customer_account", re.compile(r"\b(meu plano|my plan|meus dados|my account|minha conta|domicilio)\b")),
+    ("customer_terminal", re.compile(r"\b(minhas? maquininhas?|my (card )?machines?|meus? termina\w*|my terminals?)")),
+    ("customer_account", re.compile(r"\b(meu plano|my plan|meus dados|my account|minha conta|domicilio)")),
 ]
 
 

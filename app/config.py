@@ -10,10 +10,10 @@ from __future__ import annotations
 import re
 from enum import StrEnum
 from functools import lru_cache
-from typing import Any
+from typing import Annotated, Any
 
 from pydantic import Field, SecretStr, field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 from app.errors import ConfigurationError
 
@@ -62,7 +62,7 @@ class Settings(BaseSettings):
     jwt_issuer: str = "https://dev-idp.local"
     jwt_audience: str = "getnet-support-api"
     jwt_jwks_url: str = "file:///keys/jwks.json"
-    jwt_algorithms: list[str] = Field(default_factory=lambda: ["RS256", "ES256"])
+    jwt_algorithms: Annotated[list[str], NoDecode] = Field(default_factory=lambda: ["RS256", "ES256"])
     jwt_leeway_seconds: int = Field(default=30, ge=0, le=300)
     jwt_dev_private_key_path: str = "/keys/dev-private.pem"
     jwt_dev_kid: str = "dev-key-1"
@@ -143,7 +143,7 @@ class Settings(BaseSettings):
     request_timeout_seconds: float = Field(default=120.0, gt=0)
     idempotency_ttl_seconds: int = Field(default=86400, ge=60)
     enable_debug_endpoints: bool = True
-    cors_allow_origins: list[str] = Field(default_factory=list)
+    cors_allow_origins: Annotated[list[str], NoDecode] = Field(default_factory=list)
 
     # --- observability ---------------------------------------------------------------------
     otel_enabled: bool = False

@@ -26,25 +26,25 @@ _EVIDENCE = re.compile(
 _WEB = re.compile(r"\[(W\d+)\] (.*?) \| (.*?) \| retrieved_at: (.*?)\n(.*?)(?=\n\n\[W\d+\] |\n</web_results>)", re.S)
 
 _INTENT_PATTERNS: list[tuple[str, str]] = [
-    ("human_support", r"\b(humano|atendente|human|agent|pessoa real)\b"),
-    ("weather", r"\b(previsao|tempo|clima|chuva|weather|forecast)\b"),
-    ("exchange_rate", r"\b(cotacao|cambio|exchange rate|dolar|euro)\b"),
-    ("case_status", r"\b(chamado|protocolo|ticket|case)\b"),
+    ("human_support", r"\b(humano|atendente|human|agent|pessoa real)"),
+    ("weather", r"\b(previsao|tempo|clima|chuva|weather|forecast)"),
+    ("exchange_rate", r"\b(cotacao|cambio|exchange rate|dolar|euro)"),
+    ("case_status", r"\b(chamado|protocolo|ticket|case)"),
     (
         "customer_settlement",
-        r"\b(deposit|depositad|cai |cair|repasse|recebo|receber o|recebimento das|liquida|settle|paid out|money from)\b",
+        r"\b(deposit|depositad|cai |cair|repasse|recebo|receber o|recebimento das|liquida|settle|paid out|money from)",
     ),
     (
         "technical_support",
-        r"\b(nao conecta|nao liga|conect|internet|wi-?fi|sem sinal|travou|erro|error|won'?t connect|not connect|reinici|restart|broken|quebrad|troca|substitu|replace)\b",
+        r"\b(nao conecta|nao liga|conect|conex|internet|wi-?fi|sem sinal|travou|erro|error|won'?t connect|not connect|reinici|restart|broken|quebrad|troca|trocar|substitu|replace)",
     ),
     (
         "customer_transaction",
-        r"\b(minhas vendas|my sales|vendas de|sales from|transac|negad|recusad|declin|anteontem|day before|ontem|yesterday)\b",
+        r"\b(minhas vendas|my sales|vendas de|sales from|transac|negad|recusad|declin|anteontem|day before|ontem|yesterday)",
     ),
-    ("customer_terminal", r"\b(minhas maquininhas|my (card )?machines|meus terminais)\b"),
-    ("customer_account", r"\b(meu plano|my plan|meus dados|domicilio|minha conta bancaria)\b"),
-    ("unsupported", r"\b(poema|poem|receita|recipe|piada|joke|futebol|football)\b"),
+    ("customer_terminal", r"\b(minhas maquininhas|my (card )?machines|meus terminais)"),
+    ("customer_account", r"\b(meu plano|my plan|meus dados|domicilio|minha conta bancaria)"),
+    ("unsupported", r"\b(poema|poem|receita|recipe|piada|joke|futebol|football)"),
 ]
 _PRODUCTS = ["Get Smart", "Get Clássica", "Get Mini", "Get Tap", "Get Lite", "Link de Pagamento", "Pix", "Crediário"]
 _CUSTOMER = {

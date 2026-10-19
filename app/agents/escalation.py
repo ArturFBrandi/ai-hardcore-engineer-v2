@@ -94,7 +94,7 @@ def sanitized_context(state: AgentState) -> dict[str, Any]:
 async def escalation_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
     lang = state.get("language", "pt")
-    started = time.perf_counter()
+    started = time.time()
     signals = list(state.get("signals") or [])
     reasons = list(state.get("escalation_reasons") or [])
     context = sanitized_context(state)
@@ -223,7 +223,7 @@ async def execute_action_node(state: AgentState, *, runtime: Runtime[GraphContex
     dec = OperatorDecision.model_validate(state.get("operator_decision") or {})
     case_id = state.get("case_id") or ""
     action = await hitl_repo.pending_action_for(ctx.db, case_id)
-    started = time.perf_counter()
+    started = time.time()
     if action is None or action.customer_id != ctx.auth.customer_id:
         return {
             "action_result": {"status": "missing"},
@@ -294,7 +294,7 @@ async def human_reply_node(state: AgentState, *, runtime: Runtime[GraphContext])
     lang = state.get("language", "pt")
     dec = OperatorDecision.model_validate(state.get("operator_decision") or {})
     action_result = state.get("action_result")
-    started = time.perf_counter()
+    started = time.time()
     operator_text = dec.message or dec.note
     if dec.kind == "approval" and not operator_text:
         operator_text = {

@@ -93,7 +93,7 @@ def terminal_status_calls(done: list[ToolResultEntry]) -> list[tuple[str, dict[s
 async def run_step(state: AgentState, runtime: Runtime[GraphContext], step: PlanStep) -> dict[str, Any]:
     ctx = runtime.context
     s = ctx.settings
-    started = time.perf_counter()
+    started = time.time()
     intent = state.get("intent", "")
     inputs = step.get("inputs") or {}
     date_ref = inputs.get("date_reference") or (state.get("route_flags") or {}).get("date_reference")
@@ -105,7 +105,7 @@ async def run_step(state: AgentState, runtime: Runtime[GraphContext], step: Plan
     slots = state.get("slots") or {}
 
     async def call(name: str, args: dict[str, Any]) -> ToolResult:
-        t0 = time.perf_counter()
+        t0 = time.time()
         r = await ctx.tools.invoke("customer_support", name, args, ctx.auth)
         events.append(
             event("customer_support", "tool_call", {"tool": name, "status": r.status, "args": r.arguments}, t0)

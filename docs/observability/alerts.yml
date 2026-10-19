@@ -1,0 +1,46 @@
+groups:
+  - name: getnet-agents
+    rules:
+      - alert: HighErrorRate
+        expr: sum(rate(http_requests_total{code=~"5.."}[5m])) / clamp_min(sum(rate(http_requests_total[5m])), 1e-9) > 0.05
+        for: 5m
+        labels: {severity: page}
+        annotations: {summary: "More than 5% of HTTP requests fail with 5xx"}
+      - alert: HighP95ChatLatency
+        expr: histogram_quantile(0.95, sum by (le) (rate(agent_request_duration_seconds_bucket[5m]))) > 20
+        for: 10m
+        labels: {severity: ticket}
+        annotations: {summary: "p95 chat latency above 20s (SLO)"}
+      - alert: EscalationRateSpike
+        expr: sum(rate(agent_escalations_total[15m])) / clamp_min(sum(rate(agent_requests_total[15m])), 1e-9) > 0.30
+        for: 15m
+        labels: {severity: ticket}
+        annotations: {summary: "More than 30% of chats escalate to humans"}
+      - alert: CircuitBreakerOpen
+        expr: max by (dependency) (circuit_breaker_state) == 2
+        for: 1m
+        labels: {severity: page}
+        annotations: {summary: "Circuit breaker open for {{ $labels.dependency }}"}
+      - alert: HitlSlaBreach
+        expr: increase(hitl_sla_breaches_total[15m]) > 0
+        labels: {severity: page}
+        annotations: {summary: "A human-in-the-loop case breached its SLA"}
+      - alert: RagNoResultsRatioHigh
+        expr: sum(rate(rag_no_results_total[30m])) / clamp_min(sum(rate(rag_queries_total[30m])), 1e-9) > 0.40
+        for: 30m
+        labels: {severity: ticket}
+        annotations: {summary: "More than 40% of RAG queries return no evidence (stale corpus or drift)"}
+      - alert: LLMCostSpike
+        expr: sum(rate(llm_cost_usd_total[1h])) * 3600 > 2
+        for: 15m
+        labels: {severity: ticket}
+        annotations: {summary: "LLM spend above USD 2/hour"}
+      - alert: LLMFailureRate
+        expr: sum(rate(llm_failures_total[5m])) / clamp_min(sum(rate(llm_requests_total[5m])), 1e-9) > 0.20
+        for: 10m
+        labels: {severity: ticket}
+        annotations: {summary: "More than 20% of LLM calls fail"}
+      - alert: OutboxDeadLetters
+        expr: increase(outbox_deliveries_total{status="dead"}[30m]) > 0
+        labels: {severity: ticket}
+        annotations: {summary: "Operator notifications dead-lettered"}

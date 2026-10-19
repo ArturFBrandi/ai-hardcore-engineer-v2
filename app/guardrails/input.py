@@ -142,10 +142,13 @@ def screen_input(
                 )
                 break
     # Multi-turn injection: instructions split across turns ("ignore all" + "previous instructions").
+    # The match must involve the CURRENT message: an injection already blocked in an earlier turn stays in
+    # history but must not block every later (benign) turn.
     if recent_customer_turns and not result.blocked:
-        joined = " ".join(canonical(t) for t in [*recent_customer_turns[-2:], message])
+        previous = " ".join(canonical(t) for t in recent_customer_turns[-2:])
+        joined = f"{previous} {canonical(message)}"
         for rule in (INJECTION, PROMPT_EXTRACTION):
-            if rule.matches(joined):
+            if rule.matches(joined) and not rule.matches(previous):
                 result.flags.append(
                     {
                         "layer": "input",

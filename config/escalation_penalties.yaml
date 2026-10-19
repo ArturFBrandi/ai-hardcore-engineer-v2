@@ -4,7 +4,7 @@
 # The LLM's self-assessment is never a signal.
 version: 1
 penalties:
-  no_rag_evidence: 0.45
+  no_rag_evidence: 0.5
   low_retrieval_score: 0.15
   entity_mismatch: 0.35
   contradictory_information: 0.6

@@ -42,7 +42,7 @@ async def router_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> d
     ctx = runtime.context
     message = state["message"]
     slots = dict(state.get("slots") or {})
-    started = time.perf_counter()
+    started = time.time()
     errors: list[str] = []
     rule = rule_route(message)
     if rule is not None:

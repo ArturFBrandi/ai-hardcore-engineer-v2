@@ -63,14 +63,14 @@ class NodeFn(Protocol):
 
 
 def event(agent: str, name: str, detail: dict[str, Any], started: float | None = None) -> AgentEvent:
-    now = datetime.now(UTC)
-    ev = AgentEvent(agent=agent, event=name, detail=detail, ended_at=now.isoformat())
+    """``started`` is a wall-clock epoch (``time.time()``) so start/end timestamps of parallel branches are
+    directly comparable (monotonic-vs-wall drift would distort concurrency evidence)."""
+    now = time.time()
+    ev = AgentEvent(agent=agent, event=name, detail=detail, ended_at=datetime.fromtimestamp(now, UTC).isoformat())
+    begin = started if started is not None else now
+    ev["started_at"] = datetime.fromtimestamp(begin, UTC).isoformat()
     if started is not None:
-        latency = (time.perf_counter() - started) * 1000
-        ev["latency_ms"] = round(latency, 1)
-        ev["started_at"] = datetime.fromtimestamp(now.timestamp() - latency / 1000, UTC).isoformat()
-    else:
-        ev["started_at"] = now.isoformat()
+        ev["latency_ms"] = round((now - started) * 1000, 1)
     return ev
 
 
@@ -84,7 +84,7 @@ def node(name: str) -> Callable[[NodeFn], NodeFn]:
     def deco(fn: NodeFn) -> NodeFn:
         @wraps(fn)
         async def wrapper(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
-            started = time.perf_counter()
+            started = time.time()
             ctx = runtime.context
             if state.get("customer_id") and state["customer_id"] != ctx.auth.customer_id:
                 # Defense in depth: checkpointed state and the server-built AuthContext must agree.
@@ -105,7 +105,7 @@ def node(name: str) -> Callable[[NodeFn], NodeFn]:
                         "errors": [f"{name}:{type(exc).__name__}"],
                         "events": [event(name, "node_failed", {"error": type(exc).__name__}, started)],
                     }
-                elapsed = time.perf_counter() - started
+                elapsed = time.time() - started
                 metrics.AGENT_DURATION.labels(node=name).observe(elapsed)
                 update.setdefault("events", [])
                 update["events"] = [*update["events"], event(name, "exited", {}, started)]

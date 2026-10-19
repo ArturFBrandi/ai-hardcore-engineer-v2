@@ -88,7 +88,7 @@ async def synthesizer_node(state: AgentState, *, runtime: Runtime[GraphContext])
     ctx = runtime.context
     lang = state.get("language", "pt")
     intent = state.get("intent", "")
-    started = time.perf_counter()
+    started = time.time()
     answers = list(state.get("knowledge_answers") or [])
     tools = [t for t in state.get("tool_results") or [] if t.get("status") in ("ok", "not_found")]
 

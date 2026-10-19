@@ -65,3 +65,11 @@ def test_csv_lists_parse() -> None:
 
 def test_redact_dsn() -> None:
     assert redact_dsn("redis://default:pw@redis:6379/0") == "redis://default:***@redis:6379/0"
+
+
+def test_list_settings_parse_from_environment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("CORS_ALLOW_ORIGINS", "")
+    monkeypatch.setenv("JWT_ALGORITHMS", "RS256")
+    s = Settings()
+    assert s.cors_allow_origins == []
+    assert s.jwt_algorithms == ["RS256"]

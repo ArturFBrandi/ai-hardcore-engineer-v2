@@ -78,7 +78,7 @@ async def getnet_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang
             "evidence": [],
             "events": [],
         }
-    t0 = time.perf_counter()
+    t0 = time.time()
     try:
         result = await ctx.retriever.retrieve(query, filters)
     except RetrievalError:
@@ -159,7 +159,7 @@ async def getnet_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang
     grounding = "\n".join(e["text"] for e in evidence) + "\n" + state["message"]
     msgs = render_messages("knowledge_rag", task, blocks=[evidence_block([dict(e) for e in evidence])])
     status, answer, used = "answered", "", [e["evidence_id"] for e in evidence[:1]]
-    t1 = time.perf_counter()
+    t1 = time.time()
     try:
         out, _ = await structured(ctx.llm, task="knowledge_rag", messages=msgs, schema=RagAnswer, max_tokens=700)
         bad = unsupported_numbers(out.answer, grounding)
@@ -196,7 +196,7 @@ async def getnet_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang
 
 async def web_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang: str) -> dict[str, Any]:
     query = (step.get("inputs") or {}).get("query") or state["message"]
-    t0 = time.perf_counter()
+    t0 = time.time()
     base = KnowledgeAnswer(step_id=step["id"], mode="web", query=query, filters={}, used_evidence=[])
     try:
         resp = await ctx.web.search(query, max_results=ctx.settings.web_search_max_results)

@@ -52,7 +52,151 @@ x-app-env: &app-env
   OTEL_EXPORTER_OTLP_ENDPOINT: ${OTEL_EXPORTER_OTLP_ENDPOINT:-http://otel-collector:4318}
   GIT_SHA: ${GIT_SHA:-unknown}
 
+x-app: &app
+  image: getnet-support-agents:${APP_VERSION:-1.0.0}-${GIT_SHA:-dev}
+  build:
+    context: .
+    target: runtime
+    args:
+      GIT_SHA: ${GIT_SHA:-dev}
+      APP_VERSION: ${APP_VERSION:-1.0.0}
+  environment:
+    <<: *app-env
+  volumes:
+    - models:/models
+    - ./.dev-keys:/keys:ro
+  restart: unless-stopped
+
 services:
+  models-init:
+    <<: *app
+    command: ["models"]
+    restart: "no"
+    environment:
+      <<: *app-env
+      HF_HUB_DISABLE_TELEMETRY: "1"
+
+  migrate:
+    <<: *app
+    command: ["migrate"]
+    restart: "no"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  api:
+    <<: *app
+    command: ["api"]
+    ports:
+      - "${API_BIND:-0.0.0.0}:${API_PORT:-8000}-${API_PORT_MAX:-8003}:8000"
+    environment:
+      <<: *app-env
+      MODELS_OFFLINE: "true"
+      FORWARDED_ALLOW_IPS: "*"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      models-init:
+        condition: service_completed_successfully
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    stop_grace_period: 70s
+
+  worker:
+    <<: *app
+    command: ["worker"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:9100/metrics', timeout=2).status == 200 else 1)"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+      start_period: 15s
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+      redis:
+        condition: service_healthy
+
+  # --- optional: reverse proxy for the horizontal-scaling test (docker compose --profile proxy up -d --scale api=2)
+  proxy:
+    profiles: ["proxy"]
+    image: nginx:1.29.1-alpine@sha256:42a516af16b852e33b7682d5ef8acbd5d13fe08fecadc7ed98605ba5e3b26ab8
+    volumes:
+      - ./docker/proxy/nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - "${PROXY_BIND:-0.0.0.0}:${PROXY_PORT:-8080}:8080"
+    depends_on:
+      api:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # --- optional: JS-rendering crawler (Playwright) kept out of the API image
+  render:
+    profiles: ["render"]
+    build:
+      context: .
+      dockerfile: docker/render.Dockerfile
+    image: getnet-support-render:${APP_VERSION:-1.0.0}-${GIT_SHA:-dev}
+    environment:
+      <<: *app-env
+      MODELS_OFFLINE: "true"
+    volumes:
+      - models:/models
+      - ./data:/app/data
+    command: ["python", "-m", "ingestion.pipeline", "crawl"]
+    depends_on:
+      postgres:
+        condition: service_healthy
+      qdrant:
+        condition: service_healthy
+    restart: "no"
+
+  # --- optional: observability stack
+  otel-collector:
+    profiles: ["observability"]
+    image: otel/opentelemetry-collector-contrib:0.130.0@sha256:867d1074c2f750936fb9358ec9eefa009308053cf156b2c7ca1761ba5ef78452
+    command: ["--config=/etc/otelcol/config.yaml"]
+    volumes:
+      - ./docker/otel-collector.yml:/etc/otelcol/config.yaml:ro
+    restart: unless-stopped
+
+  jaeger:
+    profiles: ["observability"]
+    image: jaegertracing/jaeger:2.10.0@sha256:8c593d8048d86334eb52dba26633b6c846b8ecbe5c22905702c932ae97baeb42
+    ports:
+      - "127.0.0.1:${JAEGER_PORT:-16686}:16686"
+    restart: unless-stopped
+
+  prometheus:
+    profiles: ["observability"]
+    image: prom/prometheus:v3.6.0@sha256:76947e7ef22f8a698fc638f706685909be425dbe09bd7a2cd7aca849f79b5f64
+    command: ["--config.file=/etc/prometheus/prometheus.yml", "--storage.tsdb.retention.time=7d"]
+    volumes:
+      - ./docker/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./docs/observability/alerts.yml:/etc/prometheus/alerts.yml:ro
+    ports:
+      - "127.0.0.1:${PROMETHEUS_PORT:-9090}:9090"
+    restart: unless-stopped
+
+  grafana:
+    profiles: ["observability"]
+    image: grafana/grafana:12.2.0@sha256:74144189b38447facf737dfd0f3906e42e0776212bf575dc3334c3609183adf7
+    environment:
+      GF_AUTH_ANONYMOUS_ENABLED: "true"
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:-change-me-local-only}
+    volumes:
+      - ./docker/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./docs/observability/dashboard.json:/var/lib/grafana/dashboards/getnet-agents.json:ro
+    ports:
+      - "127.0.0.1:${GRAFANA_PORT:-3000}:3000"
+    depends_on: [prometheus]
+    restart: unless-stopped
+
   postgres:
     image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
     environment:

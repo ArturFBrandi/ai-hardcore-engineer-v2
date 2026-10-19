@@ -16,6 +16,7 @@ Runs after every specialist superstep and chooses ``continue(steps) | synthesize
 from __future__ import annotations
 
 import hashlib
+import re
 import json
 from dataclasses import dataclass, field
 from typing import Any, Literal
@@ -27,6 +28,7 @@ from app.orchestration.planning import ready_steps
 from app.orchestration.state import AgentState, PlanStep
 
 MAX_VISITS_PER_AGENT = 3
+_DECLINE_WORDS = re.compile(r"negad|recusad|declin|nao autoriz|não autoriz|not authori")
 DECLINE_CATEGORY = "sales_management"
 TROUBLESHOOTING_CATEGORY = "terminal_troubleshooting"
 
@@ -140,7 +142,7 @@ def evaluate(state: AgentState, *, max_steps: int, budget_ok: bool) -> Superviso
         return SupervisorDecision("continue", reason, steps=scheduled, detail=detail)
 
     # (2) deterministic triggers
-    decline_relevant = intent in ("customer_transaction", "technical_support", "customer_terminal")
+    decline_relevant = intent == "customer_transaction" or bool(_DECLINE_WORDS.search(state.get("message", "").lower()))
     for code, reason_text in _decline_codes(state) if decline_relevant else []:
         step = PlanStep(
             id=f"s{next_id + len(new)}",
