@@ -1,0 +1,3 @@
+# Reviewed pip-audit exceptions (justification + expiry). Format:
+#   - id: GHSA-xxxx-xxxx-xxxx   # reason; expires 2026-12-31
+ignores: []

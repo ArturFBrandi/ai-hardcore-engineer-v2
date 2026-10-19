@@ -1,0 +1,30 @@
+# Regression gates for `make eval --strict` (offline, deterministic) and `make eval-live` (MiniMax-M3).
+# Offline thresholds were set just below the first measured baseline (see results/baseline.json) so any
+# regression of the deterministic system fails CI. Live thresholds are looser (LLM variance) and are not
+# a CI gate (scheduled workflow only).
+offline:
+  case_pass_rate: {min: 0.95}
+  intent_accuracy: {min: 0.97}
+  routing_accuracy: {min: 0.97}
+  tool_selection_accuracy: {min: 0.98}
+  escalation_accuracy: {min: 0.97}
+  guardrail_block_accuracy: {min: 1.0}
+  false_block_rate: {max: 0.02}
+  citation_faithfulness: {min: 1.0}
+  hallucination_rate: {max: 0.0}
+  multiturn_pass_rate: {min: 0.94}
+  hitl_flow_success: {min: 1.0}
+  supervisor_step_accuracy: {min: 1.0}
+  retrieval_recall@5: {min: 0.88}
+  retrieval_mrr@10: {min: 0.82}
+  citation_presence: {min: 0.95}
+live:
+  case_pass_rate: {min: 0.75}
+  intent_accuracy: {min: 0.80}
+  guardrail_block_accuracy: {min: 1.0}
+  false_block_rate: {max: 0.05}
+  citation_faithfulness: {min: 0.95}
+  hallucination_rate: {max: 0.05}
+  claim_recall: {min: 0.60}
+  answer_language_correctness: {min: 0.90}
+  hitl_flow_success: {min: 0.85}

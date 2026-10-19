@@ -27,7 +27,7 @@ _WEB = re.compile(r"\[(W\d+)\] (.*?) \| (.*?) \| retrieved_at: (.*?)\n(.*?)(?=\n
 
 _INTENT_PATTERNS: list[tuple[str, str]] = [
     ("human_support", r"\b(humano|atendente|human|agent|pessoa real)"),
-    ("weather", r"\b(previsao|tempo|clima|chuva|weather|forecast)"),
+    ("weather", r"\b(previsao|clima|chuva|weather|forecast|temperatura)"),
     ("exchange_rate", r"\b(cotacao|cambio|exchange rate|dolar|euro)"),
     ("case_status", r"\b(chamado|protocolo|ticket|case)"),
     (
@@ -40,9 +40,12 @@ _INTENT_PATTERNS: list[tuple[str, str]] = [
     ),
     (
         "customer_transaction",
-        r"\b(minhas vendas|my sales|vendas de|sales from|transac|negad|recusad|declin|anteontem|day before|ontem|yesterday)",
+        r"\b(minhas vendas|my sales|vendas de|vendi|sales from|minhas transac|negad|recusad|declin|anteontem|day before|ontem|yesterday)",
     ),
-    ("customer_terminal", r"\b(minhas maquininhas|my (card )?machines|meus terminais)"),
+    (
+        "customer_terminal",
+        r"\b(minhas maquininhas|maquininhas eu tenho|my (card )?machines|machines do i have|meus terminais)",
+    ),
     ("customer_account", r"\b(meu plano|my plan|meus dados|domicilio|minha conta bancaria)"),
     ("unsupported", r"\b(poema|poem|receita|recipe|piada|joke|futebol|football)"),
 ]
@@ -69,12 +72,51 @@ def _date_ref(text: str) -> str | None:
     return None
 
 
+_EN_PT = [
+    (r"connect|internet|wi-?fi|offline|signal", "maquininha não conecta internet wi-fi chip conexão"),
+    (r"installment", "parcelas parcelamento"),
+    (r"advance|antecipa", "antecipação de vendas recebíveis"),
+    (r"bank account", "conta bancária chave pix domicílio"),
+    (r"payment link|whatsapp", "link de pagamento whatsapp enviar"),
+    (r"declin|decline", "venda negada não autorizada emissor"),
+    (r"deposit|settle|receive", "prazo de recebimento repasse"),
+    (r"difference|compare", "diferença comparação"),
+    (r"battery", "bateria duração"),
+    (r"refund", "estorno venda"),
+    (r"fee", "taxas tarifa"),
+]
+
+
+def _pt_query(msg: str, text: str) -> str:
+    """Emulates the router's standalone Portuguese query rewrite (Getnet content is mainly PT)."""
+    extra = " ".join(pt for pat, pt in _EN_PT if re.search(pat, text))
+    return f"{msg} {extra}".strip()
+
+
 def router(messages: list[Message], tools: list[dict[str, Any]] | None) -> LLMResponse:
     ti = task_input(messages)
     msg = ti.get("message", "")
     text = canonical(msg)
     slots = ti.get("slots") or {}
     intent = next((i for i, p in _INTENT_PATTERNS if re.search(p, text)), None)
+    # Product/policy questions ("Do I need a bank account to receive via Pix?") are knowledge questions
+    # unless they ask about the merchant's own dated data.
+    product_q = re.search(
+        r"\b(pix|link de pagamento|payment link|crediario|antecipa|domicilio|get (smart|classica|mini|tap|lite))", text
+    ) and re.search(r"\b(preciso|need|como|how|posso|can|o que|what|qual|quais|which|funciona|work)", text)
+    own_dated = re.search(
+        r"\b(ontem|anteontem|hoje|yesterday|today|minhas vendas de|my sales (from|of|yesterday))", text
+    )
+    own_problem = re.search(
+        r"\b(minha|meu|my) (maquininha|get|card machine|machine|terminal)|nao conecta|won'?t connect|sem conexao", text
+    )
+    if (
+        product_q
+        and not own_dated
+        and not own_problem
+        and intent in ("customer_transaction", "customer_settlement", "technical_support", None)
+    ):
+        intent = "getnet_product_information"
     if intent == "customer_transaction" and re.search(r"deposit|cai|repasse|receb", text):
         intent = "customer_settlement"
     if intent == "technical_support" and re.search(r"negad|recusad|declin", text):
@@ -106,7 +148,7 @@ def router(messages: list[Message], tools: list[dict[str, Any]] | None) -> LLMRe
         "requires_external_web": intent in ("weather", "exchange_rate"),
         "wants_human": intent == "human_support",
         "language": lang,
-        "knowledge_query": msg,
+        "knowledge_query": _pt_query(msg, text) if lang == "en" else msg,
         "product": product,
         "date_reference": _date_ref(text)
         or (

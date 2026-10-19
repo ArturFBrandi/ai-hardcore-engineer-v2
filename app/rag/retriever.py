@@ -93,16 +93,19 @@ class Retriever:
         deduped = len(docs)
         t_rerank_start = time.perf_counter()
         if rerank and docs:
-            scores = await self.models.arerank(query, [d.text for d in docs])
-            for d, sc in zip(docs, scores, strict=True):
+            # Rerank budget (ADR 006, evaluation/results/rerank_budget.md): only the top RAG_RERANK_TOP_K fused
+            # candidates, passages truncated to RAG_RERANK_MAX_CHARS — same Recall@5 as reranking all 15, ~2.5x faster.
+            head, tail = docs[: self.s.rag_rerank_top_k], docs[self.s.rag_rerank_top_k :]
+            scores = await self.models.arerank(query, [d.text[: self.s.rag_rerank_max_chars] for d in head])
+            for d, sc in zip(head, scores, strict=True):
                 d.rerank_score = sc
+            docs = head + tail
             if self.s.rag_product_boost and filters.product is None:
                 low = query.lower()
                 for d in docs:
                     if any(p.lower() in low for p in d.products):
                         d.rerank_score = (d.rerank_score or 0.0) + self.s.rag_product_boost
-            docs.sort(key=lambda d: d.rerank_score or 0.0, reverse=True)
-            docs = docs[: self.s.rag_rerank_top_k]
+            docs = sorted(head, key=lambda d: d.rerank_score or 0.0, reverse=True)
         t_rerank = time.perf_counter()
         reranked = len(docs)
         if apply_thresholds:

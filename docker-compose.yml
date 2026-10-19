@@ -35,7 +35,7 @@ x-app-env: &app-env
   RAG_RERANK_TOP_K: ${RAG_RERANK_TOP_K:-8}
   RAG_CONTEXT_TOP_K: ${RAG_CONTEXT_TOP_K:-5}
   RAG_MIN_SCORE: ${RAG_MIN_SCORE:-0.0}
-  RAG_RERANK_MIN_SCORE: ${RAG_RERANK_MIN_SCORE:-0.0}
+  RAG_RERANK_MIN_SCORE: ${RAG_RERANK_MIN_SCORE:--0.8}
   ESCALATION_CONFIDENCE_THRESHOLD: ${ESCALATION_CONFIDENCE_THRESHOLD:-0.55}
   ESCALATION_PENALTIES_FILE: config/escalation_penalties.yaml
   TROUBLESHOOTING_MAX_ATTEMPTS: ${TROUBLESHOOTING_MAX_ATTEMPTS:-3}
@@ -88,7 +88,7 @@ services:
     <<: *app
     command: ["api"]
     ports:
-      - "${API_BIND:-0.0.0.0}:${API_PORT:-8000}-${API_PORT_MAX:-8003}:8000"
+      - "${API_BIND:-0.0.0.0}:${API_PORT:-8000}:8000"
     environment:
       <<: *app-env
       MODELS_OFFLINE: "true"

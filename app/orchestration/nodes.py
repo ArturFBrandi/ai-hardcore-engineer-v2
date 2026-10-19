@@ -168,12 +168,12 @@ async def decision_node(state: AgentState, *, runtime: Runtime[GraphContext]) ->
     slots = state.get("slots") or {}
     attempts = 0
     if family(state.get("intent")) == "troubleshooting":
-        category = troubleshooting_category(state.get("message", ""), list(state.get("tool_results") or []))
         prev = (
             (slots.get("troubleshooting_attempts") or {})
             if slots.get("last_intent_family") == "troubleshooting"
             else {}
         )
+        category = troubleshooting_category(state.get("message", ""), list(state.get("tool_results") or []), prev)
         attempts = int(prev.get(category, 0)) + 1
         _, pending = pending_attempts(slots, state.get("message", ""))
         attempts = max(attempts, pending)

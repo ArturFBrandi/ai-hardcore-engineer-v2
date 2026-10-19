@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "reply-loop",
+      "message": "Quero falar com um atendente humano",
+      "operator": {
+        "action": "reply",
+        "message": "Verifiquei sua conta: está tudo certo com o repasse. Protocolo 4410.",
+        "send_as_is": false
+      },
+      "expect": {
+        "interrupt_kind": "reply",
+        "final_status": "human_replied",
+        "customer_sees": "4410",
+        "case_status": "awaiting_customer",
+        "audit": [
+          "case.created",
+          "hitl.interrupt",
+          "hitl.resume_requested",
+          "hitl.human_reply"
+        ],
+        "next_turn_slot": "last_human_reply"
+      }
+    },
+    {
+      "id": "reply-as-is",
+      "message": "I want to talk to a human agent please",
+      "operator": {
+        "action": "reply",
+        "message": "Hello from the Getnet team. We are checking your account.",
+        "send_as_is": true
+      },
+      "expect": {
+        "interrupt_kind": "reply",
+        "final_status": "human_replied",
+        "customer_sees": "Hello from the Getnet team",
+        "case_status": "awaiting_customer"
+      }
+    },
+    {
+      "id": "approve-replacement",
+      "message": "Minha Get Smart não conecta de jeito nenhum, quero trocar a maquininha",
+      "operator": {
+        "action": "approve",
+        "note": "Troca aprovada."
+      },
+      "expect": {
+        "interrupt_kind": "approval",
+        "final_status": "human_replied",
+        "action_status": "executed",
+        "audit": [
+          "case.created",
+          "hitl.interrupt",
+          "approval.executed"
+        ]
+      }
+    },
+    {
+      "id": "reject-replacement",
+      "message": "Minha Get Smart não conecta, quero trocar a maquininha agora",
+      "operator": {
+        "action": "reject",
+        "note": "Faremos primeiro uma visita técnica."
+      },
+      "expect": {
+        "interrupt_kind": "approval",
+        "final_status": "human_replied",
+        "action_status": "rejected",
+        "customer_sees": "visita"
+      }
+    },
+    {
+      "id": "edit-foreign-terminal",
+      "message": "Get Smart sem conexão desde ontem, preciso substituir a maquininha",
+      "operator": {
+        "action": "edit",
+        "edited_arguments": {
+          "terminal_id": 2001
+        },
+        "note": "trocar"
+      },
+      "expect": {
+        "interrupt_kind": "approval",
+        "action_status": "failed"
+      }
+    },
+    {
+      "id": "duplicate-submit",
+      "message": "Quero falar com um atendente humano",
+      "operator": {
+        "action": "reply",
+        "message": "Resposta única.",
+        "send_as_is": true,
+        "submit_twice": true
+      },
+      "expect": {
+        "interrupt_kind": "reply",
+        "duplicate_detected": true,
+        "human_turns": 1
+      }
+    },
+    {
+      "id": "fraud-urgent",
+      "message": "Acho que clonaram meu cartão e fizeram vendas que eu não reconheço",
+      "operator": {
+        "action": "reply",
+        "message": "Bloqueamos preventivamente. Protocolo 9911.",
+        "send_as_is": true
+      },
+      "expect": {
+        "interrupt_kind": "reply",
+        "priority": "urgent",
+        "category": "SECURITY_CONCERN",
+        "customer_sees": "9911"
+      }
+    }
+  ]
+}

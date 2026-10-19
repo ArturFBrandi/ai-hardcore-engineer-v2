@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "scenarios": [
+    {
+      "id": "settlement-parallel",
+      "message": "When will the money from yesterday's sales be deposited?",
+      "expect": {
+        "first_superstep": [
+          "s0",
+          "s1"
+        ],
+        "supervisor_reasons_prefix": [
+          "results_sufficient"
+        ],
+        "max_supervisor_steps": 3
+      }
+    },
+    {
+      "id": "troubleshoot-dependency",
+      "message": "My card machine won't connect to the internet, what should I do?",
+      "expect": {
+        "first_superstep": [
+          "s0"
+        ],
+        "supervisor_reasons_prefix": [
+          "terminal_model_known"
+        ],
+        "product_filter": "Get Smart",
+        "max_supervisor_steps": 3
+      }
+    },
+    {
+      "id": "decline-code-followup",
+      "message": "Por que minha venda de ontem foi negada?",
+      "expect": {
+        "supervisor_reasons_contains": [
+          "decline_code_found"
+        ],
+        "max_supervisor_steps": 3
+      }
+    },
+    {
+      "id": "knowledge-only",
+      "message": "Qual a diferença entre a Get Clássica e a Get Smart?",
+      "expect": {
+        "first_superstep": [
+          "s0"
+        ],
+        "supervisor_reasons_prefix": [
+          "results_sufficient"
+        ],
+        "max_supervisor_steps": 0
+      }
+    },
+    {
+      "id": "web-only",
+      "message": "What's the euro exchange rate today?",
+      "expect": {
+        "first_superstep": [
+          "s0"
+        ],
+        "supervisor_reasons_prefix": [
+          "results_sufficient"
+        ],
+        "max_supervisor_steps": 0
+      }
+    },
+    {
+      "id": "case-status",
+      "message": "Qual o status do meu chamado?",
+      "expect": {
+        "first_superstep": [
+          "s0"
+        ],
+        "max_supervisor_steps": 0
+      }
+    }
+  ]
+}

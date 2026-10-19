@@ -14,15 +14,17 @@ concurrency:
 
 env:
   UV_LINK_MODE: copy
+  MODELS_DIR: /home/runner/.cache/getnet-models
+  DATASTORES: external   # service containers below; locally `make` starts them with docker compose
 
 jobs:
   lint:
+    name: lint + typecheck
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
+        with: {enable-cache: true}
       - run: make lint
       - run: make typecheck
 
@@ -31,35 +33,141 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
-        with:
-          enable-cache: true
+        with: {enable-cache: true}
       - run: make test-unit
 
-  integration:
+  suites:
+    name: integration · orchestration · security · multi-turn · HITL · coverage · eval --strict
     runs-on: ubuntu-24.04
+    timeout-minutes: 60
     services:
       postgres:
         image: postgres:17.6-alpine@sha256:ef257d85f76e48da1c64832459b59fcaba1a4dac97bf5d7450c77753542eee94
-        env:
-          POSTGRES_USER: getnet
-          POSTGRES_PASSWORD: getnet-dev-only
-          POSTGRES_DB: getnet
+        env: {POSTGRES_USER: getnet, POSTGRES_PASSWORD: getnet-dev-only, POSTGRES_DB: getnet}
         ports: ["55432:5432"]
-        options: >-
-          --health-cmd "pg_isready -U getnet -d getnet" --health-interval 5s --health-timeout 3s --health-retries 20
+        options: --health-cmd "pg_isready -U getnet -d getnet" --health-interval 5s --health-timeout 3s --health-retries 20
       redis:
         image: redis:8.2-alpine@sha256:b51665e66f00759be7c3152ad5ac3c66fb2f619c13ef62dea7cc1f9914524635
         ports: ["56379:6379"]
-        options: >-
-          --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
+        options: --health-cmd "redis-cli ping" --health-interval 5s --health-timeout 3s --health-retries 20
       qdrant:
         image: qdrant/qdrant:v1.19.1@sha256:12364fe851b9f17356fc88189fc06d1b521262e04659ec7345975b00c9246a10
         ports: ["56333:6333"]
-    env:
-      DATASTORES: external
     steps:
       - uses: actions/checkout@v4
       - uses: astral-sh/setup-uv@v6
+        with: {enable-cache: true}
+      - name: Cache retrieval models (pinned by config/models.lock.json)
+        uses: actions/cache@v4
         with:
-          enable-cache: true
-      - run: make test-integration
+          path: ${{ env.MODELS_DIR }}
+          key: models-${{ hashFiles('config/models.lock.json') }}
+      - run: make setup
+      - name: Offline test suites with coverage gate (>= 85% of app/)
+        run: make coverage
+      - name: Evaluation with regression gates
+        run: make eval
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: evaluation-report
+          path: |
+            evaluation/results/latest.md
+            evaluation/results/latest.json
+            coverage.xml
+
+  docker:
+    name: image · Trivy · SBOM · composed-stack E2E · scale test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    env:
+      GIT_SHA: ${{ github.sha }}
+      LLM_PROVIDER: fake
+      WEB_SEARCH_PROVIDER: disabled
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with: {enable-cache: true}
+      - uses: docker/setup-buildx-action@v3
+      - name: Build runtime image (layer cache)
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          target: runtime
+          load: true
+          tags: getnet-support-agents:1.0.0-${{ github.sha }}
+          build-args: GIT_SHA=${{ github.sha }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      - name: Image size
+        run: docker image ls getnet-support-agents --format '{{.Repository}}:{{.Tag}} {{.Size}}' | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Trivy (HIGH/CRITICAL with a fix → fail)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v "$PWD/.trivyignore:/.trivyignore:ro" aquasec/trivy:0.66.0 \
+            image --quiet --scanners vuln --severity HIGH,CRITICAL --ignore-unfixed --ignorefile /.trivyignore --exit-code 1 \
+            getnet-support-agents:1.0.0-${{ github.sha }}
+      - name: SBOM (CycloneDX, syft)
+        run: |
+          docker run --rm -v /var/run/docker.sock:/var/run/docker.sock anchore/syft:v1.33.0 \
+            getnet-support-agents:1.0.0-${{ github.sha }} -o cyclonedx-json > sbom.cdx.json
+      - uses: actions/upload-artifact@v4
+        with: {name: sbom, path: sbom.cdx.json}
+      - name: Start the stack (offline LLM) — migrate, models-init, api, worker, datastores
+        run: |
+          make keys
+          docker compose up -d --wait
+          docker compose ps
+      - name: Seed + load the snapshot corpus
+        run: make seed ingest-snapshot
+      - name: Smoke test
+        run: make smoke-test
+      - name: E2E against the composed stack (restart, outages, HITL+SSE, demo auth)
+        run: make test-e2e
+      - name: Horizontal scaling (2 API replicas behind nginx)
+        run: make scale-test
+      - name: Logs on failure
+        if: failure()
+        run: docker compose logs --tail 200
+
+  security:
+    name: pip-audit · Bandit · gitleaks
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with: {fetch-depth: 0}
+      - uses: astral-sh/setup-uv@v6
+        with: {enable-cache: true}
+      - run: make setup
+      - name: pip-audit
+        run: |
+          uv export --frozen --format requirements-txt --no-hashes --no-emit-project > requirements-audit.txt
+          uv run pip-audit --strict --requirement requirements-audit.txt --disable-pip --no-deps
+      - name: Bandit (Medium/High fail)
+        run: uv run bandit -q -ll -r app ingestion scripts -c pyproject.toml
+      - name: gitleaks (full history)
+        run: docker run --rm -v "$PWD:/repo" zricethezav/gitleaks:v8.28.0 git /repo --redact --config /repo/.gitleaks.toml --exit-code 1
+
+  bootstrap:
+    name: bootstrap-ubuntu.sh on ubuntu:26.04
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - run: bash -n scripts/bootstrap-ubuntu.sh
+      - name: Run twice (idempotency) in a fresh Ubuntu 26.04 container
+        run: |
+          docker run --rm -v "$PWD/scripts/bootstrap-ubuntu.sh:/bootstrap.sh:ro" ubuntu:26.04 \
+            bash -c "bash /bootstrap.sh --skip-docker-verify && bash /bootstrap.sh --skip-docker-verify"
+
+  snapshot:
+    name: snapshot-corpus artifact
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify snapshot checksum
+        run: |
+          expected=$(python3 -c "import json;print(json.load(open('data/snapshots/manifest.json'))['sha256'])")
+          echo "$expected  data/snapshots/getnet-kb.jsonl.gz" | sha256sum -c -
+      - uses: actions/upload-artifact@v4
+        with:
+          name: getnet-kb-snapshot
+          path: data/snapshots/

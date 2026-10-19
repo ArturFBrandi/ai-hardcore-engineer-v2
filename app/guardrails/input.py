@@ -88,7 +88,7 @@ HIGH_RISK = Rule(
     "fraud_or_security_report",
     "info",
     (
-        r"\b(fraude|fraud|golpe|scam|clonad|clone[ds]?|roubad|stolen|furtad|invadid|hacked|hackead|phishing|nao reconhe[cç]o|unrecognized|did not make|nao fiz (essa|esta) (compra|venda|transa))",
+        r"\b(fraude|fraud|golpe|scam|clon(ad|ar|aram|aro|ou)\w*|clone[ds]?|roubad|stolen|furtad|invadid|hacked|hackead|phishing|nao reconhe[cç]o|unrecognized|did not make|nao fiz (essa|esta) (compra|venda|transa))",
     ),
 )
 OFF_TOPIC_HARMFUL = Rule(

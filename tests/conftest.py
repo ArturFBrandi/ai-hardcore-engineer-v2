@@ -18,7 +18,6 @@ from app.config import Settings
 from app.db.base import Database
 from app.tools.context import AuthContext
 
-PG_ADMIN = os.environ.get("TEST_PG_ADMIN_URL", "postgresql://getnet:getnet-dev-only@localhost:55432/getnet")
 TEST_DB_URL = os.environ.get(
     "TEST_DATABASE_URL", "postgresql+asyncpg://getnet:getnet-dev-only@localhost:55432/getnet_test"
 )
@@ -54,43 +53,18 @@ def settings() -> Settings:
     return make_test_settings()
 
 
-async def _ensure_database() -> None:
-    try:
-        conn = await asyncpg.connect(PG_ADMIN, timeout=5)
-    except (OSError, asyncpg.PostgresError) as exc:  # pragma: no cover - environment problem
-        pytest.exit(
-            f"PostgreSQL not reachable ({exc}). Start datastores: docker compose up -d postgres qdrant redis",
-            returncode=2,
-        )
-    try:
-        exists = await conn.fetchval("SELECT 1 FROM pg_database WHERE datname = 'getnet_test'")
-        if not exists:
-            await conn.execute("CREATE DATABASE getnet_test")
-    finally:
-        await conn.close()
-
-
-def _migrate(url: str) -> None:
-    from alembic.config import Config
-
-    from alembic import command
-
-    os.environ["DATABASE_URL"] = url
-    from app.config import get_settings
-
-    get_settings.cache_clear()
-    command.upgrade(Config("alembic.ini"), "head")
-
-
 @pytest.fixture(scope="session")
 async def db(settings: Settings) -> AsyncIterator[Database]:
-    await _ensure_database()
-    await asyncio.to_thread(_migrate, settings.database_url)
-    from app.db.seed import seed
+    from evaluation.environment import ensure_database, migrate, seed, setup_checkpointer
 
+    try:
+        await ensure_database(settings)
+    except (OSError, asyncpg.PostgresError) as exc:  # pragma: no cover - environment problem
+        pytest.exit(f"PostgreSQL not reachable ({exc}). Start datastores: make datastores", returncode=2)
+    await asyncio.to_thread(migrate, settings)
+    await setup_checkpointer(settings)
+    await seed(settings)
     database = Database(settings)
-    async with database.transaction() as s:
-        await seed(s)
     yield database
     await database.dispose()
 
@@ -110,29 +84,14 @@ def anyio_backend() -> Iterator[str]:
     return "asyncio"
 
 
-async def ensure_test_corpus(settings: Settings) -> None:
-    """Index the committed snapshot into the test collection once (skipped when already complete)."""
-    from app.rag.models import RetrievalModels
-    from app.rag.qdrant_store import QdrantStore
-    from ingestion.pipeline import index_chunks
-    from ingestion.snapshot import load_snapshot
-
-    chunks = load_snapshot()
-    store = QdrantStore(settings.qdrant_url, settings.qdrant_collection)
-    try:
-        if await store.count() != len(chunks):
-            await index_chunks(chunks, RetrievalModels(settings, offline=False), store, recreate=True)
-    finally:
-        await store.close()
-
-
 @pytest.fixture(scope="session")
 async def container(settings: Settings, db: Database) -> AsyncIterator[object]:
     from app.container import build_container
     from app.llm.fake import FakeLLMProvider
+    from evaluation.environment import index_snapshot
     from tests.fakes import FakeWebSearch
 
-    await ensure_test_corpus(settings)
+    await index_snapshot(settings)
     c = await build_container(settings, llm=FakeLLMProvider(), web=FakeWebSearch())
     await c.checkpointer.setup()
     yield c

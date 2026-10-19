@@ -1,0 +1,16 @@
+# gitleaks configuration: default rules + reviewed allowlist.
+[extend]
+useDefault = true
+
+[allowlist]
+description = "Reviewed false positives"
+paths = [
+  '''data/snapshots/.*''',           # public Getnet text (no credentials); scanned once, reviewed
+  '''evaluation/results/.*\.json''', # generated reports (no credentials)
+  '''uv\.lock''',
+  '''config/models\.lock\.json''', # SHA-256 digests of public model files (pinning), not secrets
+]
+regexes = [
+  '''getnet-dev-only''',             # documented local-only database password for the dev stack
+  '''change-me-local-only''',
+]

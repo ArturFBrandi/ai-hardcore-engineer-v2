@@ -37,9 +37,9 @@ async def test_workflow2_supervisor_dependency_with_product_filter(turn) -> None
     cs_end = interval(events(s, "customer_support", "exited")[0])[1]
     kn_start = interval(events(s, "knowledge", "exited")[0])[0]
     assert cs_end <= kn_start, "knowledge must run after customer support (data dependency)"
-    assert any(
-        d.get("product") == "Get Smart" or "Get Smart" in (d.get("products") or []) for d in s["retrieved_documents"]
-    )
+    # evidence is Get Smart-specific or model-agnostic (generic troubleshooting) — never another model's
+    top = s["retrieved_documents"][0]
+    assert not top.get("products") or "Get Smart" in top["products"]
     assert s["citations"], "the answer cites the model-specific source"
 
 

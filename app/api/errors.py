@@ -2,9 +2,14 @@
 
 from __future__ import annotations
 
+import asyncpg
+import psycopg
 from fastapi import FastAPI, Request
 from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
+from psycopg_pool import PoolTimeout
+from redis.exceptions import RedisError
+from sqlalchemy.exc import InterfaceError, OperationalError
 from starlette.exceptions import HTTPException as StarletteHTTPException
 
 from app.api.schemas import ErrorResponse
@@ -64,6 +69,24 @@ def install_error_handlers(app: FastAPI) -> None:
         code = _HTTP_CODES.get(exc.status_code, "http_error")
         detail = exc.detail if isinstance(exc.detail, str) else code
         return error_response(request, exc.status_code, code, detail, dict(exc.headers) if exc.headers else None)
+
+    @app.exception_handler(OperationalError)
+    @app.exception_handler(InterfaceError)
+    @app.exception_handler(RedisError)
+    @app.exception_handler(OSError)  # ConnectionError, socket.gaierror (DNS), refused/reset connections
+    @app.exception_handler(asyncpg.PostgresConnectionError)
+    @app.exception_handler(psycopg.OperationalError)
+    @app.exception_handler(PoolTimeout)
+    async def _dependency_down(request: Request, exc: Exception) -> JSONResponse:
+        # Datastore outages are a 503 (retryable), never a 500 with internals.
+        log.error("dependency_unavailable", error_type=type(exc).__name__)
+        return error_response(
+            request,
+            503,
+            "dependency_unavailable",
+            "A required dependency is unavailable. Please retry later.",
+            {"Retry-After": "5"},
+        )
 
     @app.exception_handler(Exception)
     async def _unhandled(request: Request, exc: Exception) -> JSONResponse:

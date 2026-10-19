@@ -83,9 +83,9 @@ max-statements = 80
 max-returns = 10
 
 [tool.ruff.lint.per-file-ignores]
-"tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415", "PT018", "PLR0917", "E501"]
-"evaluation/**" = ["S101", "S311", "PLR0912", "PLR0915"]
-"scripts/**" = ["S603", "S607", "T201", "PLR0915", "PLC0415"]
+"tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415", "PT018", "PLR0917", "E501", "S603", "S607", "PLR0913"]
+"evaluation/**" = ["S101", "S311", "PLR0912", "PLR0915", "S603", "S607", "ASYNC221", "ASYNC240", "PLC0415"]  # offline tooling
+"scripts/**" = ["S603", "S607", "T201", "PLR0915", "PLC0415", "ASYNC240"]
 
 [tool.mypy]
 python_version = "3.12"
@@ -95,7 +95,7 @@ plugins = ["pydantic.mypy"]
 exclude = ["alembic/versions/", "tests/", "build/"]
 
 [[tool.mypy.overrides]]
-module = ["fastembed.*", "qdrant_client.*", "sse_starlette.*", "pypdf.*", "bs4.*", "psycopg_pool.*"]
+module = ["fastembed.*", "qdrant_client.*", "sse_starlette.*", "pypdf.*", "bs4.*", "psycopg_pool.*", "asyncpg.*"]
 ignore_missing_imports = true
 
 [tool.pytest.ini_options]
@@ -108,6 +108,7 @@ markers = [
   "live: requires real MiniMax / web-search credentials",
   "docker: requires the composed stack (datastores)",
   "stack: requires the running API over HTTP (E2E)",
+  "scale: requires the proxy profile with 2 API replicas",
 ]
 addopts = "-ra --strict-markers"
 filterwarnings = ["ignore::DeprecationWarning:pkg_resources.*"]

@@ -107,8 +107,9 @@ class Settings(BaseSettings):
     rag_rerank_top_k: int = Field(default=8, ge=1, le=50)
     rag_context_top_k: int = Field(default=5, ge=1, le=20)
     rag_min_score: float = 0.0
-    rag_rerank_min_score: float = -2.0  # overwritten by `make calibrate` results (see .env.example)
+    rag_rerank_min_score: float = -0.8  # chosen by `make calibrate` (evaluation/results/calibration.md)
     rag_product_boost: float = Field(default=0.0, ge=0.0)
+    rag_rerank_max_chars: int = Field(default=700, ge=100, le=4000)
     ingest_user_agent: str = "GetnetSupportAgentBot/1.0 (+evaluation crawler; respects robots.txt)"
     ingest_rate_limit_seconds: float = Field(default=1.0, ge=0.0)
     ingest_timeout_seconds: float = Field(default=20.0, gt=0)
@@ -138,7 +139,9 @@ class Settings(BaseSettings):
     rate_limit_per_minute: int = Field(default=30, ge=1)
     rate_limit_ip_per_minute: int = Field(default=120, ge=1)
     rate_limit_operator_writes_per_minute: int = Field(default=20, ge=1)
-    rate_limit_fail_open: bool = False
+    rate_limit_fail_open: bool = (
+        True  # customer chat stays available if Redis is down (metric + log); operator writes always fail closed
+    )
     max_request_body_bytes: int = Field(default=16384, ge=1024)
     request_timeout_seconds: float = Field(default=120.0, gt=0)
     idempotency_ttl_seconds: int = Field(default=86400, ge=60)

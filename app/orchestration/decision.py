@@ -41,6 +41,9 @@ KNOWN_SIGNALS = {
     "approval_required",
     "unsupported_request",
 }
+# Intents whose answer IS official Getnet evidence (product facts, troubleshooting steps). For customer-data
+# intents (sales, settlements, cases) the merchant's own data is the answer and policy evidence only enriches it.
+EVIDENCE_CORE_INTENTS = {"getnet_product_information", "getnet_policy", "getnet_how_to", "technical_support"}
 EVIDENCE_SIGNALS = {"no_rag_evidence", "low_retrieval_score", "entity_mismatch", "insufficient_evidence"}
 REASON_TEXT = {
     "no_rag_evidence": "no official evidence found",
@@ -138,17 +141,24 @@ def collect_signals(
             signals.append("high_risk_report")
         elif f.get("severity") == "warn":
             signals.append("guardrail_flag")
-    for ka in state.get("knowledge_answers") or []:
-        if ka.get("mode") == "getnet":
-            if ka.get("status") == "no_evidence":
-                signals.append("no_rag_evidence")
-            elif ka.get("top_rerank_score") is not None and float(ka["top_rerank_score"] or 0) < rerank_min + 1.0:
+    answers = list(state.get("knowledge_answers") or [])
+    getnet = [a for a in answers if a.get("mode") == "getnet"]
+    # Evidence signals reflect the FINAL outcome across all knowledge steps (a broadened retry that found
+    # evidence clears the empty filtered attempt). For intents where knowledge is not a core agent (e.g. a
+    # sales lookup), a supervisor enrichment step that finds nothing must not penalize the answer.
+    knowledge_core = intent in EVIDENCE_CORE_INTENTS
+    if getnet and knowledge_core:
+        answered = [a for a in getnet if a.get("status") in ("answered", "insufficient")]
+        if not answered:
+            signals.append("llm_failure" if all(a.get("status") == "error" for a in getnet) else "no_rag_evidence")
+        else:
+            top = max(float(a.get("top_rerank_score") or -99.0) for a in answered)
+            if top < rerank_min + 1.0:
                 signals.append("low_retrieval_score")
-            if ka.get("status") == "insufficient":
+            if all(a.get("status") == "insufficient" for a in answered):
                 signals.append("insufficient_evidence")
-            if ka.get("status") == "error":
-                signals.append("llm_failure")
-        elif ka.get("status") in ("unavailable", "error"):
+    for ka in answers:
+        if ka.get("mode") == "web" and ka.get("status") in ("unavailable", "error"):
             signals.append("web_search_failure")
     if entity_mismatch(state.get("message", ""), list(state.get("retrieved_documents") or [])):
         signals.append("entity_mismatch")

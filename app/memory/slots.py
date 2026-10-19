@@ -40,8 +40,14 @@ def family(intent: str | None) -> str | None:
     return INTENT_FAMILY.get(intent or "")
 
 
-def troubleshooting_category(message: str, tool_results: list[ToolResultEntry]) -> str:
+def troubleshooting_category(
+    message: str, tool_results: list[ToolResultEntry], previous: dict[str, int] | None = None
+) -> str:
     text = message.lower()
+    if previous and not re.search(
+        r"conect|conex|internet|wi-?fi|sinal|signal|rede|network|chip|erro|error|adq|idl|bateria|tela|impress", text
+    ):
+        return max(previous, key=lambda k: previous[k])  # follow-up on the active topic ("continua igual")
     if re.search(r"conect|conex|internet|wi-?fi|sinal|signal|offline|rede|network|chip|4g|3g", text):
         return "connectivity"
     for r in tool_results:
@@ -133,8 +139,8 @@ def update_slots(
         slots["open_case_id"] = case_id
 
     if fam == "troubleshooting":
-        category = troubleshooting_category(message, tool_results)
         attempts = dict(slots.get("troubleshooting_attempts") or {})
+        category = troubleshooting_category(message, tool_results, attempts)
         attempts[category] = attempts.get(category, 0) + 1
         slots["troubleshooting_attempts"] = attempts
         used = list(slots.get("troubleshooting_evidence_used") or [])

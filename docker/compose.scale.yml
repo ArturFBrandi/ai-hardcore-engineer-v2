@@ -1,0 +1,6 @@
+# Horizontal-scaling overlay: API replicas are reachable only through the nginx proxy (port 8080),
+# so `--scale api=N` does not collide on a published host port.
+#   docker compose -f docker-compose.yml -f docker/compose.scale.yml --profile proxy up -d --scale api=2
+services:
+  api:
+    ports: !reset []

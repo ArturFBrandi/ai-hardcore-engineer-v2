@@ -87,7 +87,15 @@ class QdrantStore:
     def build_filter(product: str | None = None, category: str | None = None) -> models.Filter | None:
         must: list[models.Condition] = []
         if product:
-            must.append(models.FieldCondition(key="products", match=models.MatchAny(any=[product])))
+            # The model's own documents OR generic (model-agnostic) ones, e.g. "how to configure Wi-Fi on your machine".
+            must.append(
+                models.Filter(
+                    should=[
+                        models.FieldCondition(key="products", match=models.MatchAny(any=[product])),
+                        models.IsEmptyCondition(is_empty=models.PayloadField(key="products")),
+                    ]
+                )
+            )
         if category:
             must.append(models.FieldCondition(key="category", match=models.MatchValue(value=category)))
         return models.Filter(must=must) if must else None

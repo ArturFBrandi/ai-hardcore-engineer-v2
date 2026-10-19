@@ -31,8 +31,18 @@ A new session must be able to continue from this file alone. Read `docs/initial-
 | 3 Tools + policy | done | `uv run pytest tests -q` → 31 passed (21 tool integration tests on real Postgres incl. isolation, approval gate, idempotent case + outbox + audit, append-only audit) |
 
 | 4 LLM provider | done | `uv run --env-file .env python -m scripts.llm_test` → PASS plain/structured/tool round-trip (MiniMax-M3, 4 calls, 1291 tokens, $0.00047); 19 provider unit tests (retry/no-retry, breaker, budget, malformed JSON repair) |
-| 5 Ingestion + retrieval | in progress | live crawl `python -m ingestion.pipeline crawl --recreate --no-render` → 150 pages (146 HTML + 4 PDF manuals), 925 chunks; snapshot exported (`data/snapshots/getnet-kb.jsonl.gz`, 250 KB); benchmark running (`python -m evaluation.benchmark_retrieval`); calibration pending |
-| 6/7 Agents + graph + supervisor | in progress | `pytest tests/orchestration/test_smoke_graph.py` → settlement workflow runs end-to-end (CS ∥ Knowledge same superstep, supervisor, synthesizer, decision, save_memory) with fake LLM |
+| 5 Ingestion + retrieval | done | crawl: 150 pages (146 HTML + 4 PDF), 925 chunks; `python -m evaluation.benchmark_retrieval` (4 dense × 3 rerankers, results/retrieval_benchmark.md); `python -m evaluation.rerank_budget` (top-8 + 700 chars = same Recall@5, ~2.5x faster); `python -m evaluation.calibrate` → RAG_RERANK_MIN_SCORE=-0.8 (F1 0.906) |
+| 6/7 Agents + graph + supervisor | done | `pytest tests/orchestration` 9 passed (parallel superstep by timestamps, supervisor dependency w/ product filter, web outage, insufficient evidence, fallback, budget) |
+| 8 Memory | done | `pytest tests/multiturn` 11 passed; E2E restart-between-turns passed |
+| 9 Auth/protection | done | `pytest tests/security` 34 passed |
+| 10 HITL + worker | done | `pytest tests/hitl` 10 passed |
+| 11 Guardrails | done | unit + security suites |
+| 12 Observability | partial | metrics/traces/logs implemented; compose profile + dashboard + alerts written; screenshots pending |
+| 13 Evaluation | done | `python -m evaluation.run_eval` → 126 single-turn, 17 multi-turn, 7 HITL, 6 supervisor; pass 0.976, all strict gates pass; baseline written. Live eval pending |
+| 14 Docker | done | image 833 MB (non-root uid 10001, no models baked); `docker compose up -d --wait` healthy; E2E `pytest tests/e2e -m "stack and not scale"` 9 passed; scale test (2 replicas + nginx) passed; bootstrap tested in ubuntu:26.04 twice |
+| Live provider | done | `make test-live` 5 passed (router structured output, tool round-trip, auth no-retry, grounded generation, Tavily) |
+| Security tooling | done | `./scripts/security_scan.sh` passed (pip-audit 0 vulns, Bandit Medium+ 0, gitleaks history clean, Trivy 0 fixable HIGH/CRITICAL) |
+| 15 Docs | pending | README, ARCHITECTURE, THREAT_MODEL, SLO, TESTING_GUIDE, VIDEO_SCRIPT, SCORECARD, ADRs |
 
 ## Open issues
 - CPU reranking costs ~3 s p50 for 15 candidates (benchmark); evaluate reranking top-8 only.
@@ -40,5 +50,4 @@ A new session must be able to continue from this file alone. Read `docs/initial-
 - Host port 5432 is used by another local project → compose publishes datastores on 127.0.0.1:55432/56333/56379.
 
 ## Next step
-- Finish retrieval benchmark → choose models (ADR 006) → `evaluation/calibrate.py` → set RAG thresholds.
-- API tests (auth/JWT, chat, conversations, operator), HITL + worker, guardrail/security suites, Docker.
+- Confirm CI green for the full workflow; eval-live; judge calibration; observability screenshots; docs; final validation.

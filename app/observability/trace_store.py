@@ -64,6 +64,17 @@ class TraceStore:
                 for s in (state.get("plan") or {}).get("steps", [])
             ],
             "steps": _sanitize(list(state.get("events") or [])),
+            "evidence": [
+                {
+                    "evidence_id": e.get("evidence_id"),
+                    "url": e.get("url"),
+                    "title": e.get("title"),
+                    "rerank_score": e.get("rerank_score"),
+                }
+                for e in state.get("retrieved_documents") or []
+            ],
+            "tools": [{"tool": t.get("tool"), "status": t.get("status")} for t in state.get("tool_results") or []],
+            "web_results": [{"url": w.get("url"), "title": w.get("title")} for w in state.get("web_results") or []],
             "cost": {"agent": "cost", "event": "tokens", "detail": usage},
             "latency_ms": round(latency_ms, 1),
         }

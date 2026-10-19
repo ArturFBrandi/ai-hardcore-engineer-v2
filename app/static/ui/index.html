@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getnet Support · Customer demo</title>
+  <link rel="stylesheet" href="/ui/style.css">
+</head>
+<body>
+  <header>
+    <span class="brand">getnet</span><h1>Multi-agent support — customer demo</h1><span class="spacer"></span>
+    <label class="small muted">Signed in as
+      <select id="who"><option value="cliente1988">cliente1988</option><option value="cliente2077">cliente2077</option></select>
+    </label>
+    <button id="login" class="secondary">Sign in</button>
+  </header>
+  <div class="notice">Development demo: tokens come from the local dev identity provider (disabled in production). All customer data is synthetic.</div>
+  <main>
+    <aside>
+      <div class="item"><button id="new" class="secondary" style="width:100%">+ New conversation</button></div>
+      <div id="conversations"></div>
+    </aside>
+    <section class="pane">
+      <div id="messages"><p class="muted">Sign in, then ask e.g. “When will the money from yesterday's sales be deposited?”.</p></div>
+      <form class="composer" id="composer">
+        <input type="text" id="text" maxlength="2000" placeholder="Type a message (PT or EN)…" autocomplete="off">
+        <button id="send" type="submit">Send</button>
+      </form>
+    </section>
+  </main>
+  <script src="/ui/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Getnet Support · Operator console</title>
+  <link rel="stylesheet" href="/operator/style.css">
+</head>
+<body>
+  <header>
+    <span class="brand">getnet</span><h1>Operator console (human-in-the-loop)</h1><span class="spacer"></span>
+    <select id="filter"><option value="">all statuses</option><option value="open">open</option><option value="in_progress">in progress</option><option value="awaiting_customer">awaiting customer</option><option value="resolved">resolved</option></select>
+    <input type="text" id="operator" value="operator.ana" style="max-width:160px">
+    <button id="login" class="secondary">Sign in</button>
+  </header>
+  <div class="notice">Development demo: operator tokens come from the local dev identity provider. Actions resume the paused agent workflow; approvals execute with the case owner's identity only.</div>
+  <main>
+    <aside id="queue"></aside>
+    <section class="pane"><div class="scroll" id="detail"><p class="muted">Sign in and select a case.</p></div></section>
+  </main>
+  <script src="/operator/op.js"></script>
+</body>
+</html>

@@ -19,7 +19,7 @@ from sqlalchemy import select
 
 from app.config import Settings, get_settings
 from app.db.base import Database
-from app.db.models import ActorType, CasePriority, CaseStatus, Outbox, OutboxStatus, SupportCase, TurnRole
+from app.db.models import ActorType, CasePriority, CaseStatus, Conversation, Outbox, OutboxStatus, SupportCase, TurnRole
 from app.db.repositories import write_audit
 from app.llm.reliability import backoff_delay
 from app.memory.store import MemoryStore
@@ -161,6 +161,9 @@ async def check_sla(
         if fresh is None or not fresh.conversation_id:
             continue
         conv = fresh.conversation_id
+        async with db.session() as s:
+            if await s.get(Conversation, conv) is None:
+                continue  # conversation erased (LGPD) or purged: notify operators only
         lang = (fresh.context_json or {}).get("language", "pt")
         text = (
             f"Seu atendimento {case_id} continua na fila com prioridade elevada. Um especialista responderá aqui assim que possível."

@@ -56,9 +56,31 @@ def extractive_answer(evidence: list[EvidenceEntry], lang: str) -> str:
     return f"{lead} ({top['title']}): {snippet} [{top['evidence_id']}]"
 
 
+_TOPIC_TERMS = {
+    "connectivity": "maquininha não conecta internet wi-fi chip conexão sinal",
+    "error_code": "erro código maquininha solução",
+    "hardware": "problema maquininha manutenção",
+}
+_DOMAIN_WORDS = re.compile(
+    r"conect|conex|internet|wi-?fi|sinal|chip|erro|error|bateria|battery|tela|impress|maquininha|machine|terminal", re.I
+)
+
+
+def rewrite_query(query: str, state: AgentState) -> str:
+    """Deterministic, slot-based rewrite for troubleshooting follow-ups ("já reiniciei e continua igual"):
+    conversation context is used only to make the retrieval query self-contained."""
+    if family(state.get("intent")) != "troubleshooting" or _DOMAIN_WORDS.search(query):
+        return query
+    slots = state.get("slots") or {}
+    attempts = slots.get("troubleshooting_attempts") or {}
+    topic = max(attempts, key=lambda k: attempts[k]) if attempts else "connectivity"
+    model = slots.get("active_terminal_model") or ""
+    return f"{model} {_TOPIC_TERMS.get(topic, _TOPIC_TERMS['hardware'])} {query}".strip()
+
+
 async def getnet_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang: str) -> dict[str, Any]:
     inputs = step.get("inputs") or {}
-    query = inputs.get("query") or state["message"]
+    query = rewrite_query(inputs.get("query") or state["message"], state)
     broaden = bool(inputs.get("broaden"))
     filters = RetrievalFilters(
         product=None if broaden else inputs.get("product_filter"),
