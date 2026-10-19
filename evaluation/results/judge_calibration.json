@@ -1,0 +1,187 @@
+{
+  "accuracy": 1.0,
+  "kappa": 1.0,
+  "n": 30,
+  "rows": [
+    {
+      "golden_id": "g011",
+      "answer": "A Getnet permite parcelar em até 48x no crediário; o prazo máximo e os juros dependem do emissor do cartão.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g011",
+      "answer": "No crediário você pode parcelar em até 12x sem juros, definido pela Getnet.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g013",
+      "answer": "Yes. The Payment Link can be sent through WhatsApp, as well as social networks, e-mail and SMS.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g013",
+      "answer": "No, the Payment Link only works by e-mail.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g019",
+      "answer": "Charge the Get Smart for at least 3 hours in a row and recharge when the battery is around 20%.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g019",
+      "answer": "Always let the battery drain to 0% before charging it for 30 minutes.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g022",
+      "answer": "Get Tap needs an Android 12 (or newer) phone with NFC.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g022",
+      "answer": "Get Tap works on any iPhone with iOS 10.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g023",
+      "answer": "O Get Tap não tem mensalidade; você paga apenas as taxas por transação.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g023",
+      "answer": "O Get Tap custa R$ 49,90 por mês.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g024",
+      "answer": "Não existe limite pré-determinado, mas acima de R$ 200 o cliente pode precisar digitar a senha.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g024",
+      "answer": "O limite por venda no Get Tap é de R$ 1.000.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g034",
+      "answer": "O estorno na maquininha só pode ser feito no mesmo dia, com a senha do lojista (padrão 0000) e o mesmo cartão da venda.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g034",
+      "answer": "Você pode estornar vendas de até 90 dias pela maquininha, sem senha.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g037",
+      "answer": "Há o Parcelado Emissor (até 24 parcelas) e o Parcelado Lojista (até 12 parcelas).",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g037",
+      "answer": "A Getnet só oferece o Parcelado Lojista, em até 36 parcelas.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g038",
+      "answer": "Pre-authorization reserves the amount on the customer's card; it must be confirmed within 30 days and can be changed up to four times.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g038",
+      "answer": "Pre-authorization charges the card immediately and cannot be changed.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g039",
+      "answer": "No Plano Light você paga 12 parcelas e depois tem 100% de desconto; a parcela é R$ 12,90 se faturar ao menos R$ 1,00 e R$ 29,90 se não faturar.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g039",
+      "answer": "O Plano Light custa R$ 99,90 por mês para sempre.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g045",
+      "answer": "O erro ADQ 4-83 é um erro de integração com as bandeiras: tecla Função, número 38, Inicialização e depois uma venda teste.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g045",
+      "answer": "O erro ADQ 4-83 indica bateria fraca; troque o carregador.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g054",
+      "answer": "Não é preciso ter site; no campo url informe https://minhaconta.getnet.com.br.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g054",
+      "answer": "Sim, é obrigatório ter um site com certificado SSL próprio.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g056",
+      "answer": "A habilitação do Link de Pagamento ocorre no mesmo dia.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g056",
+      "answer": "A habilitação do Link de Pagamento leva 30 dias úteis.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g058",
+      "answer": "No, Pix through Get Conta is free.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g058",
+      "answer": "Pix through Get Conta costs 0.99% per transaction.",
+      "human_label_correct": false,
+      "judge": false
+    },
+    {
+      "golden_id": "g064",
+      "answer": "A Get Clássica tem 1 ano de garantia e a bateria dura entre 4h e 8h.",
+      "human_label_correct": true,
+      "judge": true
+    },
+    {
+      "golden_id": "g064",
+      "answer": "A Get Clássica tem 5 anos de garantia e bateria de 48h.",
+      "human_label_correct": false,
+      "judge": false
+    }
+  ]
+}

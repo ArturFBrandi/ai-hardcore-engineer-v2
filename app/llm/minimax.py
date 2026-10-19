@@ -16,6 +16,7 @@ from typing import Any
 import httpx
 import openai
 from openai import AsyncOpenAI
+from opentelemetry import trace
 
 from app.config import Settings
 from app.errors import ProviderError
@@ -26,6 +27,7 @@ from app.observability.cost import TokenBudgetExceeded, current_usage, estimate_
 from app.observability.logging import get_logger
 
 log = get_logger(__name__)
+_tracer = trace.get_tracer("getnet.llm")
 
 _RETRYABLE = (openai.APITimeoutError, openai.APIConnectionError, openai.RateLimitError, openai.InternalServerError)
 
@@ -93,6 +95,7 @@ class MiniMaxProvider:
         async def _call() -> Any:
             return await self._client.chat.completions.create(**kwargs)
 
+        span = _tracer.start_span(f"llm.{task}", attributes={"llm.model": self.model, "llm.task": task})
         try:
             raw = await with_retries(
                 _call,
@@ -115,6 +118,8 @@ class MiniMaxProvider:
             metrics.LLM_REQUESTS.labels(task=task, status="error").inc()
             metrics.LLM_FAILURES.labels(task=task, reason=type(exc).__name__).inc()
             raise ProviderError(f"MiniMax request failed: {type(exc).__name__}", retryable=True) from exc
+        finally:
+            span.end()
         latency = time.perf_counter() - started
         metrics.LLM_DURATION.labels(task=task).observe(latency)
 

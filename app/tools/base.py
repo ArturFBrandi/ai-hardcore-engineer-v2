@@ -17,6 +17,7 @@ import time
 from abc import ABC, abstractmethod
 from typing import Any, ClassVar, Literal
 
+from opentelemetry import trace
 from pydantic import BaseModel, ConfigDict, ValidationError
 
 from app.db.base import Database
@@ -28,6 +29,7 @@ from app.orchestration.policy import agent_may_use, policy_for
 from app.tools.context import AuthContext
 
 log = get_logger(__name__)
+_tracer = trace.get_tracer("getnet.tools")
 
 ToolStatus = Literal["ok", "not_found", "invalid_arguments", "error", "approval_required", "forbidden"]
 
@@ -152,8 +154,9 @@ class ToolRegistry:
         started = time.perf_counter()
         arguments = args.model_dump(mode="json")
         try:
-            async with asyncio.timeout(tool.timeout_seconds):
-                data = await tool.run(ctx, args)
+            with _tracer.start_as_current_span(f"tool.{tool.name}"):
+                async with asyncio.timeout(tool.timeout_seconds):
+                    data = await tool.run(ctx, args)
             status: ToolStatus = "ok"
             error, retryable = None, False
         except NotFoundError as exc:

@@ -11,6 +11,8 @@ from __future__ import annotations
 import time
 from typing import Literal
 
+from opentelemetry import trace
+
 from app.config import Settings
 from app.errors import RetrievalError
 from app.observability import metrics
@@ -20,6 +22,7 @@ from app.rag.qdrant_store import QdrantStore
 from app.rag.schemas import RetrievalFilters, RetrievalResult, RetrievedDocument
 
 log = get_logger(__name__)
+_tracer = trace.get_tracer("getnet.rag")
 
 Mode = Literal["hybrid", "dense", "sparse"]
 
@@ -45,13 +48,16 @@ class Retriever:
         t0 = time.perf_counter()
         metrics.RAG_QUERIES.labels(mode=mode).inc()
         try:
-            dense = await self.models.aembed_query(query) if mode != "sparse" else []
-            sparse = await self.models.asparse_query(query) if mode != "dense" else None
+            with _tracer.start_as_current_span("rag.embed"):
+                dense = await self.models.aembed_query(query) if mode != "sparse" else []
+                sparse = await self.models.asparse_query(query) if mode != "dense" else None
             t_embed = time.perf_counter()
             flt = QdrantStore.build_filter(filters.product, filters.category)
             if mode == "hybrid":
                 assert sparse is not None  # noqa: S101 - mode invariant
-                points = await self.store.hybrid(dense, sparse, k, flt)
+                with _tracer.start_as_current_span("rag.vector_search") as span:
+                    span.set_attribute("rag.mode", "hybrid_rrf")
+                    points = await self.store.hybrid(dense, sparse, k, flt)
             elif mode == "dense":
                 points = await self.store.dense_only(dense, k, flt)
             else:
@@ -97,7 +103,9 @@ class Retriever:
             # candidates, passages truncated to RAG_RERANK_MAX_CHARS — same Recall@5 as reranking all 15, ~2.5x faster.
             head, tail = docs[: self.s.rag_rerank_top_k], docs[self.s.rag_rerank_top_k :]
             try:
-                scores = await self.models.arerank(query, [d.text[: self.s.rag_rerank_max_chars] for d in head])
+                with _tracer.start_as_current_span("rag.rerank") as span:
+                    span.set_attribute("rag.rerank_candidates", len(head))
+                    scores = await self.models.arerank(query, [d.text[: self.s.rag_rerank_max_chars] for d in head])
             except Exception as exc:  # model missing/corrupt → explicit retrieval error, never a crashed node
                 log.error("rerank_failed", error=type(exc).__name__)
                 raise RetrievalError(f"rerank failed: {type(exc).__name__}") from exc

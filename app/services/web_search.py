@@ -12,6 +12,7 @@ from datetime import UTC, datetime
 from typing import Protocol
 
 import httpx
+from opentelemetry import trace
 
 from app.config import Settings, WebSearchProviderName
 from app.errors import ExternalSearchError
@@ -20,6 +21,7 @@ from app.observability import metrics
 from app.observability.logging import get_logger
 
 log = get_logger(__name__)
+_tracer = trace.get_tracer("getnet.web")
 
 
 @dataclass(frozen=True)
@@ -92,9 +94,10 @@ class TavilySearch:
             return resp
 
         try:
-            resp = await with_retries(
-                _call, is_retryable=_retryable, max_retries=1, breaker=self.breaker, name="web_search"
-            )
+            with _tracer.start_as_current_span("web_search"):
+                resp = await with_retries(
+                    _call, is_retryable=_retryable, max_retries=1, breaker=self.breaker, name="web_search"
+                )
         except CircuitOpenError as exc:
             metrics.WEB_SEARCH_FAILURES.labels(reason="circuit_open").inc()
             raise ExternalSearchError("web search circuit open") from exc
