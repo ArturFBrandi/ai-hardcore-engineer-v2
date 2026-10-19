@@ -1,0 +1,115 @@
+[project]
+name = "getnet-support-agents"
+version = "1.0.0"
+description = "Multi-agent customer support system for Getnet (LangGraph + MiniMax-M3 + hybrid RAG)"
+readme = "README.md"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "alembic>=1.20.0",
+    "asyncpg>=0.32.0",
+    "beautifulsoup4>=4.15.0",
+    "cryptography>=50.0.2",
+    "fastapi>=0.149.0",
+    "fastembed>=0.9.0",
+    "httpx>=0.28.1",
+    "langgraph>=1.2.16",
+    "langgraph-checkpoint-postgres>=3.2.0",
+    "lxml>=6.1.3",
+    "openai>=3.35.1",
+    "opentelemetry-api>=1.45.1",
+    "opentelemetry-exporter-otlp-proto-http>=1.45.1",
+    "opentelemetry-instrumentation-fastapi>=0.66b1",
+    "opentelemetry-sdk>=1.45.1",
+    "prometheus-client>=0.26.0",
+    "psycopg[binary,pool]>=3.3.6",
+    "pydantic>=2.14.1",
+    "pydantic-settings>=2.16.0",
+    "pyjwt[crypto]>=2.15.1",
+    "pypdf>=6.21.1",
+    "pyyaml>=6.0.3",
+    "qdrant-client>=1.19.1",
+    "redis>=8.1.0",
+    "sqlalchemy[asyncio]>=2.1.5",
+    "sse-starlette>=3.5.0",
+    "structlog>=26.1.0",
+    "tenacity>=9.2.1",
+    "uvicorn[standard]>=0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "bandit>=1.9.4",
+    "hypothesis>=6.170.2",
+    "mypy>=2.4.0",
+    "pip-audit>=2.10.1",
+    "pytest>=9.1.1",
+    "pytest-asyncio>=1.4.0",
+    "pytest-cov>=7.1.0",
+    "pytest-timeout>=2.4.0",
+    "respx>=0.23.1",
+    "ruff>=0.17.1",
+    "types-pyyaml>=6.0.12.20260906",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["app", "ingestion", "evaluation"]
+
+[tool.ruff]
+line-length = 120
+target-version = "py312"
+extend-exclude = ["alembic/versions"]
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "ASYNC", "RUF", "SIM", "C4", "PT", "PL"]
+ignore = [
+  "PLR0913",  # agent/tool constructors legitimately take several collaborators
+  "PLR2004",  # numeric literals in tests and thresholds are explicit
+  "RUF001", "RUF002", "RUF003",  # Portuguese text contains ambiguous-looking unicode by design
+]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106", "S311", "PLR0915", "PLC0415"]
+"evaluation/**" = ["S101", "S311", "PLR0912", "PLR0915"]
+"scripts/**" = ["S603", "S607", "T201", "PLR0915", "PLC0415"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_unused_ignores = true
+plugins = ["pydantic.mypy"]
+exclude = ["alembic/versions/", "tests/", "build/"]
+
+[[tool.mypy.overrides]]
+module = ["fastembed.*", "qdrant_client.*", "sse_starlette.*", "pypdf.*", "bs4.*", "psycopg_pool.*"]
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+testpaths = ["tests"]
+timeout = 120
+markers = [
+  "live: requires real MiniMax / web-search credentials",
+  "docker: requires the composed stack (datastores)",
+  "stack: requires the running API over HTTP (E2E)",
+]
+addopts = "-ra --strict-markers"
+filterwarnings = ["ignore::DeprecationWarning:pkg_resources.*"]
+
+[tool.coverage.run]
+source = ["app"]
+omit = ["app/worker/__main__.py"]
+concurrency = ["greenlet", "thread"]
+
+[tool.coverage.report]
+show_missing = false
+skip_covered = true
+exclude_lines = ["pragma: no cover", "if TYPE_CHECKING:", "raise NotImplementedError", "\\.\\.\\."]
+
+[tool.bandit]
+exclude_dirs = ["tests", ".venv", "evaluation"]
