@@ -56,8 +56,8 @@ def troubleshooting_category(message: str, tool_results: list[ToolResultEntry]) 
 def pick_terminal(message: str, tool_results: list[ToolResultEntry]) -> dict[str, Any] | None:
     """The terminal the conversation is about: the model the customer named, else the one with a
     connectivity issue, else the first one inspected."""
-    statuses = [
-        r["data"]
+    statuses: list[dict[str, Any]] = [
+        r["data"] or {}
         for r in tool_results
         if r.get("tool") == "get_terminal_status" and r.get("status") == "ok" and r.get("data")
     ]

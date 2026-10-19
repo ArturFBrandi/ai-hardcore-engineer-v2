@@ -47,10 +47,10 @@ def main() -> int:
     wanted = {settings.embedding_model, settings.reranker_model, settings.sparse_model}
     if a.write_lock:
         LOCK.write_text(json.dumps({"models": sorted(wanted), "files": inv}, indent=2, sort_keys=True) + "\n")
-        print(f"wrote {LOCK} ({len(inv)} repos)")  # noqa: T201
+        print(f"wrote {LOCK} ({len(inv)} repos)")
         return 0
     if not LOCK.exists():
-        print("models.lock.json missing — run with --write-lock", file=sys.stderr)  # noqa: T201
+        print("models.lock.json missing — run with --write-lock", file=sys.stderr)
         return 1
     lock = json.loads(LOCK.read_text())["files"]
     problems = []
@@ -63,9 +63,9 @@ def main() -> int:
             if got.get(name) != digest:
                 problems.append(f"{repo}:{name} expected {digest[:12]} got {str(got.get(name))[:12]}")
     if problems:
-        print("model checksum verification FAILED:\n  " + "\n  ".join(problems[:20]), file=sys.stderr)  # noqa: T201
+        print("model checksum verification FAILED:\n  " + "\n  ".join(problems[:20]), file=sys.stderr)
         return 1
-    print(f"models ready and verified: {sorted(wanted)}")  # noqa: T201
+    print(f"models ready and verified: {sorted(wanted)}")
     return 0
 
 

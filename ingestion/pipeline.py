@@ -88,6 +88,92 @@ def _extract(result: FetchResult, html_override: str | None = None) -> Extracted
     return extract_html(html, result.final_url)
 
 
+DocTriple = tuple[FetchResult, ExtractedDocument, bool]
+
+
+def _chunk_and_dedupe(
+    docs: list[DocTriple], classifier: Classifier, report: IngestReport
+) -> tuple[dict[str, Chunk], dict[str, list[Chunk]]]:
+    all_chunks: list[Chunk] = []
+    per_doc: dict[str, list[Chunk]] = {}
+    for r, doc, rendered in docs:
+        seed = r.seed
+        chunks = chunk_document(
+            doc,
+            category=seed.category if seed else "faq",
+            language=(doc.language or (seed.language if seed else "pt")),
+            classifier=classifier,
+            page_product=seed.product if seed else None,
+            retrieved_at=r.fetched_at,
+            etag=r.etag,
+            last_modified=r.last_modified,
+            rendered=rendered,
+        )
+        if not chunks:
+            continue
+        per_doc[doc.canonical_url] = chunks
+        all_chunks.extend(chunks)
+    # Dedup identical bodies across pages (FAQ hubs repeat topic-page answers): keep the most
+    # specific source (longest URL path), so citations point at the topic page.
+    unique: dict[str, Chunk] = {}
+    for c in sorted(all_chunks, key=lambda c: -len(c.metadata["canonical_url"])):
+        unique.setdefault(c.metadata["body_hash"], c)
+    for url in list(per_doc):
+        per_doc[url] = [c for c in per_doc[url] if unique.get(c.metadata["body_hash"]) is c]
+    report.chunks_total = len(unique)
+    report.categories = dict(Counter(c.metadata["category"] for c in unique.values()))
+    report.products = dict(Counter(c.metadata["product"] for c in unique.values() if c.metadata["product"]))
+    return unique, per_doc
+
+
+async def _persist_state(
+    db: Database,
+    docs: list[DocTriple],
+    per_doc: dict[str, list[Chunk]],
+    unchanged_urls: list[str],
+    now: datetime,
+    freshness_days: int,
+    report: IngestReport,
+) -> None:
+    async with db.transaction() as s:
+        for r, doc, rendered in docs:
+            chunks = per_doc.get(doc.canonical_url, [])
+            values = {
+                "url": r.url,
+                "canonical_url": doc.canonical_url,
+                "title": doc.title[:300],
+                "category": (r.seed.category if r.seed else "faq")[:48],
+                "language": doc.language,
+                "content_type": r.content_type[:64],
+                "etag": r.etag,
+                "last_modified": r.last_modified,
+                "doc_hash": chunks[0].metadata["doc_hash"] if chunks else "",
+                "chunk_count": len(chunks),
+                "rendered": rendered,
+                "last_crawled_at": now,
+                "last_changed_at": now,
+            }
+            stmt = insert(KBDocument).values(**values)
+            await s.execute(
+                stmt.on_conflict_do_update(
+                    index_elements=["url"],
+                    set_={k: stmt.excluded[k] for k in values if k != "url"},
+                )
+            )
+        for url in unchanged_urls:
+            doc_row = await s.get(KBDocument, url)
+            if doc_row is not None:
+                doc_row.last_crawled_at = now
+        stale_before = now - timedelta(days=freshness_days)
+        all_rows = (await s.scalars(select(KBDocument))).all()
+        report.stale_documents = sum(1 for d in all_rows if d.last_crawled_at < stale_before)
+
+
+def _write_report(report: IngestReport) -> None:
+    REPORT.parent.mkdir(parents=True, exist_ok=True)
+    REPORT.write_text(json.dumps(report.as_dict(), indent=2, ensure_ascii=False))
+
+
 async def run_crawl(settings: Settings, *, recreate: bool = False, render: bool | None = None) -> IngestReport:
     cat = SourceCatalogue.load(str(SOURCES))
     classifier = Classifier(cat.categories, cat.products)
@@ -163,77 +249,17 @@ async def run_crawl(settings: Settings, *, recreate: bool = False, render: bool 
                 report.html_pages += 1
         report.boilerplate_blocks_removed = remove_boilerplate([d for _, d, _ in docs])
 
-        all_chunks: list[Chunk] = []
-        per_doc: dict[str, list[Chunk]] = {}
-        for r, doc, rendered in docs:
-            seed = r.seed
-            chunks = chunk_document(
-                doc,
-                category=seed.category if seed else "faq",
-                language=(doc.language or (seed.language if seed else "pt")),
-                classifier=classifier,
-                page_product=seed.product if seed else None,
-                retrieved_at=r.fetched_at,
-                etag=r.etag,
-                last_modified=r.last_modified,
-                rendered=rendered,
-            )
-            if not chunks:
-                continue
-            per_doc[doc.canonical_url] = chunks
-            all_chunks.extend(chunks)
-        # Dedup identical bodies across pages (FAQ hubs repeat topic-page answers): keep the most
-        # specific source (longest URL path), so citations point at the topic page.
-        unique: dict[str, Chunk] = {}
-        for c in sorted(all_chunks, key=lambda c: -len(c.metadata["canonical_url"])):
-            unique.setdefault(c.metadata["body_hash"], c)
-        for url in list(per_doc):
-            per_doc[url] = [c for c in per_doc[url] if unique.get(c.metadata["body_hash"]) is c]
-        report.chunks_total = len(unique)
-        report.categories = dict(Counter(c.metadata["category"] for c in unique.values()))
-        report.products = dict(Counter(c.metadata["product"] for c in unique.values() if c.metadata["product"]))
+        unique, per_doc = _chunk_and_dedupe(docs, classifier, report)
         if unique:
             report.chunks_upserted = await index_chunks(list(unique.values()), models, store, recreate=recreate)
         for url, chunks in per_doc.items():
             report.chunks_deleted += await store.delete_by_url(url, {c.metadata["content_hash"] for c in chunks})
         report.documents_indexed = len(per_doc)
 
-        async with db.transaction() as s:
-            for r, doc, rendered in docs:
-                chunks = per_doc.get(doc.canonical_url, [])
-                values = {
-                    "url": r.url,
-                    "canonical_url": doc.canonical_url,
-                    "title": doc.title[:300],
-                    "category": (r.seed.category if r.seed else "faq")[:48],
-                    "language": doc.language,
-                    "content_type": r.content_type[:64],
-                    "etag": r.etag,
-                    "last_modified": r.last_modified,
-                    "doc_hash": chunks[0].metadata["doc_hash"] if chunks else "",
-                    "chunk_count": len(chunks),
-                    "rendered": rendered,
-                    "last_crawled_at": now,
-                    "last_changed_at": now,
-                }
-                stmt = insert(KBDocument).values(**values)
-                await s.execute(
-                    stmt.on_conflict_do_update(
-                        index_elements=["url"],
-                        set_={k: stmt.excluded[k] for k in values if k != "url"},
-                    )
-                )
-            for url in unchanged_urls:
-                doc_row = await s.get(KBDocument, url)
-                if doc_row is not None:
-                    doc_row.last_crawled_at = now
-            stale_before = now - timedelta(days=cat.freshness_days)
-            all_rows = (await s.scalars(select(KBDocument))).all()
-            report.stale_documents = sum(1 for d in all_rows if d.last_crawled_at < stale_before)
+        await _persist_state(db, docs, per_doc, unchanged_urls, now, cat.freshness_days, report)
         metrics.RAG_STALE_DOCUMENTS.set(report.stale_documents)
         report.finished_at = datetime.now(UTC).isoformat()
-        REPORT.parent.mkdir(parents=True, exist_ok=True)
-        REPORT.write_text(json.dumps(report.as_dict(), indent=2, ensure_ascii=False))
+        await asyncio.to_thread(_write_report, report)
         return report
     finally:
         await store.close()

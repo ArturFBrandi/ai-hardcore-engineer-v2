@@ -7,6 +7,7 @@ Multiple worker replicas are safe: rows are claimed with ``FOR UPDATE SKIP LOCKE
 from __future__ import annotations
 
 import asyncio
+import contextlib
 import signal
 from collections.abc import Callable
 from datetime import UTC, datetime, timedelta
@@ -156,11 +157,11 @@ async def check_sla(
             metrics.HITL_SLA_BREACHES.inc()
     for case_id in breached:
         async with db.session() as s:
-            case = await s.get(SupportCase, case_id)
-        if case is None or not case.conversation_id:
+            fresh = await s.get(SupportCase, case_id)
+        if fresh is None or not fresh.conversation_id:
             continue
-        conv = case.conversation_id
-        lang = (case.context_json or {}).get("language", "pt")
+        conv = fresh.conversation_id
+        lang = (fresh.context_json or {}).get("language", "pt")
         text = (
             f"Seu atendimento {case_id} continua na fila com prioridade elevada. Um especialista responderá aqui assim que possível."
             if lang == "pt"
@@ -192,8 +193,9 @@ async def refresh_queue_gauge(db: Database) -> None:
 
 
 async def run_forever(settings: Settings) -> None:
-    from app.container import RedisPublisher, make_checkpointer  # noqa: PLC0415 - avoid importing the graph at module import
     from redis.asyncio import Redis  # noqa: PLC0415
+
+    from app.container import RedisPublisher, make_checkpointer  # noqa: PLC0415 - avoid importing the graph at module import
 
     db = Database(settings)
     memory = MemoryStore(db, settings.conversation_ttl_days, settings.conversation_lock_timeout_seconds)
@@ -220,12 +222,10 @@ async def run_forever(settings: Settings) -> None:
                     last_purge = utcnow()
                     if purged:
                         log.info("retention_purge", conversations=purged)
-            except Exception as exc:  # noqa: BLE001 - the worker must survive transient datastore errors
+            except Exception as exc:
                 log.error("worker_tick_failed", error=type(exc).__name__, detail=str(exc)[:200])
-            try:
+            with contextlib.suppress(TimeoutError):
                 await asyncio.wait_for(stop.wait(), timeout=settings.worker_poll_seconds)
-            except TimeoutError:
-                pass
     finally:
         await pool.close()
         await redis.aclose()

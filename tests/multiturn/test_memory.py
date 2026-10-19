@@ -58,7 +58,7 @@ async def test_entity_carry_over_and_escalation_on_nth_failure(api, container) -
 
     t3 = await _say(api, "Ainda não funciona, continua sem conexão", conv)
     assert t3["status"] == "awaiting_human"
-    assert any("repeated troubleshooting failure (3 attempts)" == r for r in t3["escalation_reasons"])
+    assert any(r == "repeated troubleshooting failure (3 attempts)" for r in t3["escalation_reasons"])
     assert t3["case_id"]
 
 

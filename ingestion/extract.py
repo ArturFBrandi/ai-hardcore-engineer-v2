@@ -37,7 +37,7 @@ _NOISE_ATTR = re.compile(
     r"cliente-app|gnt-header|c-footer|skip-link|menu|navbar|banner-app|modal-fuga|whatsapp-float|lgpd",
     re.IGNORECASE,
 )
-_WS = re.compile(r"[ \t ​]+")
+_WS = re.compile("[ \t\u00a0\u200b]+")
 _HEADINGS = {"h1": 1, "h2": 2, "h3": 3, "h4": 4}
 _INLINE = {"span", "a", "strong", "em", "b", "i", "font", "label", "small", "sup", "sub", "u", "mark", "code"}
 

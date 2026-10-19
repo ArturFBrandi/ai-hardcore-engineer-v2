@@ -118,10 +118,10 @@ def chunk_document(
     for sec_heading, blocks in sections:
         buf: list[str] = []
 
-        def flush(h: str = sec_heading) -> None:
-            if buf:
-                raw.append((h, "\n".join(buf), "section"))
-                buf.clear()
+        def flush(h: str = sec_heading, pending: list[str] = buf) -> None:
+            if pending:
+                raw.append((h, "\n".join(pending), "section"))
+                pending.clear()
 
         for b in blocks:
             if b.kind == "faq":

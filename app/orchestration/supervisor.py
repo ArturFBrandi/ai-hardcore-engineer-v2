@@ -16,8 +16,8 @@ Runs after every specialist superstep and chooses ``continue(steps) | synthesize
 from __future__ import annotations
 
 import hashlib
-import re
 import json
+import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 

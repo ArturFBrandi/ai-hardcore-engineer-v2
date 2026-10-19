@@ -14,7 +14,7 @@ log = get_logger(__name__)
 
 def render_available() -> bool:
     try:
-        import playwright.async_api  # noqa: F401
+        import playwright.async_api  # noqa: F401, PLC0415 - optional dependency (render image only)
     except ImportError:
         return False
     return True
@@ -22,7 +22,7 @@ def render_available() -> bool:
 
 async def render_html(url: str, user_agent: str, timeout_ms: int = 30000) -> str | None:
     try:
-        from playwright.async_api import async_playwright
+        from playwright.async_api import async_playwright  # noqa: PLC0415 - optional dependency
     except ImportError:
         return None
     try:

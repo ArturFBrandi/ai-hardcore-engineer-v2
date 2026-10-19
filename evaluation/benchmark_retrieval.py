@@ -24,6 +24,7 @@ from app.rag.models import RetrievalModels
 from app.rag.qdrant_store import QdrantStore
 from evaluation.metrics import hit_at_k, is_relevant, ndcg_at_k, reciprocal_rank
 from ingestion.chunker import Chunk
+from ingestion.pipeline import index_chunks
 from ingestion.snapshot import load_snapshot
 
 GOLDEN = Path("evaluation/golden/golden.yaml")
@@ -66,8 +67,6 @@ async def bench_dense(
     models = RetrievalModels(s, offline=False)
     store = QdrantStore(s.qdrant_url, s.qdrant_collection)
     t0 = time.perf_counter()
-    from ingestion.pipeline import index_chunks
-
     await index_chunks(chunks, models, store, recreate=True)
     index_s = time.perf_counter() - t0
     totals = [sum(1 for c in chunks if is_relevant(c.metadata["canonical_url"], c.text, i["relevant"])) for i in items]
@@ -155,13 +154,17 @@ async def main_async(dense: list[str], rerankers: list[str]) -> None:
     chunks = load_snapshot()
     items = golden_items()
     results = []
-    for i, name in enumerate(dense):
+    for name in dense:
         print(f"[{name}] indexing + evaluating…", flush=True)
         results.append(await bench_dense(settings, name, chunks, items, rerankers))
         print(json.dumps(results[-1], indent=1), flush=True)
+    await asyncio.to_thread(_write, results, len(items))
+
+
+def _write(results: list[dict[str, Any]], n_items: int) -> None:
     OUT.mkdir(parents=True, exist_ok=True)
-    (OUT / "retrieval_benchmark.json").write_text(json.dumps({"items": len(items), "results": results}, indent=2))
-    (OUT / "retrieval_benchmark.md").write_text(render_md(results, len(items)))
+    (OUT / "retrieval_benchmark.json").write_text(json.dumps({"items": n_items, "results": results}, indent=2))
+    (OUT / "retrieval_benchmark.md").write_text(render_md(results, n_items))
 
 
 def main() -> None:
