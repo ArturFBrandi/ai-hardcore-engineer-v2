@@ -19,6 +19,7 @@ from app.agents.prompts import render_messages, tool_block
 from app.errors import ProviderError
 from app.guardrails.output import unsupported_numbers
 from app.llm.base import strip_reasoning
+from app.orchestration.routing import is_vague
 from app.orchestration.runtime import GraphContext, event, node
 from app.orchestration.state import AgentState, Citation
 
@@ -93,11 +94,11 @@ async def synthesizer_node(state: AgentState, *, runtime: Runtime[GraphContext])
     tools = [t for t in state.get("tool_results") or [] if t.get("status") in ("ok", "not_found")]
 
     if intent == "unsupported":
-        text = message("unsupported", lang)
+        reason = "clarify" if is_vague(state.get("message") or "") else "unsupported"
         return {
-            "candidate_answer": text,
+            "candidate_answer": message(reason, lang),
             "citations": [],
-            "events": [event("synthesizer", "deterministic", {"reason": "unsupported"}, started)],
+            "events": [event("synthesizer", "deterministic", {"reason": reason}, started)],
         }
     if intent == "human_support":
         return {

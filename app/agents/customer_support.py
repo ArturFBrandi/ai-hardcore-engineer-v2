@@ -9,7 +9,9 @@ from __future__ import annotations
 
 import asyncio
 import json
+import re
 import time
+from collections.abc import Mapping
 from typing import Any
 
 from langgraph.runtime import Runtime
@@ -17,12 +19,16 @@ from langgraph.runtime import Runtime
 from app.agents.formatting import describe_all
 from app.agents.prompts import render_messages
 from app.errors import ProviderError
+from app.guardrails.normalize import canonical
 from app.orchestration.runtime import GraphContext, event, node
 from app.orchestration.state import AgentState, PlanStep, ProposedAction, ToolResultEntry
 from app.tools.base import ToolResult
 from app.tools.customer import br_today
 
 PRESETS = {"today", "yesterday", "day_before_yesterday", "last_7_days", "last_30_days"}
+REPLACEMENT_REQUEST = re.compile(
+    r"\b(trocar|troca|substituir|substituicao|nova maquininha|outra maquininha|replace|replacement|new (card )?machine)\b"
+)
 
 
 def _entry(r: ToolResult, step_id: str) -> ToolResultEntry:
@@ -73,6 +79,30 @@ def required_calls(intent: str, date_ref: str | None, done: list[ToolResultEntry
     elif intent == "customer_account" and "get_customer_profile" not in ok_tools:
         calls.append(("get_customer_profile", {}))
     return calls
+
+
+def replacement_target(message: str, slots: Mapping[str, Any], done: list[ToolResultEntry]) -> int | None:
+    """Terminal for an explicit replacement request: the model named in the message, else the active one, else the only one.
+
+    Returns None when the merchant did not ask for a replacement or the terminal is ambiguous (the operator decides).
+    """
+    text = canonical(message)
+    if not REPLACEMENT_REQUEST.search(text):
+        return None
+    terminals = [
+        term
+        for t in done
+        if t["tool"] == "get_customer_terminals" and t["status"] == "ok"
+        for term in ((t.get("data") or {}).get("terminals") or [])
+    ]
+    named = [t for t in terminals if canonical(str(t.get("model", ""))) in text]
+    if len({t["terminal_id"] for t in named}) == 1:
+        return int(named[0]["terminal_id"])
+    if slots.get("active_terminal_id") in {t["terminal_id"] for t in terminals}:
+        return int(slots["active_terminal_id"])
+    if len({t["terminal_id"] for t in terminals}) == 1:
+        return int(terminals[0]["terminal_id"])
+    return None
 
 
 def terminal_status_calls(done: list[ToolResultEntry]) -> list[tuple[str, dict[str, Any]]]:
@@ -200,6 +230,26 @@ async def run_step(state: AgentState, runtime: Runtime[GraphContext], step: Plan
             results.extend(_entry(r, step["id"]) for r in outs)
     if guard:
         events.append(event("customer_support", "coverage_guard", {"added_calls": [n for n, _ in guard]}))
+
+    # Explicit replacement request the LLM did not turn into a proposal: code proposes, a human still approves.
+    if intent in ("technical_support", "customer_terminal") and not proposed:
+        target = replacement_target(state.get("message") or "", slots, results + list(state.get("tool_results") or []))
+        if target is not None:
+            r = await call(
+                "request_terminal_replacement",
+                {"terminal_id": target, "reason": "merchant explicitly requested a replacement; diagnostics attached"},
+            )
+            results.append(_entry(r, step["id"]))
+            if r.status == "approval_required":
+                proposed.append(
+                    ProposedAction(
+                        tool=r.tool,
+                        arguments=dict(r.arguments),
+                        policy="requires_approval",
+                        reason=str(r.arguments.get("reason", "")),
+                    )
+                )
+                events.append(event("customer_support", "replacement_proposed_by_policy", {"terminal_id": target}))
 
     status = "ok" if any(r["status"] == "ok" for r in results) else ("failed" if results else "no_data")
     if not summary:

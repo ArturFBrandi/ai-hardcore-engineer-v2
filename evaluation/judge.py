@@ -71,14 +71,17 @@ async def calibrate() -> int:
         f"**Accuracy vs labels: {acc:.3f} · Cohen's κ: {kappa:.3f} ({strength} agreement).**",
         "",
         "Use: the judge may be consulted for semantic groundedness in exploratory live runs. Deterministic metrics "
-        "(claim recall, hallucination traps, citation faithfulness) remain the gates" + (". Agreement is weak: do not rely on the judge." if strength == "weak" else "."),
+        "(claim recall, hallucination traps, citation faithfulness) remain the gates"
+        + (". Agreement is weak: do not rely on the judge." if strength == "weak" else "."),
         "",
         "| golden | label | judge | answer |",
         "|---|---|---|---|",
         *[f"| {r['golden_id']} | {r['human_label_correct']} | {r['judge']} | {r['answer'][:90]} |" for r in rows],
     ]
     OUT.write_text("\n".join(lines) + "\n")
-    Path("evaluation/results/judge_calibration.json").write_text(json.dumps({"accuracy": acc, "kappa": kappa, "n": n, "rows": rows}, indent=2, ensure_ascii=False))
+    Path("evaluation/results/judge_calibration.json").write_text(
+        json.dumps({"accuracy": acc, "kappa": kappa, "n": n, "rows": rows}, indent=2, ensure_ascii=False)
+    )
     print(f"judge accuracy={acc:.3f} kappa={kappa:.3f} ({strength})")
     return 0
 
@@ -89,5 +92,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-
-

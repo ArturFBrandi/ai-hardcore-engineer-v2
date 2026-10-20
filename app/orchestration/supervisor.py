@@ -21,7 +21,7 @@ import re
 from dataclasses import dataclass, field
 from typing import Any, Literal
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
 from app.orchestration.decision import settlement_contradiction
 from app.orchestration.planning import ready_steps
@@ -37,6 +37,13 @@ class SupervisorProposal(BaseModel):
     decision: Literal["synthesize", "knowledge", "customer_support", "escalate"]
     reason: str = Field(default="", max_length=200)
     query: str | None = Field(default=None, max_length=300)
+
+    @field_validator("reason", mode="before")
+    @classmethod
+    def _clip_reason(cls, v: Any) -> Any:
+        # Free-text rationale is only logged; clipping beats discarding an otherwise valid decision.
+        return v[:200] if isinstance(v, str) else v
+
     product_filter: str | None = None
     category: str | None = None
     objective: str | None = Field(default=None, max_length=300)

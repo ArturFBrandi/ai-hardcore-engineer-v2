@@ -13,6 +13,8 @@ from sqlalchemy import select
 
 from app.db.models import ActionStatus, AuditLog, Outbox, OutboxStatus, PendingAction, ServiceOrder, SupportCase
 from app.hitl.service import HitlService
+from app.llm.base import LLMResponse
+from app.llm.fake import tool_call_response
 from app.worker.main import Sink, check_sla, deliver_outbox
 from tests.conftest import OPERATOR_SCOPE, auth_headers
 
@@ -298,3 +300,13 @@ async def test_operator_cannot_resume_without_operator_scope(api) -> None:  # ty
         headers=auth_headers(OP, OPERATOR_SCOPE),
     )
     assert r.status_code == 404
+
+
+async def test_explicit_replacement_request_is_proposed_even_if_llm_does_not(api, fake_llm) -> None:  # type: ignore[no-untyped-def]
+    # MiniMax sometimes answers with diagnostics only; the explicit request still becomes an approval-gated proposal.
+    fake_llm.script("customer_support", tool_call_response(("get_customer_terminals", {})), LLMResponse(content="ok"))
+    body = await _escalate(api, "Get Smart sem conexão desde ontem, preciso substituir a maquininha")
+    detail = (await api.get(f"/v1/operator/cases/{body['case_id']}", headers=auth_headers(OP, OPERATOR_SCOPE))).json()
+    assert detail["interrupt_kind"] == "approval"
+    assert detail["proposed_action"]["tool"] == "request_terminal_replacement"
+    assert detail["proposed_action"]["status"] == "proposed"  # not executed until an operator approves

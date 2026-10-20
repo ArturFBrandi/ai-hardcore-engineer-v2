@@ -129,8 +129,28 @@ _RULES: list[tuple[str, str, re.Pattern[str]]] = [
 ]
 
 
+# Messages with nothing to act on (a greeting or a bare "help"): ask what the merchant needs instead of
+# escalating, searching the web for "hello" or guessing an intent.
+_VAGUE = re.compile(
+    r"^(oi+|ola|ola tudo bem|bom dia|boa tarde|boa noite|ajuda|socorro|help|hello|hi|hey|"
+    r"preciso de ajuda|pode me ajudar|me ajuda|tenho uma duvida|i need help|can you help( me)?)[\s!?.,]*$"
+)
+
+
+def is_vague(message: str) -> bool:
+    return bool(_VAGUE.match(canonical(message)))
+
+
 def rule_route(message: str) -> RuleMatch | None:
     text = canonical(message)
+    if is_vague(message):
+        flags = {
+            "requires_customer_data": False,
+            "requires_getnet_knowledge": False,
+            "requires_external_web": False,
+            "wants_human": False,
+        }
+        return RuleMatch(intent="unsupported", flags=flags, rule="too_vague")
     for intent, rule, pattern in _RULES:
         if pattern.search(text):
             flags = {

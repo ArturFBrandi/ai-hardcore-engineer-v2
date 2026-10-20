@@ -243,6 +243,10 @@ MESSAGES: dict[str, dict[str, str]] = {
         "pt": "A base de conhecimento oficial está indisponível no momento, então não vou responder de memória. Tente novamente em instantes.",
         "en": "The official knowledge base is unavailable right now, so I won't answer from memory. Please try again shortly.",
     },
+    "clarify": {
+        "pt": "Claro, posso ajudar! Me conte o que você precisa — por exemplo: repasse das suas vendas, uma maquininha com problema, uma transação, o status de um chamado ou dúvidas sobre produtos Getnet.",
+        "en": "Sure, I can help! Tell me what you need — for example: settlement of your sales, a card machine problem, a transaction, the status of a case or questions about Getnet products.",
+    },
     "unsupported": {
         "pt": "Posso ajudar com dúvidas sobre produtos e serviços Getnet, sua conta, vendas, repasses e maquininhas — e com informações gerais como clima e câmbio. Esse pedido está fora do que posso atender.",
         "en": "I can help with Getnet products and services, your account, sales, settlements and card machines — and general information like weather and exchange rates. That request is outside what I can help with.",

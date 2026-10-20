@@ -20,7 +20,7 @@ from pydantic import BaseModel, Field
 from app.agents.formatting import message
 from app.agents.prompts import evidence_block, render_messages, web_block
 from app.errors import ExternalSearchError, ProviderError, RetrievalError
-from app.guardrails.output import unsupported_numbers
+from app.guardrails.output import detect_language, unsupported_numbers
 from app.llm.base import structured
 from app.memory.slots import family
 from app.orchestration.runtime import GraphContext, event, node
@@ -69,7 +69,11 @@ _DOMAIN_WORDS = re.compile(
 def rewrite_query(query: str, state: AgentState) -> str:
     """Deterministic, slot-based rewrite for troubleshooting follow-ups ("já reiniciei e continua igual"):
     conversation context is used only to make the retrieval query self-contained."""
-    if family(state.get("intent")) != "troubleshooting" or _DOMAIN_WORDS.search(query):
+    if family(state.get("intent")) != "troubleshooting":
+        return query
+    # Getnet content is Portuguese: an English query (the router is asked for PT but may not comply) or one
+    # without domain words gets the PT topic terms of the troubleshooting thread.
+    if _DOMAIN_WORDS.search(query) and detect_language(query) == "pt":
         return query
     slots = state.get("slots") or {}
     attempts = slots.get("troubleshooting_attempts") or {}
