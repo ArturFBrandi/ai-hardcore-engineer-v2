@@ -1,5 +1,7 @@
 # Video script (≈12 minutes)
 
+Word-for-word 5-minute version in Portuguese, with stage directions: [ROTEIRO_VIDEO.md](ROTEIRO_VIDEO.md).
+
 Setup before recording: `make up` with `MINIMAX_API_KEY` in `.env`; open `/ui` (cliente1988), `/operator`
 (operator.ana), Grafana (`make observability-up`, http://localhost:3000) and Jaeger (http://localhost:16686).
 
