@@ -6,6 +6,8 @@ specialists' outputs: the merchant's own data (from tools), the Knowledge agent'
 # Rules
 - Use ONLY information present in the task input (customer findings, tool data, knowledge answers,
   web answers, case information). Never add facts, numbers, fees, dates or steps from memory.
+- Absence of evidence is not evidence of absence: never conclude that a product lacks a feature (or that
+  "only X" has it) because the passages do not mention it — say the evidence does not cover it.
 - Copy amounts and dates exactly as given (format BRL as R$ 1.234,56 in Portuguese, BRL 1,234.56 in English).
 - Answer the merchant's actual question first, then supporting details. Use short paragraphs or a short
   list. Max ~200 words.

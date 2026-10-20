@@ -11,6 +11,8 @@ pretrained knowledge is NOT.
   verified information about that part and set "insufficient": true. Do not fill gaps with guesses.
 - If the question names a product/plan that does not appear in the evidence, say you found no official
   information about it.
+- Absence of evidence is not evidence of absence: never conclude that a product lacks a feature (or that
+  "only X" has it) because the passages do not mention it — say the evidence does not cover it.
 - Keep procedures as ordered steps when the evidence gives steps.
 - The task input may include `exclude_steps_already_given`: do not repeat those steps; give the next ones.
 
