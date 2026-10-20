@@ -43,7 +43,7 @@ receives it). `make verify` prints a summary table; reports land in `evaluation/
 | Customer Support (≥2 tools) | 7 read-only tools + 1 approval-gated action + idempotent case creation, scoped to the verified customer |
 | API | `POST /v1/chat` with the exact payload `{"message", "user_id"}` (+ optional `conversation_id`) |
 | Docker | multi-stage non-root image, Compose stack (api, worker, migrate, models-init, postgres, qdrant, redis) + profiles |
-| Testing | 191 offline tests in 6 suites + 10 E2E/scale tests against the composed stack + 5 live-provider tests; evaluation harness; CI on every push |
+| Testing | 192 offline tests in 6 suites + 10 E2E/scale tests against the composed stack + 5 live-provider tests; evaluation harness; CI on every push |
 | Bonus | 4th agent (Human Escalation) with interrupt/resume + approvals, layered guardrails, human handoff, evaluation + observability stack |
 
 ## 2. Architecture
@@ -263,7 +263,7 @@ and wildcard CORS, and force-disables debug endpoints; `safe_dict()` is the only
 | `make coverage` | gate ≥ 85% of `app/` |
 
 Latest run (2026-10-20, commit `e28b2b2`): **191 offline tests passed, 0 failed** (91 unit, 29 integration,
-12 orchestration, 35 security, 11 multi-turn, 13 HITL); **9 E2E + 1 scale** passed against the stack (`make verify`,
+12 orchestration, 35 security, 11 multi-turn, 13 HITL; 192 / 14 HITL after the operator-reply fix below); **9 E2E + 1 scale** passed against the stack (`make verify`,
 `make scale-test`); **5 live** passed (`make test-live`); `make test-docker` 166 passed (the same offline suite in the
 Dockerfile `test` stage; the docs-contract test checks only the README there); coverage **90.9%** (gate 85%). Strategy and how the
 orchestration is integration-tested: [`docs/TESTING_GUIDE.md`](docs/TESTING_GUIDE.md).

@@ -9,6 +9,7 @@ honestly, with the official contact channels.
 
 from __future__ import annotations
 
+import re
 import time
 from typing import Any, Literal
 
@@ -288,6 +289,15 @@ async def execute_action_node(state: AgentState, *, runtime: Runtime[GraphContex
     }
 
 
+# The polished reply must deliver the operator's message, not talk about it (found in manual testing: a greeting
+# came back as "no specific request was identified in the operator's notes").
+_META_COMMENTARY = re.compile(
+    r"notas? do operador|mensagem do operador|operator'?s? (notes?|message)|"
+    r"(não|nao) (foi possível|consegui) identificar|no specific request|could not identify",
+    re.IGNORECASE,
+)
+
+
 @node("human_reply")
 async def human_reply_node(state: AgentState, *, runtime: Runtime[GraphContext]) -> dict[str, Any]:
     ctx = runtime.context
@@ -316,7 +326,7 @@ async def human_reply_node(state: AgentState, *, runtime: Runtime[GraphContext])
                     "human_reply",
                     {
                         "language": lang,
-                        "operator_notes": operator_text,
+                        "operator_message": operator_text,
                         "decision": dec.decision,
                         "action_result": action_result,
                         "case_id": state.get("case_id"),
@@ -326,7 +336,9 @@ async def human_reply_node(state: AgentState, *, runtime: Runtime[GraphContext])
                 temperature=0.2,
             )
             candidate = strip_reasoning(resp.content)
-            if candidate and not unsupported_numbers(candidate, grounding + f" {state.get('case_id')}"):
+            if _META_COMMENTARY.search(candidate):
+                source = "verbatim_meta_commentary"
+            elif candidate and not unsupported_numbers(candidate, grounding + f" {state.get('case_id')}"):
                 text, source = candidate, "llm"
         except ProviderError:
             source = "verbatim_fallback"

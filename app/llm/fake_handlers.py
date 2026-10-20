@@ -302,7 +302,7 @@ def human_reply(messages: list[Message], tools: list[dict[str, Any]] | None) -> 
     result = ti.get("action_result") or {}
     if (result.get("data") or {}).get("service_order_id"):
         extra = f" (ordem de serviço {result['data']['service_order_id']})"
-    return LLMResponse(content=f"{lead} {ti.get('operator_notes', '')}{extra}")
+    return LLMResponse(content=f"{lead} {ti.get('operator_message', '')}{extra}")
 
 
 def summary(messages: list[Message], tools: list[dict[str, Any]] | None) -> LLMResponse:

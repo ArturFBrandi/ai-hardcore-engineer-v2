@@ -355,3 +355,23 @@ async def test_next_turn_can_repeat_numbers_from_the_operator_reply(api, fake_ll
     )
     assert nxt.status_code == 200, nxt.text
     assert "59,90" in nxt.json()["answer"]
+
+
+async def test_polished_reply_that_comments_on_the_operator_message_is_not_sent(api, container, fake_llm) -> None:  # type: ignore[no-untyped-def]
+    # Found in manual testing: "Bom dia, em que posso ajudar?" reached the customer as "não foi possível identificar
+    # um pedido específico nas notas do operador". The operator's own words must be delivered instead.
+    body = await _escalate(api)
+    fake_llm.script(
+        "human_reply",
+        "Infelizmente, não foi possível identificar um pedido específico nas notas do operador. As notas recebidas "
+        'foram apenas: "Bom dia, em que posso ajudar?"',
+    )
+    op = auth_headers(OP, OPERATOR_SCOPE)
+    r = await api.post(
+        f"/v1/operator/cases/{body['case_id']}/reply", json={"message": "Bom dia, em que posso ajudar?"}, headers=op
+    )
+    assert r.status_code == 200, r.text
+    conv = await api.get(f"/v1/conversations/{body['conversation_id']}", headers=auth_headers())
+    human = [t["content"] for t in conv.json()["turns"] if t["role"] == "human_operator"]
+    assert human == ["Bom dia, em que posso ajudar?"]
+    assert fake_llm.calls_for("human_reply"), "the polishing step must have been attempted"
