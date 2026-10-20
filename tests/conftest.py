@@ -94,6 +94,10 @@ async def container(settings: Settings, db: Database) -> AsyncIterator[object]:
     await index_snapshot(settings)
     c = await build_container(settings, llm=FakeLLMProvider(), web=FakeWebSearch())
     await c.checkpointer.setup()
+    if c.models is not None:
+        # Same as the API lifespan: load models before traffic. A cold load holds the GIL long enough to starve
+        # the event loop, which made the parallel-superstep timing test flaky on a fresh process.
+        await asyncio.to_thread(c.models.warmup)
     yield c
     await c.close()
 

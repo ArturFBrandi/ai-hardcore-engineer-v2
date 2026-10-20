@@ -335,3 +335,23 @@ async def test_operator_queue_is_paginated_and_priority_ordered(api) -> None:  #
     assert [order[c["priority"]] for c in waiting] == sorted(order[c["priority"]] for c in waiting)
     for bad in ("limit=0", "limit=1000", "offset=-1"):
         assert (await api.get(f"/v1/operator/cases?{bad}", headers=op)).status_code == 422
+
+
+async def test_next_turn_can_repeat_numbers_from_the_operator_reply(api, fake_llm) -> None:  # type: ignore[no-untyped-def]
+    # Found in manual validation: the operator's "R$ 59,90" was treated as an unsupported number, so the answer fell
+    # back to a bare case list instead of telling the customer what the specialist said.
+    body = await _escalate(api, "Quero falar com um atendente humano sobre uma cobrança")
+    op = auth_headers(OP, OPERATOR_SCOPE)
+    note = "Verificamos a cobrança: é o aluguel mensal da Get Smart, R$ 59,90."
+    r = await api.post(
+        f"/v1/operator/cases/{body['case_id']}/reply", json={"message": note, "send_as_is": True}, headers=op
+    )
+    assert r.status_code == 200, r.text
+    fake_llm.script("synthesizer", "O especialista informou que a cobrança é o aluguel da Get Smart, R$ 59,90.")
+    nxt = await api.post(
+        "/v1/chat",
+        json={"message": "O que o atendente disse sobre o meu chamado?", "conversation_id": body["conversation_id"]},
+        headers=auth_headers(),
+    )
+    assert nxt.status_code == 200, nxt.text
+    assert "59,90" in nxt.json()["answer"]

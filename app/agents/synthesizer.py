@@ -33,6 +33,9 @@ def _grounding(state: AgentState) -> str:
     parts += [e.get("text", "") for e in state.get("retrieved_documents") or []]
     parts += [w.get("content", "") for w in state.get("web_results") or []]
     parts += [a.get("answer", "") for a in state.get("knowledge_answers") or []]
+    # What a human operator told the customer is evidence too (numbers in it may be repeated).
+    parts.append((state.get("slots") or {}).get("last_human_reply") or "")
+    parts += [h.get("content", "") for h in state.get("history") or [] if h.get("role") == "human_operator"]
     return "\n".join(parts)
 
 
@@ -44,6 +47,11 @@ def compose_fallback(state: AgentState, lang: str) -> str:
     for a in state.get("knowledge_answers") or []:
         if a.get("answer"):
             parts.append(a["answer"])
+    reply = (state.get("slots") or {}).get("last_human_reply")
+    if reply:
+        parts.append(
+            ("Última resposta do especialista: " if lang == "pt" else "Latest reply from the specialist: ") + reply
+        )
     return "\n\n".join(parts) or message("no_evidence", lang)
 
 
@@ -72,7 +80,11 @@ def final_citations(state: AgentState, answer: str) -> list[Citation]:
             )
     for w in (state.get("web_results") or [])[:3]:
         if (
-            any(a.get("mode") == "web" and a.get("status") == "answered" for a in state.get("knowledge_answers") or [])
+            # "insufficient" web answers (e.g. sources disagree on a rate) still quote these results.
+            any(
+                a.get("mode") == "web" and a.get("status") in ("answered", "insufficient")
+                for a in state.get("knowledge_answers") or []
+            )
             and w["url"] not in seen
         ):
             seen.add(w["url"])

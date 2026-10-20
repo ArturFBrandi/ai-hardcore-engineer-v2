@@ -1,6 +1,6 @@
 # Evaluation report — inprocess
 
-- Date: 2026-10-20T03:45:44+00:00  ·  Commit: `5d747c2`  ·  LLM: fake (deterministic test double)
+- Date: 2026-10-20T04:38:13+00:00  ·  Commit: `734ec5e`  ·  LLM: fake (deterministic test double)
 - Strict gate: PASS
 
 | Metric | Value | Δ vs baseline | Threshold |
@@ -19,10 +19,10 @@
 | hallucination_rate | 0.0 | +0.0 | max 0.0 |
 | answer_language_correctness | 0.7264 |  |  |
 | priority_accuracy | 1.0 |  |  |
-| latency_p50_ms | 3248.4 |  |  |
-| latency_p95_ms | 4103.2 |  |  |
+| latency_p50_ms | 3168.1 |  |  |
+| latency_p95_ms | 4082.6 |  |  |
 | llm_calls_per_case | 2.416 |  |  |
-| tokens_per_case | 3664.616 |  |  |
+| tokens_per_case | 3663.656 |  |  |
 | cost_usd_per_case | 0.0014 |  |  |
 | multiturn_conversations | 17 |  |  |
 | multiturn_pass_rate | 1.0 | +0.0 | min 0.94 |
@@ -34,9 +34,9 @@
 | retrieval_questions | 66 |  |  |
 | retrieval_recall@5 | 0.8939 | +0.0 | min 0.88 |
 | retrieval_mrr@10 | 0.846 | +0.0 | min 0.82 |
-| retrieval_ndcg@5 | 0.4568 |  |  |
-| retrieval_latency_p50_ms | 1170.8 |  |  |
-| retrieval_latency_p95_ms | 1461.6 |  |  |
+| retrieval_ndcg@5 | 0.454 |  |  |
+| retrieval_latency_p50_ms | 1150.0 |  |  |
+| retrieval_latency_p95_ms | 1401.5 |  |  |
 
 ## Pass rate per tag
 

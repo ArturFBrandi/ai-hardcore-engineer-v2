@@ -29,6 +29,7 @@ RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen --no-dev
 FROM builder AS test
 RUN --mount=type=cache,target=/root/.cache/uv uv sync --frozen
 COPY tests ./tests
+COPY Makefile README.md ./
 ENV PATH=/app/.venv/bin:$PATH APP_ENV=test
 CMD ["pytest", "-q"]
 

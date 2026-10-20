@@ -88,6 +88,8 @@ services:
     <<: *app
     command: ["api"]
     ports:
+      # Fixed 8000 for the single-replica stack. To scale with this file alone, publish a range:
+      #   API_PORT=8000-8001 docker compose --profile proxy up -d --scale api=2   (see ADR 014)
       - "${API_BIND:-0.0.0.0}:${API_PORT:-8000}:8000"
     environment:
       <<: *app-env
@@ -132,6 +134,11 @@ services:
     depends_on:
       api:
         condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O", "/dev/null", "http://127.0.0.1:8080/health/live"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
     restart: unless-stopped
 
   # --- optional: JS-rendering crawler (Playwright) kept out of the API image

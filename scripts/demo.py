@@ -140,15 +140,19 @@ def conversation(c: httpx.Client, restart: bool) -> int:
     print(
         f"\n── operator sees {case_id}: priority={detail['priority']} category={detail['category']} kind={detail['interrupt_kind']}"
     )
-    reply = c.post(
-        f"/v1/operator/cases/{case_id}/reply",
-        json={
-            "message": "Abrimos uma ordem de serviço para trocar o chip da sua Get Smart. Protocolo 55821; o técnico vai até você em até 2 dias úteis.",
-            "send_as_is": False,
-        },
-        headers=op,
-    ).json()
-    print(f"── operator reply resumed the graph → status {reply['status']}")
+    note = "Abrimos uma ordem de serviço para trocar o chip da sua Get Smart. Protocolo 55821; o técnico vai até você em até 2 dias úteis."
+    if detail["interrupt_kind"] == "approval":
+        # MiniMax may propose a replacement when diagnostics show a persistent fault: the operator decides it.
+        resp = c.post(f"/v1/operator/cases/{case_id}/decision", json={"decision": "approve", "note": note}, headers=op)
+        what = "operator approved the proposed action"
+    else:
+        resp = c.post(f"/v1/operator/cases/{case_id}/reply", json={"message": note, "send_as_is": False}, headers=op)
+        what = "operator reply"
+    if resp.status_code != 200:
+        print(f"operator call failed: HTTP {resp.status_code} {resp.text[:300]}")
+        return 1
+    reply = resp.json()
+    print(f"── {what} resumed the graph → status {reply['status']}")
     turns = c.get(f"/v1/conversations/{conv}", headers=headers("cliente1988")).json()["turns"]
     human = [t for t in turns if t["role"] == "human_operator"][-1]
     print("── customer receives (GET /v1/conversations/{id} and SSE):")

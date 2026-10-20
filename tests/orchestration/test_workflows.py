@@ -158,3 +158,16 @@ async def test_llm_supervisor_proposals_are_capped_per_turn(turn, fake_llm) -> N
     assert len(fake_llm.calls_for("supervisor")) <= 1
     assert sum(st.get("origin") == "supervisor_llm" for st in s["plan"]["steps"]) <= 1
     assert s["status"] in ("answered", "awaiting_human")
+
+
+async def test_web_answer_marked_insufficient_still_carries_its_sources(turn, fake_llm) -> None:  # type: ignore[no-untyped-def]
+    # Found in manual validation: sources disagreeing on the euro rate → model flagged "insufficient" and the
+    # answer (which quoted those sources) was delivered without citations.
+    fake_llm.script(
+        "knowledge_web",
+        '{"answer": "As fontes divergem: entre R$ 5,58 e R$ 5,63.", "used_results": [], "insufficient": true}',
+    )
+    r = await turn("Qual a cotação do euro hoje?")
+    s = r.state
+    assert s["intent"] == "exchange_rate"
+    assert s["citations"] and all(c["category"] == "web" for c in s["citations"])
