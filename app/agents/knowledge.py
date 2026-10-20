@@ -66,26 +66,34 @@ _DOMAIN_WORDS = re.compile(
 )
 
 
-def rewrite_query(query: str, state: AgentState) -> str:
-    """Deterministic, slot-based rewrite for troubleshooting follow-ups ("já reiniciei e continua igual"):
-    conversation context is used only to make the retrieval query self-contained."""
-    if family(state.get("intent")) != "troubleshooting":
-        return query
-    # Getnet content is Portuguese: an English query (the router is asked for PT but may not comply) or one
-    # without domain words gets the PT topic terms of the troubleshooting thread.
-    if _DOMAIN_WORDS.search(query) and detect_language(query) == "pt":
-        return query
+def topic_query(state: AgentState) -> str:
     slots = state.get("slots") or {}
     attempts = slots.get("troubleshooting_attempts") or {}
     topic = max(attempts, key=lambda k: attempts[k]) if attempts else "connectivity"
     model = slots.get("active_terminal_model") or ""
-    return f"{model} {_TOPIC_TERMS.get(topic, _TOPIC_TERMS['hardware'])} {query}".strip()
+    return f"{model} {_TOPIC_TERMS.get(topic, _TOPIC_TERMS['hardware'])}".strip()
+
+
+def rewrite_query(query: str, state: AgentState, broaden: bool = False) -> str:
+    """Deterministic, slot-based rewrite for troubleshooting follow-ups ("já reiniciei e continua igual"):
+    conversation context is used only to make the retrieval query self-contained."""
+    if family(state.get("intent")) != "troubleshooting":
+        return query
+    if broaden:
+        # The broadened retry after an empty filtered search: the LLM's query may carry diagnostic codes that
+        # match nothing, so search the thread's topic for the terminal model instead.
+        return topic_query(state)
+    # Getnet content is Portuguese: an English query (the router is asked for PT but may not comply) or one
+    # without domain words gets the PT topic terms of the troubleshooting thread.
+    if _DOMAIN_WORDS.search(query) and detect_language(query) == "pt":
+        return query
+    return f"{topic_query(state)} {query}".strip()
 
 
 async def getnet_mode(state: AgentState, ctx: GraphContext, step: PlanStep, lang: str) -> dict[str, Any]:
     inputs = step.get("inputs") or {}
-    query = rewrite_query(inputs.get("query") or state["message"], state)
     broaden = bool(inputs.get("broaden"))
+    query = rewrite_query(inputs.get("query") or state["message"], state, broaden=broaden)
     filters = RetrievalFilters(
         product=None if broaden else inputs.get("product_filter"),
         category=None if broaden else inputs.get("category"),

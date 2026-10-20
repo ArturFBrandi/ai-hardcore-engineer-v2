@@ -17,9 +17,12 @@ async def list_cases(
     request: Request,
     status: Literal["open", "in_progress", "awaiting_customer", "resolved", "closed"] | None = Query(default=None),
     priority: Literal["low", "normal", "high", "urgent"] | None = Query(default=None),
+    limit: int = Query(default=50, ge=1, le=100),
+    offset: int = Query(default=0, ge=0),
     principal: Principal = require_scopes("cases:read"),
 ) -> dict[str, Any]:
-    return {"items": await request.app.state.hitl.queue(status, priority)}
+    items = await request.app.state.hitl.queue(status, priority, limit=limit + 1, offset=offset)
+    return {"items": items[:limit], "next_offset": offset + limit if len(items) > limit else None}
 
 
 @router.get("/cases/{case_id}")

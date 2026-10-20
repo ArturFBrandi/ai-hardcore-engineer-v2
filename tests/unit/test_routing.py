@@ -28,3 +28,12 @@ def test_english_troubleshooting_query_gets_portuguese_topic_terms() -> None:
     assert "conecta" in q and "Get Smart" in q
     pt = "maquininha continua sem conexão internet após reiniciar"
     assert rewrite_query(pt, state) == pt  # type: ignore[arg-type]
+
+
+def test_broadened_troubleshooting_retry_uses_the_topic_query() -> None:
+    state = {
+        "intent": "technical_support",
+        "slots": {"active_terminal_model": "Get Smart", "troubleshooting_attempts": {"connectivity": 2}},
+    }
+    q = rewrite_query("Get Smart não conecta APN erro E-COM reiniciou", state, broaden=True)  # type: ignore[arg-type]
+    assert q.startswith("Get Smart maquininha não conecta") and "E-COM" not in q

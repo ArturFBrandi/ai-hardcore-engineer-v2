@@ -12,6 +12,7 @@ from __future__ import annotations
 from datetime import UTC, datetime
 from typing import Any
 
+from sqlalchemy import case as sql_case
 from sqlalchemy import func, select
 
 from app.db.base import Database
@@ -58,22 +59,26 @@ class HitlService:
         self.db = db
         self.chat = chat
 
-    async def queue(self, status: str | None, priority: str | None, limit: int = 50) -> list[dict[str, Any]]:
+    async def queue(
+        self, status: str | None, priority: str | None, limit: int = 50, offset: int = 0
+    ) -> list[dict[str, Any]]:
         async with self.db.session() as s:
             stmt = select(SupportCase)
             if status:
                 stmt = stmt.where(SupportCase.status == CaseStatus(status))
             if priority:
                 stmt = stmt.where(SupportCase.priority == CasePriority(priority))
-            rows = (await s.scalars(stmt.order_by(SupportCase.created_at.desc()).limit(limit))).all()
+            rank = sql_case(
+                {CasePriority(p): o for p, o in PRIORITY_ORDER.items()}, value=SupportCase.priority, else_=9
+            )
+            # Awaiting a human first, then by priority, newest first; stable across pages.
+            stmt = stmt.order_by(SupportCase.awaiting_human.desc(), rank, SupportCase.created_at.desc(), SupportCase.id)
+            rows = (await s.scalars(stmt.offset(offset).limit(limit))).all()
             awaiting = await s.scalar(
                 select(func.count()).select_from(SupportCase).where(SupportCase.awaiting_human.is_(True))
             )
         metrics.HITL_QUEUE.set(int(awaiting or 0))
-        return sorted(
-            (case_summary(r) for r in rows),
-            key=lambda c: (not c["awaiting_human"], PRIORITY_ORDER.get(c["priority"], 9)),
-        )
+        return [case_summary(r) for r in rows]
 
     async def detail(self, case_id: str) -> dict[str, Any]:
         async with self.db.session() as s:

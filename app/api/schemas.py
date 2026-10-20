@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+import re
 from datetime import datetime
 from typing import Any, Literal
 
 from pydantic import BaseModel, ConfigDict, Field, field_validator
 
 MAX_MESSAGE_CHARS = 2000
+# C0 controls (except tab/newline/CR) and DEL: PostgreSQL text rejects NUL, and none of them carry meaning in chat.
+_CONTROL = re.compile(r"[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]")
+
+
+def clean_text(value: str) -> str:
+    return _CONTROL.sub("", value)
 
 
 class ErrorResponse(BaseModel):
@@ -30,6 +37,7 @@ class ChatRequest(BaseModel):
     @field_validator("message")
     @classmethod
     def _not_blank(cls, value: str) -> str:
+        value = clean_text(value)
         if not value.strip():
             raise ValueError("message must not be blank")
         return value
@@ -94,6 +102,14 @@ class OperatorReplyIn(BaseModel):
     message: str = Field(min_length=1, max_length=4000)
     send_as_is: bool = False
 
+    @field_validator("message")
+    @classmethod
+    def _clean(cls, value: str) -> str:
+        value = clean_text(value)
+        if not value.strip():
+            raise ValueError("message must not be blank")
+        return value
+
 
 class OperatorDecisionIn(BaseModel):
     model_config = ConfigDict(extra="forbid")
@@ -101,11 +117,21 @@ class OperatorDecisionIn(BaseModel):
     edited_arguments: dict[str, Any] | None = None
     note: str = Field(default="", max_length=2000)
 
+    @field_validator("note")
+    @classmethod
+    def _clean_note(cls, value: str) -> str:
+        return clean_text(value)
+
 
 class OperatorResolveIn(BaseModel):
     model_config = ConfigDict(extra="forbid")
     resolution_code: str = Field(min_length=2, max_length=64, pattern=r"^[A-Z0-9_]+$")
     note: str = Field(default="", max_length=2000)
+
+    @field_validator("note")
+    @classmethod
+    def _clean_note(cls, value: str) -> str:
+        return clean_text(value)
 
 
 class DevTokenIn(BaseModel):

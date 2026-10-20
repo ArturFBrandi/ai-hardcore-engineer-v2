@@ -31,6 +31,16 @@ async def _escalate(api, message: str = "Quero falar com um atendente humano", c
     return body
 
 
+async def _whole_queue(api, headers: dict[str, str]) -> list[dict]:  # type: ignore[no-untyped-def]
+    items: list[dict] = []
+    offset: int | None = 0
+    while offset is not None:
+        page = (await api.get(f"/v1/operator/cases?limit=100&offset={offset}", headers=headers)).json()
+        items += page["items"]
+        offset = page["next_offset"]
+    return items
+
+
 async def _audit_actions(container, case_id: str) -> list[str]:  # type: ignore[no-untyped-def]
     async with container.db.session() as s:
         rows = (await s.scalars(select(AuditLog).where(AuditLog.entity_id == case_id).order_by(AuditLog.id))).all()
@@ -42,8 +52,7 @@ async def test_full_loop_reply_flows_back_and_next_turn_uses_it(api, container) 
     case_id, conv = body["case_id"], body["conversation_id"]
     op = auth_headers(OP, OPERATOR_SCOPE)
 
-    queue = await api.get("/v1/operator/cases", headers=op)
-    assert any(c["case_id"] == case_id and c["awaiting_human"] for c in queue.json()["items"])
+    assert any(c["case_id"] == case_id and c["awaiting_human"] for c in await _whole_queue(api, op))
     detail = (await api.get(f"/v1/operator/cases/{case_id}", headers=op)).json()
     assert detail["context"]["intent"] == "human_support"
     assert detail["conversation_excerpt"]
@@ -310,3 +319,19 @@ async def test_explicit_replacement_request_is_proposed_even_if_llm_does_not(api
     assert detail["interrupt_kind"] == "approval"
     assert detail["proposed_action"]["tool"] == "request_terminal_replacement"
     assert detail["proposed_action"]["status"] == "proposed"  # not executed until an operator approves
+
+
+async def test_operator_queue_is_paginated_and_priority_ordered(api) -> None:  # type: ignore[no-untyped-def]
+    await _escalate(api)
+    await _escalate(api, "Fui vítima de fraude, alguém usou meu cartão na maquininha")
+    op = auth_headers(OP, OPERATOR_SCOPE)
+    first = (await api.get("/v1/operator/cases?limit=1", headers=op)).json()
+    assert len(first["items"]) == 1 and first["next_offset"] == 1
+    second = (await api.get("/v1/operator/cases?limit=1&offset=1", headers=op)).json()
+    assert second["items"][0]["case_id"] != first["items"][0]["case_id"]
+    page = (await api.get("/v1/operator/cases?limit=100", headers=op)).json()["items"]
+    waiting = [c for c in page if c["awaiting_human"]]
+    order = {"urgent": 0, "high": 1, "normal": 2, "low": 3}
+    assert [order[c["priority"]] for c in waiting] == sorted(order[c["priority"]] for c in waiting)
+    for bad in ("limit=0", "limit=1000", "offset=-1"):
+        assert (await api.get(f"/v1/operator/cases?{bad}", headers=op)).status_code == 422

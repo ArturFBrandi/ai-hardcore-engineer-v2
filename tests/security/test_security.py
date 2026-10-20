@@ -295,3 +295,13 @@ async def test_security_headers_and_no_stack_traces(api) -> None:  # type: ignor
     assert r.headers["x-content-type-options"] == "nosniff"
     assert r.headers["x-frame-options"] == "DENY"
     assert "Traceback" not in r.text
+
+
+async def test_control_characters_are_stripped_not_a_500(api) -> None:  # type: ignore[no-untyped-def]
+    # Found in adversarial QA: a NUL byte reached PostgreSQL (text rejects \x00) and produced a 500.
+    r = await api.post(
+        "/v1/chat", json={"message": "oi\u0000 qual o status do meu chamado?\u0007"}, headers=auth_headers()
+    )
+    assert r.status_code == 200, r.text
+    only_controls = await api.post("/v1/chat", json={"message": "\u0000\u0001"}, headers=auth_headers())
+    assert only_controls.status_code == 422

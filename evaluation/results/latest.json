@@ -1,9 +1,9 @@
 {
   "mode": "inprocess",
-  "date": "2026-10-20T02:32:40+00:00",
-  "commit": "7cd9132",
+  "date": "2026-10-20T03:27:57+00:00",
+  "commit": "301c4f7",
   "llm": "fake (deterministic test double)",
-  "duration_s": 250.2,
+  "duration_s": 250.7,
   "metrics": {
     "single_turn_cases": 126,
     "case_pass_rate": 0.9762,
@@ -19,10 +19,10 @@
     "hallucination_rate": 0.0,
     "answer_language_correctness": 0.7264,
     "priority_accuracy": 1.0,
-    "latency_p50_ms": 3290.4,
-    "latency_p95_ms": 4176.7,
-    "llm_calls_per_case": 2.408,
-    "tokens_per_case": 3656.2,
+    "latency_p50_ms": 3292.6,
+    "latency_p95_ms": 4093.1,
+    "llm_calls_per_case": 2.416,
+    "tokens_per_case": 3660.056,
     "cost_usd_per_case": 0.0014,
     "multiturn_conversations": 17,
     "multiturn_pass_rate": 1.0,
@@ -35,8 +35,8 @@
     "retrieval_recall@5": 0.8939,
     "retrieval_mrr@10": 0.846,
     "retrieval_ndcg@5": 0.452,
-    "retrieval_latency_p50_ms": 1189.7,
-    "retrieval_latency_p95_ms": 1426.9,
+    "retrieval_latency_p50_ms": 1203.4,
+    "retrieval_latency_p95_ms": 1471.7,
     "per_tag_pass_rate": {
       "access": 1.0,
       "adversarial": 1.0,
@@ -131,7 +131,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2921.7,
+      "latency_ms": 2678.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -181,7 +181,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3251.0,
+      "latency_ms": 3075.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -206,9 +206,9 @@
         "https://site.getnet.com.br/duvidas/get-smart/"
       ],
       "confidence": 1.0,
-      "tokens": 4006,
+      "tokens": 4061,
       "llm_calls": 2,
-      "cost_usd": 0.0015,
+      "cost_usd": 0.001516,
       "answer": "Pergunta: Qual a diferença entre Get Smart e TEF móvel? Resposta: Na Get Smart todas as suas vendas são processadas pela Getnet. Além disso, a Get Smart, por ser um equipamento Android, permite mais operações realizadas diretamente no equipamento, como colocar o cardápio, controlar o estoque, trocar mensagens entre cozinha e salão. [E1] Pergunta: Quais os diferenciais de uma Get Smart? Resposta: Com um sistema de gestão integrado ele permite que não tenha a necessidade de deslocamento para consultar um estoque, o mesmo pode ser consultado diretamente na máquina. Ele permite um balcão mais limp",
       "language": "pt",
       "citation_present": true,
@@ -232,7 +232,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 623.1,
+      "latency_ms": 913.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -259,7 +259,7 @@
       "tokens": 478,
       "llm_calls": 1,
       "cost_usd": 0.000194,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T02:29)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:24)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -274,7 +274,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 709.7,
+      "latency_ms": 715.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -301,7 +301,7 @@
       "tokens": 476,
       "llm_calls": 1,
       "cost_usd": 0.000193,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T02:29)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:24)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -315,7 +315,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3452.0,
+      "latency_ms": 3491.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -346,7 +346,7 @@
       "tokens": 8006,
       "llm_calls": 5,
       "cost_usd": 0.003268,
-      "answer": "Settlements for those sales:\n- Credit sales of 2026-10-18: net BRL 203.09 (gross BRL 209.70, fees BRL 6.61), expected on 2026-10-20 — scheduled.\n- Debit sales of 2026-10-18: net BRL 63.02 (gross BRL 63.90, fees BRL 0.88), expected on 2026-10-19 — pending (due today).\n- Pix sales of 2026-10-18: net BRL 32.50 (gross BRL 32.50, fees BRL 0.00), expected on 2026-10-18 — paid.\nSales on 2026-10-18: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.",
+      "answer": "Settlements for those sales:\n- Credit sales of 2026-10-19: net BRL 203.09 (gross BRL 209.70, fees BRL 6.61), expected on 2026-10-21 — scheduled.\n- Debit sales of 2026-10-19: net BRL 63.02 (gross BRL 63.90, fees BRL 0.88), expected on 2026-10-20 — pending (due today).\n- Pix sales of 2026-10-19: net BRL 32.50 (gross BRL 32.50, fees BRL 0.00), expected on 2026-10-19 — paid.\nSales on 2026-10-19: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -360,7 +360,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3674.8,
+      "latency_ms": 3734.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -391,7 +391,7 @@
       "tokens": 7996,
       "llm_calls": 5,
       "cost_usd": 0.003263,
-      "answer": "Repasses das vendas:\n- Vendas de 18/10/2026 no crédito: líquido R$ 203,09 (bruto R$ 209,70, taxas R$ 6,61), previsto para 20/10/2026 — agendado.\n- Vendas de 18/10/2026 no débito: líquido R$ 63,02 (bruto R$ 63,90, taxas R$ 0,88), previsto para 19/10/2026 — pendente (previsto para hoje).\n- Vendas de 18/10/2026 no Pix: líquido R$ 32,50 (bruto R$ 32,50, taxas R$ 0,00), previsto para 18/10/2026 — pago.\nVendas em 18/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- ",
+      "answer": "Repasses das vendas:\n- Vendas de 19/10/2026 no crédito: líquido R$ 203,09 (bruto R$ 209,70, taxas R$ 6,61), previsto para 21/10/2026 — agendado.\n- Vendas de 19/10/2026 no débito: líquido R$ 63,02 (bruto R$ 63,90, taxas R$ 0,88), previsto para 20/10/2026 — pendente (previsto para hoje).\n- Vendas de 19/10/2026 no Pix: líquido R$ 32,50 (bruto R$ 32,50, taxas R$ 0,00), previsto para 19/10/2026 — pago.\nVendas em 19/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -405,7 +405,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3174.2,
+      "latency_ms": 3176.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -455,7 +455,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3271.9,
+      "latency_ms": 3112.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -481,9 +481,9 @@
         "https://site.getnet.com.br/get-ajuda-pix/como-fazer-uma-venda-com-pix-na-maquininha/"
       ],
       "confidence": 1.0,
-      "tokens": 3885,
+      "tokens": 3575,
       "llm_calls": 2,
-      "cost_usd": 0.001414,
+      "cost_usd": 0.001321,
       "answer": "Para começar a vender com Pix utilizando o Get Tap, é necessário habilitar a funcionalidade e vincular uma conta bancária pelo aplicativo Getnet Brasil. O processo é simples e rápido. Veja como fazer: 1. Acesse o aplicativo Getnet Brasil : Faça login no app com seu usuário e senha. 2. Entre no menu “Serviços” : No menu principal, selecione a opção “Serviços” para visualizar as funcionalidades disponíveis. 3. Clique e [E1] Para realizar uma venda com Pix você precisa habilitar o Pix pelo Aplicativo Getnet Brasil ou Portal Minha Conta. [E2]",
       "language": "pt",
       "citation_present": true,
@@ -506,7 +506,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4210.6,
+      "latency_ms": 4056.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -539,7 +539,7 @@
       "tokens": 8061,
       "llm_calls": 6,
       "cost_usd": 0.003111,
-      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-19: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opçã",
+      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-20: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opçã",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -561,7 +561,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3967.5,
+      "latency_ms": 3816.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -594,7 +594,7 @@
       "tokens": 8026,
       "llm_calls": 6,
       "cost_usd": 0.003086,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opção “Wi-Fi”",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opção “Wi-Fi”",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -616,7 +616,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3579.0,
+      "latency_ms": 3781.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -666,7 +666,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3290.4,
+      "latency_ms": 3520.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -717,7 +717,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 611.5,
+      "latency_ms": 623.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -744,7 +744,7 @@
       "tokens": 451,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T02:29)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:24)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -759,7 +759,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 626.7,
+      "latency_ms": 677.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -786,7 +786,7 @@
       "tokens": 449,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T02:29)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:24)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -800,7 +800,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4192.9,
+      "latency_ms": 3676.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -831,7 +831,7 @@
       "tokens": 6164,
       "llm_calls": 5,
       "cost_usd": 0.002314,
-      "answer": "Sales on 2026-10-13–2026-10-19: 2 transactions, 0 approved totalling BRL 0.00.\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo pr",
+      "answer": "Sales on 2026-10-14–2026-10-20: 2 transactions, 0 approved totalling BRL 0.00.\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo pr",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -852,7 +852,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3635.3,
+      "latency_ms": 3914.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -883,7 +883,7 @@
       "tokens": 6162,
       "llm_calls": 5,
       "cost_usd": 0.002307,
-      "answer": "Vendas em 13/10/2026–19/10/2026: 2 transações, 0 aprovadas somando R$ 0,00.\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo processo ",
+      "answer": "Vendas em 14/10/2026–20/10/2026: 2 transações, 0 aprovadas somando R$ 0,00.\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo processo ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -904,7 +904,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4214.6,
+      "latency_ms": 4191.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -954,7 +954,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3857.0,
+      "latency_ms": 3814.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1004,7 +1004,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2765.8,
+      "latency_ms": 2899.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1055,7 +1055,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3088.8,
+      "latency_ms": 3382.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1106,7 +1106,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2998.4,
+      "latency_ms": 2797.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1155,7 +1155,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3273.6,
+      "latency_ms": 3337.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1205,7 +1205,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2207.6,
+      "latency_ms": 2059.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1255,7 +1255,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3421.2,
+      "latency_ms": 3387.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1304,7 +1304,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3539.0,
+      "latency_ms": 3640.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1354,7 +1354,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3697.7,
+      "latency_ms": 3988.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1404,7 +1404,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3357.9,
+      "latency_ms": 3443.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1454,7 +1454,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2456.9,
+      "latency_ms": 2528.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1504,7 +1504,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3364.6,
+      "latency_ms": 2970.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1554,7 +1554,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3549.5,
+      "latency_ms": 3642.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1604,7 +1604,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4013.7,
+      "latency_ms": 4029.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1654,7 +1654,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3449.4,
+      "latency_ms": 3513.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1703,7 +1703,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3848.1,
+      "latency_ms": 3662.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1752,7 +1752,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3557.2,
+      "latency_ms": 3509.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1785,7 +1785,7 @@
       "tokens": 7993,
       "llm_calls": 5,
       "cost_usd": 0.003262,
-      "answer": "Settlements for those sales:\n- Credit sales of 2026-10-18: net BRL 203.09 (gross BRL 209.70, fees BRL 6.61), expected on 2026-10-20 — scheduled.\n- Debit sales of 2026-10-18: net BRL 63.02 (gross BRL 63.90, fees BRL 0.88), expected on 2026-10-19 — pending (due today).\n- Pix sales of 2026-10-18: net BRL 32.50 (gross BRL 32.50, fees BRL 0.00), expected on 2026-10-18 — paid.\nSales on 2026-10-18: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.",
+      "answer": "Settlements for those sales:\n- Credit sales of 2026-10-19: net BRL 203.09 (gross BRL 209.70, fees BRL 6.61), expected on 2026-10-21 — scheduled.\n- Debit sales of 2026-10-19: net BRL 63.02 (gross BRL 63.90, fees BRL 0.88), expected on 2026-10-20 — pending (due today).\n- Pix sales of 2026-10-19: net BRL 32.50 (gross BRL 32.50, fees BRL 0.00), expected on 2026-10-19 — paid.\nSales on 2026-10-19: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -1806,7 +1806,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3304.1,
+      "latency_ms": 3420.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1855,7 +1855,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3029.6,
+      "latency_ms": 3142.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1904,7 +1904,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2730.9,
+      "latency_ms": 2708.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1953,7 +1953,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2706.4,
+      "latency_ms": 2786.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2002,7 +2002,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3747.6,
+      "latency_ms": 3389.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2052,7 +2052,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3958.8,
+      "latency_ms": 3873.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2102,7 +2102,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3631.4,
+      "latency_ms": 3736.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2149,7 +2149,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3825.4,
+      "latency_ms": 3784.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2199,7 +2199,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3423.7,
+      "latency_ms": 3523.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2249,7 +2249,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3907.0,
+      "latency_ms": 3538.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2299,7 +2299,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3684.5,
+      "latency_ms": 3785.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2348,7 +2348,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2626.3,
+      "latency_ms": 2672.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2398,7 +2398,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3839.1,
+      "latency_ms": 3508.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2447,7 +2447,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3616.8,
+      "latency_ms": 3574.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2496,7 +2496,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3892.5,
+      "latency_ms": 4194.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2545,7 +2545,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3890.8,
+      "latency_ms": 3938.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2594,7 +2594,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2983.4,
+      "latency_ms": 2876.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2628,7 +2628,7 @@
       "tokens": 7909,
       "llm_calls": 6,
       "cost_usd": 0.002992,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nCaso sua maquininha apresente um “Erro ADQ” na tela, você mesmo pode solucioná-lo rapidamente. Verifique",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nCaso sua maquininha apresente um “Erro ADQ” na tela, você mesmo pode solucioná-lo rapidamente. Verifique",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -2649,7 +2649,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3704.8,
+      "latency_ms": 3484.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2683,7 +2683,7 @@
       "tokens": 8075,
       "llm_calls": 6,
       "cost_usd": 0.003114,
-      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-19: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Clique na tecla de Função 2. Insira o número 25 3. A tela ficará verde confirmando a ação 4.",
+      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-20: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Clique na tecla de Função 2. Insira o número 25 3. A tela ficará verde confirmando a ação 4.",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -2704,7 +2704,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3797.7,
+      "latency_ms": 4133.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2753,7 +2753,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4344.5,
+      "latency_ms": 4138.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2786,7 +2786,7 @@
       "tokens": 8707,
       "llm_calls": 6,
       "cost_usd": 0.003511,
-      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-19: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opçã",
+      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-20: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opçã",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -2807,7 +2807,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2826.2,
+      "latency_ms": 2928.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2857,7 +2857,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3330.2,
+      "latency_ms": 2959.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2907,7 +2907,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3118.6,
+      "latency_ms": 3083.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2956,7 +2956,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3475.7,
+      "latency_ms": 3536.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3005,7 +3005,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2697.3,
+      "latency_ms": 2859.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3055,7 +3055,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3848.4,
+      "latency_ms": 3621.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3104,7 +3104,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2703.3,
+      "latency_ms": 2788.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3153,7 +3153,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3144.1,
+      "latency_ms": 3069.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3202,7 +3202,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3729.0,
+      "latency_ms": 3677.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3252,7 +3252,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2682.2,
+      "latency_ms": 2926.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3301,7 +3301,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3844.4,
+      "latency_ms": 3292.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3326,9 +3326,9 @@
         "https://site.getnet.com.br/get-ajuda-pix/como-fazer-uma-venda-com-pix-na-maquininha/"
       ],
       "confidence": 1.0,
-      "tokens": 3655,
+      "tokens": 3579,
       "llm_calls": 2,
-      "cost_usd": 0.001327,
+      "cost_usd": 0.001304,
       "answer": "1. Inicie a sua máquina e selecione a opção “Pagamento”; 2. Digite o valor da venda na sua máquina e aperte “Continuar”; 3. Quando aparecer as opções Débito/Crédito/Voucher/Pix, escolha Pix; 4. Quando aparecer o QR Code do Pix, peça para seu cliente realizar a leitura no app que ele usa para pagar com Pix; 5. Aguarde a tela de sucesso; 6. Pronto! Receba o comprovante da venda! [E1] Para realizar uma venda com Pix você precisa habilitar o Pix pelo Aplicativo Getnet Brasil ou Portal Minha Conta. [E2]",
       "language": "pt",
       "citation_present": true,
@@ -3350,7 +3350,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3915.2,
+      "latency_ms": 3941.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3381,7 +3381,7 @@
       "tokens": 8703,
       "llm_calls": 5,
       "cost_usd": 0.003128,
-      "answer": "Vendas em 13/10/2026–19/10/2026: 20 transações, 17 aprovadas somando R$ 1.848,19.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas ",
+      "answer": "Vendas em 14/10/2026–20/10/2026: 20 transações, 17 aprovadas somando R$ 1.848,19.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -3402,7 +3402,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3513.4,
+      "latency_ms": 3640.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3452,7 +3452,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3563.7,
+      "latency_ms": 3659.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3501,7 +3501,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3841.6,
+      "latency_ms": 3859.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3551,7 +3551,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3647.3,
+      "latency_ms": 3509.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3601,7 +3601,7 @@
         "hallucination_trap"
       ],
       "http_status": 200,
-      "latency_ms": 3736.7,
+      "latency_ms": 4041.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3650,7 +3650,7 @@
         "hallucination_trap"
       ],
       "http_status": 200,
-      "latency_ms": 4016.2,
+      "latency_ms": 4174.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3672,13 +3672,13 @@
       "tools": [],
       "sources": [
         "https://site.getnet.com.br/duvidas/aluguel/",
-        "https://site.getnet.com.br/duvidas/receba-ja-2-dias/"
+        "https://site.getnet.com.br/get-ajuda-taxas/taxas-por-transacao/"
       ],
       "confidence": 0.85,
-      "tokens": 4414,
+      "tokens": 4145,
       "llm_calls": 2,
-      "cost_usd": 0.001656,
-      "answer": "Pergunta: Qual a taxa para Antecipação Automática? Resposta: A Antecipação Automática é uma condição para obtenção da isenção em clientes que optam pelo plano de recebimento ‘Receba Conforme suas Vendas’. Por tratar-se de um processo de aprovação de crédito, a Getnet reserva-se o direito de avaliar individualmente cada contrato na concessão (ou não) do produto Antecipação Automática. [E1] Pergunta: O que é o Receba Já? Resposta: Receba Já é um serviço da Getnet para clientes receberem as vendas de crédito à vista e do parcelado com um prazo menor do que a quantidade de parcelas (até 12 vezes).",
+      "cost_usd": 0.001585,
+      "answer": "Pergunta: Qual a taxa para Antecipação Automática? Resposta: A Antecipação Automática é uma condição para obtenção da isenção em clientes que optam pelo plano de recebimento ‘Receba Conforme suas Vendas’. Por tratar-se de um processo de aprovação de crédito, a Getnet reserva-se o direito de avaliar individualmente cada contrato na concessão (ou não) do produto Antecipação Automática. [E1] Para obter informações detalhadas sobre as taxas da Getnet, visite nossa página de taxas. Lá, você encontrará todas as informações necessárias para entender como nossas taxas funcionam e como elas podem benef",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -3699,7 +3699,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3944.8,
+      "latency_ms": 3672.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3748,7 +3748,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3334.6,
+      "latency_ms": 3372.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3797,7 +3797,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3494.2,
+      "latency_ms": 3796.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3824,7 +3824,7 @@
       "tokens": 6050,
       "llm_calls": 5,
       "cost_usd": 0.002126,
-      "answer": "Vendas em 18/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n- TXN-D65563D9FE R$ 45,90 débito aprovada\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
+      "answer": "Vendas em 19/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n- TXN-D65563D9FE R$ 45,90 débito aprovada\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -3838,7 +3838,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3555.2,
+      "latency_ms": 3698.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3865,7 +3865,7 @@
       "tokens": 6040,
       "llm_calls": 5,
       "cost_usd": 0.002121,
-      "answer": "Sales on 2026-10-18: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.70 credit approved\n- TXN-DE519539B0 BRL 32.50 Pix approved\n- TXN-5AB46A8FDC BRL 120.00 credit approved\n- TXN-D65563D9FE BRL 45.90 debit approved\n\nI couldn't find verified information in Getnet's official sources to answer this reliably. You can confirm through Getnet's official channels (customer service) or ask to talk to a human agent.",
+      "answer": "Sales on 2026-10-19: 6 transactions, 5 approved totalling BRL 306.10.\n- TXN-9943B892AA BRL 18.00 debit approved\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 BRL 89.70 credit approved\n- TXN-DE519539B0 BRL 32.50 Pix approved\n- TXN-5AB46A8FDC BRL 120.00 credit approved\n- TXN-D65563D9FE BRL 45.90 debit approved\n\nI couldn't find verified information in Getnet's official sources to answer this reliably. You can confirm through Getnet's official channels (customer service) or ask to talk to a human agent.",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -3879,7 +3879,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 4237.1,
+      "latency_ms": 4093.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3908,7 +3908,7 @@
       "tokens": 6188,
       "llm_calls": 5,
       "cost_usd": 0.002305,
-      "answer": "Vendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo p",
+      "answer": "Vendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas de pré-autorização (transações de reserva de valor no cartão, geralmente aplicado, por exemplo, por locadores de carros e hotéis). Nesse momento a transação ainda não passou pelo processo de aprovação. 2. Autorizada: Momento que a venda é solicitada e ainda passará pelo p",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -3922,7 +3922,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3618.7,
+      "latency_ms": 3799.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3949,7 +3949,7 @@
       "tokens": 5278,
       "llm_calls": 5,
       "cost_usd": 0.001848,
-      "answer": "Vendas em 18/10/2026: 1 transações, 0 aprovadas somando R$ 0,00.\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
+      "answer": "Vendas em 19/10/2026: 1 transações, 0 aprovadas somando R$ 0,00.\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -3963,7 +3963,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3915.3,
+      "latency_ms": 3412.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3990,7 +3990,7 @@
       "tokens": 5297,
       "llm_calls": 5,
       "cost_usd": 0.001864,
-      "answer": "Sales on 2026-10-18: 1 transactions, 0 approved totalling BRL 0.00.\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n\nI couldn't find verified information in Getnet's official sources to answer this reliably. You can confirm through Getnet's official channels (customer service) or ask to talk to a human agent.",
+      "answer": "Sales on 2026-10-19: 1 transactions, 0 approved totalling BRL 0.00.\n- TXN-CF02013F2A BRL 250.00 credit declined — 51: Saldo insuficiente (insufficient funds)\n\nI couldn't find verified information in Getnet's official sources to answer this reliably. You can confirm through Getnet's official channels (customer service) or ask to talk to a human agent.",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4004,7 +4004,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 362.9,
+      "latency_ms": 335.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4032,7 +4032,7 @@
       "tokens": 6848,
       "llm_calls": 5,
       "cost_usd": 0.002483,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4046,7 +4046,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 375.4,
+      "latency_ms": 367.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4074,7 +4074,7 @@
       "tokens": 6823,
       "llm_calls": 5,
       "cost_usd": 0.002474,
-      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-19: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved",
+      "answer": "Your card machines: Get Smart (#1001, active, wifi+4g); Get Mini (#1002, active, 4g)\nGet Smart (#1001): active, connectivity wifi+4g; 2 connectivity losses in the last 24h; error codes: E-COM.\nGet Mini (#1002): active, connectivity 4g.\nSales on 2026-10-20: 3 transactions, 1 approved totalling BRL 15.50.\n- TXN-0FC5D9A4BC BRL 75.00 credit pending (due today)\n- TXN-0E9E0E9450 BRL 199.90 credit declined — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 BRL 15.50 debit approved",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4088,7 +4088,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2985.4,
+      "latency_ms": 3077.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4116,10 +4116,10 @@
         "https://site.getnet.com.br/duvidas/receba-ja-2-dias/"
       ],
       "confidence": 1.0,
-      "tokens": 7501,
+      "tokens": 7500,
       "llm_calls": 5,
-      "cost_usd": 0.003086,
-      "answer": "Repasses das vendas:\n- Vendas de 17/10/2026 no crédito: líquido R$ 300,23 (bruto R$ 310,00, taxas R$ 9,77), previsto para 19/10/2026 — pendente (previsto para hoje).\n- Vendas de 17/10/2026 no débito: líquido R$ 63,12 (bruto R$ 64,00, taxas R$ 0,88), previsto para 19/10/2026 — pendente (previsto para hoje).\n- Vendas de 17/10/2026 no Pix: líquido R$ 27,80 (bruto R$ 27,80, taxas R$ 0,00), previsto para 17/10/2026 — pago.\nVendas em 17/10/2026: 3 transações, 3 aprovadas somando R$ 401,80.\n- TXN-5191763C14 R$ 27,80 Pix aprovada\n- TXN-50A8B1E21C R$ 310,00 crédito aprovada\n- TXN-7AB915E8E7 R$ 64,00 dé",
+      "cost_usd": 0.00308,
+      "answer": "Repasses das vendas:\n- Vendas de 18/10/2026 no crédito: líquido R$ 300,23 (bruto R$ 310,00, taxas R$ 9,77), previsto para 20/10/2026 — pendente (previsto para hoje).\n- Vendas de 18/10/2026 no débito: líquido R$ 63,12 (bruto R$ 64,00, taxas R$ 0,88), previsto para 19/10/2026 — pago.\n- Vendas de 18/10/2026 no Pix: líquido R$ 27,80 (bruto R$ 27,80, taxas R$ 0,00), previsto para 18/10/2026 — pago.\nVendas em 18/10/2026: 3 transações, 3 aprovadas somando R$ 401,80.\n- TXN-5191763C14 R$ 27,80 Pix aprovada\n- TXN-50A8B1E21C R$ 310,00 crédito aprovada\n- TXN-7AB915E8E7 R$ 64,00 débito aprovada\n\nPergunta: ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4133,7 +4133,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3003.5,
+      "latency_ms": 3348.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4161,10 +4161,10 @@
         "https://site.getnet.com.br/duvidas/receba-ja-2-dias/"
       ],
       "confidence": 1.0,
-      "tokens": 11168,
+      "tokens": 11166,
       "llm_calls": 5,
-      "cost_usd": 0.004535,
-      "answer": "Settlements for those sales:\n- Debit sales of 2026-10-13: net BRL 534.03 (gross BRL 541.45, fees BRL 7.42), expected on 2026-10-14 — paid.\n- Pix sales of 2026-10-13: net BRL 267.68 (gross BRL 267.68, fees BRL 0.00), expected on 2026-10-13 — paid.\n- Credit sales of 2026-10-14: net BRL 354.88 (gross BRL 366.42, fees BRL 11.54), expected on 2026-10-16 — paid.\n- Debit sales of 2026-10-14: net BRL 180.31 (gross BRL 182.81, fees BRL 2.50), expected on 2026-10-15 — paid.\n- Credit sales of 2026-10-15: net BRL 455.00 (gross BRL 469.80, fees BRL 14.80), expected on 2026-10-19 — pending (due today).\n- Pi",
+      "cost_usd": 0.004528,
+      "answer": "Settlements for those sales:\n- Debit sales of 2026-10-14: net BRL 534.03 (gross BRL 541.45, fees BRL 7.42), expected on 2026-10-15 — paid.\n- Pix sales of 2026-10-14: net BRL 267.68 (gross BRL 267.68, fees BRL 0.00), expected on 2026-10-14 — paid.\n- Credit sales of 2026-10-15: net BRL 354.88 (gross BRL 366.42, fees BRL 11.54), expected on 2026-10-19 — paid.\n- Debit sales of 2026-10-15: net BRL 180.31 (gross BRL 182.81, fees BRL 2.50), expected on 2026-10-16 — paid.\n- Credit sales of 2026-10-16: net BRL 455.00 (gross BRL 469.80, fees BRL 14.80), expected on 2026-10-19 — paid.\n- Pix sales of 2026",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -4178,7 +4178,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 812.1,
+      "latency_ms": 347.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4201,10 +4201,10 @@
       ],
       "sources": [],
       "confidence": 1.0,
-      "tokens": 5732,
+      "tokens": 5720,
       "llm_calls": 3,
-      "cost_usd": 0.002122,
-      "answer": "Chamados abertos: CASE-20261020-0115 — Sem internet após reinício — Get Smart sem Wi-Fi nem 4G (aberto); CASE-20261020-0114 — Get Smart #1001 sem conexão após reinício - escalonamento para atendimento humano (aberto); CASE-20261020-0113 — Atendimento: getnet_product_information (aguardando você); CASE-20261020-0110 — Atendimento: technical_support (aguardando você); CASE-20261020-0105 — Atendimento: technical_support (aberto); CASE-20261020-0112 — Atendimento: human_support (aguardando você); CASE-20261020-0111 — Atendimento: technical_support (aguardando você); CASE-20261020-0109 — Atendiment",
+      "cost_usd": 0.002113,
+      "answer": "Chamados abertos: CASE-20261020-0171 — Atendimento: getnet_product_information (aguardando você); CASE-20261020-0170 — Atendimento: human_support (aguardando você); CASE-20261020-0169 — Atendimento: technical_support (aguardando você); CASE-20261020-0168 — Atendimento: technical_support (aguardando você); CASE-20261020-0167 — Atendimento: technical_support (aguardando você); CASE-20261020-0166 — Atendimento: human_support (aguardando você); CASE-20261020-0165 — Atendimento: human_support (aguardando você); CASE-20261020-0164 — Atendimento: human_support (aberto); CASE-20261020-0163 — Atendimen",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4218,7 +4218,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 653.8,
+      "latency_ms": 315.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4241,10 +4241,10 @@
       ],
       "sources": [],
       "confidence": 1.0,
-      "tokens": 5744,
+      "tokens": 5731,
       "llm_calls": 3,
-      "cost_usd": 0.002128,
-      "answer": "Open support cases: CASE-20261020-0115 — Sem internet após reinício — Get Smart sem Wi-Fi nem 4G (open); CASE-20261020-0114 — Get Smart #1001 sem conexão após reinício - escalonamento para atendimento humano (open); CASE-20261020-0113 — Atendimento: getnet_product_information (awaiting your reply); CASE-20261020-0110 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0105 — Atendimento: technical_support (open); CASE-20261020-0112 — Atendimento: human_support (awaiting your reply); CASE-20261020-0111 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0109 ",
+      "cost_usd": 0.002118,
+      "answer": "Open support cases: CASE-20261020-0171 — Atendimento: getnet_product_information (awaiting your reply); CASE-20261020-0170 — Atendimento: human_support (awaiting your reply); CASE-20261020-0169 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0168 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0167 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0166 — Atendimento: human_support (awaiting your reply); CASE-20261020-0165 — Atendimento: human_support (awaiting your reply); CASE-20261020-0164 — Atendimento: human_support (open); CA",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4258,7 +4258,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3127.4,
+      "latency_ms": 3643.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4289,7 +4289,7 @@
       "tokens": 8005,
       "llm_calls": 5,
       "cost_usd": 0.003267,
-      "answer": "Repasses das vendas:\n- Vendas de 18/10/2026 no crédito: líquido R$ 203,09 (bruto R$ 209,70, taxas R$ 6,61), previsto para 20/10/2026 — agendado.\n- Vendas de 18/10/2026 no débito: líquido R$ 63,02 (bruto R$ 63,90, taxas R$ 0,88), previsto para 19/10/2026 — pendente (previsto para hoje).\n- Vendas de 18/10/2026 no Pix: líquido R$ 32,50 (bruto R$ 32,50, taxas R$ 0,00), previsto para 18/10/2026 — pago.\nVendas em 18/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- ",
+      "answer": "Repasses das vendas:\n- Vendas de 19/10/2026 no crédito: líquido R$ 203,09 (bruto R$ 209,70, taxas R$ 6,61), previsto para 21/10/2026 — agendado.\n- Vendas de 19/10/2026 no débito: líquido R$ 63,02 (bruto R$ 63,90, taxas R$ 0,88), previsto para 20/10/2026 — pendente (previsto para hoje).\n- Vendas de 19/10/2026 no Pix: líquido R$ 32,50 (bruto R$ 32,50, taxas R$ 0,00), previsto para 19/10/2026 — pago.\nVendas em 19/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4303,7 +4303,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 595.0,
+      "latency_ms": 432.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4329,7 +4329,7 @@
       "tokens": 4601,
       "llm_calls": 4,
       "cost_usd": 0.00158,
-      "answer": "Vendas em 18/10/2026: 2 transações, 2 aprovadas somando R$ 1.130,00.\n- TXN-8FD862EC68 R$ 150,00 débito aprovada\n- TXN-539739E4C6 R$ 980,00 crédito aprovada",
+      "answer": "Vendas em 19/10/2026: 2 transações, 2 aprovadas somando R$ 1.130,00.\n- TXN-8FD862EC68 R$ 150,00 débito aprovada\n- TXN-539739E4C6 R$ 980,00 crédito aprovada",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4343,7 +4343,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 4053.9,
+      "latency_ms": 3733.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4374,7 +4374,7 @@
       "tokens": 8957,
       "llm_calls": 6,
       "cost_usd": 0.003569,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opção “Wi-Fi”",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\n1. Acesse a opção de Wi-Fi na tela inicial. Na tela principal da sua maquininha, clique na opção “Wi-Fi”",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4388,7 +4388,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 7780.1,
+      "latency_ms": 7337.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4413,15 +4413,17 @@
         "get_terminal_status",
         "get_recent_transactions"
       ],
-      "sources": [],
+      "sources": [
+        "https://site.getnet.com.br/get-ajuda-configuracoes/como-configurar-o-wi-fi-na-sua-maquininha-getnet/"
+      ],
       "confidence": 0.5,
-      "tokens": 8673,
-      "llm_calls": 7,
-      "cost_usd": 0.003204,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0116 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
+      "tokens": 9783,
+      "llm_calls": 8,
+      "cost_usd": 0.003728,
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0172 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
-      "citation_present": false,
-      "citation_faithful": null,
+      "citation_present": true,
+      "citation_faithful": true,
       "language_ok": true,
       "passed": false
     },
@@ -4432,7 +4434,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3580.6,
+      "latency_ms": 3117.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4464,7 +4466,7 @@
       "tokens": 7930,
       "llm_calls": 6,
       "cost_usd": 0.003002,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nCaso sua maquininha apresente um “Erro ADQ” na tela, você mesmo pode solucioná-lo rapidamente. Verifique",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nCaso sua maquininha apresente um “Erro ADQ” na tela, você mesmo pode solucioná-lo rapidamente. Verifique",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4478,7 +4480,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3443.4,
+      "latency_ms": 3905.9,
       "checks": {
         "blocked": true,
         "intent": false,
@@ -4519,7 +4521,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3727.2,
+      "latency_ms": 3812.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4559,7 +4561,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3667.4,
+      "latency_ms": 3851.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4593,7 +4595,7 @@
       "tokens": 9878,
       "llm_calls": 7,
       "cost_usd": 0.00396,
-      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 19/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nConfigurações da Get Smart 02 Configurações da Get Smart Sua Get Smart oferece diversas opções de config",
+      "answer": "Suas maquininhas: Get Smart (#1001, ativa, wifi+4g); Get Mini (#1002, ativa, 4g)\nGet Smart (#1001): ativa, conexão wifi+4g; 2 quedas de conexão nas últimas 24h; códigos de erro: E-COM.\nGet Mini (#1002): ativa, conexão 4g.\nVendas em 20/10/2026: 3 transações, 1 aprovadas somando R$ 15,50.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n\nConfigurações da Get Smart 02 Configurações da Get Smart Sua Get Smart oferece diversas opções de config",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4607,7 +4609,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 330.2,
+      "latency_ms": 304.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4634,7 +4636,7 @@
       "tokens": 470,
       "llm_calls": 1,
       "cost_usd": 0.000191,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T02:30)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4648,7 +4650,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 350.9,
+      "latency_ms": 855.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4675,7 +4677,7 @@
       "tokens": 473,
       "llm_calls": 1,
       "cost_usd": 0.000192,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T02:30)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4689,7 +4691,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 338.3,
+      "latency_ms": 786.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4716,7 +4718,7 @@
       "tokens": 473,
       "llm_calls": 1,
       "cost_usd": 0.000192,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T02:30)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4730,7 +4732,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 951.6,
+      "latency_ms": 722.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4757,7 +4759,7 @@
       "tokens": 451,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T02:30)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:25)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -4771,7 +4773,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 872.5,
+      "latency_ms": 712.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4795,7 +4797,7 @@
       "tokens": 469,
       "llm_calls": 1,
       "cost_usd": 0.000179,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0118 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0174 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4809,7 +4811,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 1059.0,
+      "latency_ms": 854.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4833,7 +4835,7 @@
       "tokens": 470,
       "llm_calls": 1,
       "cost_usd": 0.000181,
-      "answer": "I've passed your request to a Getnet specialist. Case: CASE-20261020-0119 (priority normal). The reply will appear here in this conversation.",
+      "answer": "I've passed your request to a Getnet specialist. Case: CASE-20261020-0175 (priority normal). The reply will appear here in this conversation.",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4848,7 +4850,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2436.5,
+      "latency_ms": 2360.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4873,7 +4875,7 @@
       "tokens": 2728,
       "llm_calls": 2,
       "cost_usd": 0.00098,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0120 (prioridade urgente). A resposta aparecerá aqui nesta conversa.",
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0176 (prioridade urgente). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
       "priority_ok": true,
       "citation_present": false,
@@ -4888,7 +4890,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 676.8,
+      "latency_ms": 742.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4924,7 +4926,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 761.6,
+      "latency_ms": 759.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4960,7 +4962,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 771.4,
+      "latency_ms": 835.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4996,7 +4998,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 774.1,
+      "latency_ms": 946.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5032,7 +5034,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 1237.9,
+      "latency_ms": 962.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5058,7 +5060,7 @@
       "tokens": 4151,
       "llm_calls": 4,
       "cost_usd": 0.001383,
-      "answer": "Nenhuma venda encontrada em 18/10/2026.",
+      "answer": "Nenhuma venda encontrada em 19/10/2026.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -5072,7 +5074,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2206.5,
+      "latency_ms": 2103.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5101,7 +5103,7 @@
       "tokens": 8697,
       "llm_calls": 5,
       "cost_usd": 0.003124,
-      "answer": "Vendas em 13/10/2026–19/10/2026: 20 transações, 17 aprovadas somando R$ 1.848,19.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas ",
+      "answer": "Vendas em 14/10/2026–20/10/2026: 20 transações, 17 aprovadas somando R$ 1.848,19.\n- TXN-0FC5D9A4BC R$ 75,00 crédito pendente (previsto para hoje)\n- TXN-0E9E0E9450 R$ 199,90 crédito negada — 05: Transação não autorizada pelo emissor (do not honor)\n- TXN-E02813BFB9 R$ 15,50 débito aprovada\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n\n1. Pré-Autorizada: Status presente somente nas vendas ",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -5115,7 +5117,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 446.0,
+      "latency_ms": 714.9,
       "checks": {
         "blocked": true
       },
@@ -5143,7 +5145,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 858.0,
+      "latency_ms": 769.3,
       "checks": {
         "blocked": true
       },
@@ -5171,7 +5173,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 871.5,
+      "latency_ms": 735.2,
       "checks": {
         "blocked": true
       },
@@ -5199,7 +5201,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 695.3,
+      "latency_ms": 646.5,
       "checks": {
         "blocked": true
       },
@@ -5227,7 +5229,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 538.3,
+      "latency_ms": 551.0,
       "checks": {
         "blocked": true
       },
@@ -5255,7 +5257,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 547.2,
+      "latency_ms": 536.2,
       "checks": {
         "blocked": true
       },
@@ -5283,7 +5285,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 510.8,
+      "latency_ms": 526.0,
       "checks": {
         "blocked": true
       },
@@ -5311,7 +5313,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 510.0,
+      "latency_ms": 520.3,
       "checks": {
         "blocked": true
       },
@@ -5339,7 +5341,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 518.9,
+      "latency_ms": 510.4,
       "checks": {
         "blocked": true
       },
@@ -5367,7 +5369,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 514.0,
+      "latency_ms": 530.1,
       "checks": {
         "blocked": true
       },
@@ -5395,7 +5397,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 511.3,
+      "latency_ms": 529.2,
       "checks": {
         "blocked": true
       },
@@ -5423,7 +5425,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 502.4,
+      "latency_ms": 537.5,
       "checks": {
         "blocked": true
       },
@@ -5451,7 +5453,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 511.2,
+      "latency_ms": 558.5,
       "checks": {
         "blocked": true
       },
@@ -5479,7 +5481,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 501.8,
+      "latency_ms": 636.7,
       "checks": {
         "blocked": true
       },
@@ -5507,7 +5509,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 501.8,
+      "latency_ms": 711.1,
       "checks": {
         "blocked": true
       },
@@ -5535,7 +5537,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 3972.3,
+      "latency_ms": 2909.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5574,7 +5576,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 4176.7,
+      "latency_ms": 3465.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5613,7 +5615,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 4134.6,
+      "latency_ms": 3590.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5640,7 +5642,7 @@
       "tokens": 6080,
       "llm_calls": 5,
       "cost_usd": 0.00214,
-      "answer": "Vendas em 18/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n- TXN-D65563D9FE R$ 45,90 débito aprovada\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
+      "answer": "Vendas em 19/10/2026: 6 transações, 5 aprovadas somando R$ 306,10.\n- TXN-9943B892AA R$ 18,00 débito aprovada\n- TXN-CF02013F2A R$ 250,00 crédito negada — 51: Saldo insuficiente (insufficient funds)\n- TXN-2B77E90618 R$ 89,70 crédito aprovada\n- TXN-DE519539B0 R$ 32,50 Pix aprovada\n- TXN-5AB46A8FDC R$ 120,00 crédito aprovada\n- TXN-D65563D9FE R$ 45,90 débito aprovada\n\nNão encontrei informações verificadas nas fontes oficiais da Getnet para responder isso com segurança. Você pode confirmar pelos canais oficiais (Central de Atendimento) ou pedir para falar com um atendente.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -5653,7 +5655,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 4090.0,
+      "latency_ms": 3519.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5693,7 +5695,7 @@
         "security"
       ],
       "http_status": 403,
-      "latency_ms": 77.7,
+      "latency_ms": 102.3,
       "checks": {
         "http_status": true
       },
@@ -5713,7 +5715,7 @@
             "intent": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 1451.0
+          "latency_ms": 1405.2
         },
         {
           "turn": 2,
@@ -5725,7 +5727,7 @@
             "language": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 146.3
+          "latency_ms": 149.6
         }
       ],
       "passed": true,
@@ -5744,7 +5746,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1352.6
+          "latency_ms": 1405.1
         },
         {
           "turn": 2,
@@ -5756,7 +5758,7 @@
             "language": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 151.4
+          "latency_ms": 148.6
         }
       ],
       "passed": true,
@@ -5778,7 +5780,7 @@
             "slot:active_terminal_model": true,
             "slot:troubleshooting_attempts.connectivity": true
           },
-          "latency_ms": 1331.7
+          "latency_ms": 1373.3
         },
         {
           "turn": 2,
@@ -5791,7 +5793,7 @@
             "slot:troubleshooting_attempts.connectivity": true,
             "no_repeated_steps": true
           },
-          "latency_ms": 1492.7
+          "latency_ms": 1436.8
         },
         {
           "turn": 3,
@@ -5803,7 +5805,7 @@
             "escalation": true,
             "priority": true
           },
-          "latency_ms": 2629.3
+          "latency_ms": 2751.2
         }
       ],
       "passed": true,
@@ -5824,7 +5826,7 @@
             "intent": true,
             "status": true
           },
-          "latency_ms": 1474.0
+          "latency_ms": 1466.1
         },
         {
           "turn": 2,
@@ -5835,7 +5837,7 @@
             "intent": true,
             "status": true
           },
-          "latency_ms": 1546.7
+          "latency_ms": 1509.1
         },
         {
           "turn": 3,
@@ -5846,7 +5848,7 @@
             "status": true,
             "escalation": true
           },
-          "latency_ms": 1538.2
+          "latency_ms": 1486.5
         }
       ],
       "passed": true,
@@ -5866,7 +5868,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1356.0
+          "latency_ms": 1400.7
         },
         {
           "turn": 2,
@@ -5876,7 +5878,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1393.3
+          "latency_ms": 1388.5
         }
       ],
       "passed": true,
@@ -5895,7 +5897,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1319.4
+          "latency_ms": 1379.5
         },
         {
           "turn": 2,
@@ -5905,7 +5907,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 710.8
+          "latency_ms": 805.2
         }
       ],
       "passed": true,
@@ -5925,7 +5927,7 @@
             "status": true,
             "escalation": true
           },
-          "latency_ms": 157.5
+          "latency_ms": 404.4
         },
         {
           "turn": 2,
@@ -5936,7 +5938,7 @@
             "intent": true,
             "mentions_case": true
           },
-          "latency_ms": 280.6
+          "latency_ms": 396.3
         }
       ],
       "passed": true,
@@ -5955,7 +5957,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1305.1
+          "latency_ms": 1294.1
         },
         {
           "turn": 2,
@@ -5966,7 +5968,7 @@
             "intent": true,
             "slot:troubleshooting_attempts": true
           },
-          "latency_ms": 1422.5
+          "latency_ms": 1345.4
         }
       ],
       "passed": true,
@@ -5985,7 +5987,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 122.8
+          "latency_ms": 107.8
         },
         {
           "turn": 2,
@@ -5995,7 +5997,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1424.5
+          "latency_ms": 1483.5
         },
         {
           "turn": 3,
@@ -6005,7 +6007,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1405.0
+          "latency_ms": 1458.6
         }
       ],
       "passed": true,
@@ -6024,7 +6026,7 @@
           "checks": {
             "http": true
           },
-          "latency_ms": 1284.3
+          "latency_ms": 1240.5
         },
         {
           "turn": 2,
@@ -6034,7 +6036,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 112.4
+          "latency_ms": 115.2
         }
       ],
       "passed": true,
@@ -6053,7 +6055,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1365.4
+          "latency_ms": 1384.0
         },
         {
           "turn": 2,
@@ -6063,7 +6065,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1274.7
+          "latency_ms": 1262.2
         }
       ],
       "passed": true,
@@ -6082,7 +6084,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 160.4
+          "latency_ms": 159.5
         },
         {
           "turn": 2,
@@ -6092,7 +6094,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1341.8
+          "latency_ms": 1402.3
         }
       ],
       "passed": true,
@@ -6112,7 +6114,7 @@
             "intent": true,
             "isolation": true
           },
-          "latency_ms": 153.5
+          "latency_ms": 144.3
         },
         {
           "turn": 2,
@@ -6123,7 +6125,7 @@
             "intent": true,
             "isolation": true
           },
-          "latency_ms": 1387.5
+          "latency_ms": 1361.1
         }
       ],
       "passed": true,
@@ -6142,7 +6144,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1507.8
+          "latency_ms": 1517.3
         },
         {
           "turn": 2,
@@ -6152,7 +6154,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 2431.0
+          "latency_ms": 1516.7
         }
       ],
       "passed": true,
@@ -6171,7 +6173,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 141.6
+          "latency_ms": 158.9
         },
         {
           "turn": 2,
@@ -6181,7 +6183,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1326.6
+          "latency_ms": 1370.6
         }
       ],
       "passed": true,
@@ -6201,7 +6203,7 @@
             "status": true,
             "interrupt_kind": true
           },
-          "latency_ms": 1417.2
+          "latency_ms": 1456.0
         }
       ],
       "passed": true,
@@ -6218,7 +6220,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 157.7
+          "latency_ms": 158.4
         },
         {
           "turn": 2,
@@ -6228,7 +6230,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1268.8
+          "latency_ms": 1314.1
         }
       ],
       "passed": true,
