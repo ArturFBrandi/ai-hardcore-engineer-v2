@@ -7,7 +7,7 @@ bounded replanning, a Knowledge agent (hybrid RAG over official Getnet content +
 agent (typed tools over a synthetic backend), a Human Escalation agent with a real **interrupt → human → resume**
 loop and a Response Synthesizer cooperate. **MiniMax-M3** is the only reasoning LLM. Everything runs with Docker.
 
-> 🎥 **Video walkthrough:** _link to be added at submission_ · script: [`docs/VIDEO_SCRIPT.md`](docs/VIDEO_SCRIPT.md)
+> 🎥 **Video walkthrough:** https://youtu.be/ADQshgJodVA
 
 ## 5-minute evaluator path
 
@@ -372,7 +372,6 @@ Troubleshooting p95 was 116 s before LLM-proposed supervisor steps were capped a
   hubs need the JS render profile to discover new articles (known URLs are listed in `sources.yaml`).
 - Rule-based injection detection is a first layer; structural controls (scoping, approvals, canary) are the real defence.
 - The customer backend is synthetic; amounts/fees in it are not Getnet's real rates.
-- Video link to be added at submission.
 
 ## 23. Production evolution
 
@@ -383,5 +382,5 @@ snapshots — `make snapshot-export` already versions the corpus); per-tenant ra
 
 ## Docs index
 [IMPLEMENTATION_PLAN](docs/IMPLEMENTATION_PLAN.md) · [ARCHITECTURE](docs/ARCHITECTURE.md) · [THREAT_MODEL](docs/THREAT_MODEL.md) ·
-[SLO](docs/SLO.md) · [TESTING_GUIDE](docs/TESTING_GUIDE.md) · [VIDEO_SCRIPT](docs/VIDEO_SCRIPT.md) · [SCORECARD](docs/SCORECARD.md) ·
+[SLO](docs/SLO.md) · [TESTING_GUIDE](docs/TESTING_GUIDE.md) · [SCORECARD](docs/SCORECARD.md) ·
 [ADRs](docs/adr/) · [PROGRESS ledger](docs/PROGRESS.md) · [challenge statement](docs/AI_Hardcore_Engineer-Multi-Agent_Support_System-Tech-Challenge.md)

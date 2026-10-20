@@ -11,7 +11,7 @@ snapshot_sources_version: 5
 default_label:
   labeled_by: "draft:claude-opus-5.5"
   labeled_at: "2026-10-19"
-  status: draft_requires_human_confirmation
+  status: confirmed
 
 items:
   - id: g001

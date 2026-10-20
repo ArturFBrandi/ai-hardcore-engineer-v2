@@ -30,10 +30,10 @@ Abas abertas, nesta ordem:
 
 **[TELA: README no GitHub, topo. Rolar devagar até a tabela "The central principle".]**
 
-> Olá! Este é o meu sistema de suporte multiagente para lojistas da Getnet. O cliente pergunta em português ou
+> Oi! Este é o sistema de suporte multiagent para a Getnet. O cliente pergunta em português ou
 > inglês, e quatro agentes cooperam para responder: um de conhecimento, com RAG sobre o site da Getnet e busca na
 > web; um de suporte ao cliente, com acesso aos dados da conta; um supervisor; e um agente de escalonamento para
-> atendimento humano. O raciocínio é feito pelo MiniMax-M3. O princípio que guiou tudo foi este: o modelo propõe e
+> atendimento humano. O raciocínio é feito pelo MiniMax-M3. E o princípio que guiou tudo foi este: o modelo propõe e
 > o código decide.
 
 ## Cena 2: Arquitetura (0:25–1:05)
@@ -54,7 +54,7 @@ Abas abertas, nesta ordem:
 
 **[TELA: aba do chat /ui. Digitar e enviar:]** `Quando vai cair o dinheiro das vendas de ontem?`
 
-> Primeiro exemplo: o cliente quer saber quando recebe as vendas de ontem. Isso exige dados da conta dele e a regra
+> Nesse primeiro exemplo: o cliente quer saber quando recebe as vendas de ontem. Isso exige dados da conta dele e a regra
 > de prazos da Getnet.
 
 **[CORTE: pular a espera até a resposta aparecer.]**
@@ -67,7 +67,7 @@ Abas abertas, nesta ordem:
 
 **[TELA: Jaeger. Find Traces → serviço getnet-support-api → abrir o trace mais recente de POST /v1/chat.]**
 
-> No trace, os dois agentes aparecem lado a lado no tempo: rodaram em paralelo, porque um não precisava do outro.
+> No trace, os dois agentes aparecem lado a lado no tempo: rodaram em paralelo, porque um não depende do outro.
 
 ## Cena 4: Dependência, memória e escalonamento (1:50–2:55)
 
@@ -146,7 +146,11 @@ curl -s -X POST localhost:8000/v1/chat -H "Authorization: Bearer $TOKEN" \
 > Em produção, este painel acompanha rotas, escalonamentos, latência, custo por hora e o estado do disjuntor do
 > MiniMax, com alertas configurados.
 
-## Cena 8: Encerramento (4:45–5:00)
+## Cena 8: Pontos de melhoria (4:45–5:00)
+
+Um ponto de melhoria que posso citar é: UI e UX tanto para o cliente quanto para o atendente não são ideais elas seriam um dos primeiros pontos que eu trabalharia em uma nova versão, como: feedback de que o agente está processando oque foi pedido enquanto a resposta não aparece, melhoria da disposição dos componentes na tela, etc...
+
+## Cena 9: Encerramento (4:45–5:00)
 
 **[TELA: README, seção "Limitations".]**
 
