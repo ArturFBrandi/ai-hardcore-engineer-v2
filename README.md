@@ -43,7 +43,7 @@ receives it). `make verify` prints a summary table; reports land in `evaluation/
 | Customer Support (≥2 tools) | 7 read-only tools + 1 approval-gated action + idempotent case creation, scoped to the verified customer |
 | API | `POST /v1/chat` with the exact payload `{"message", "user_id"}` (+ optional `conversation_id`) |
 | Docker | multi-stage non-root image, Compose stack (api, worker, migrate, models-init, postgres, qdrant, redis) + profiles |
-| Testing | 165 automated tests in 8 suites + evaluation harness; CI on every push |
+| Testing | 191 offline tests in 6 suites + 10 E2E/scale tests against the composed stack + 5 live-provider tests; evaluation harness; CI on every push |
 | Bonus | 4th agent (Human Escalation) with interrupt/resume + approvals, layered guardrails, human handoff, evaluation + observability stack |
 
 ## 2. Architecture
@@ -136,7 +136,7 @@ No evidence → "I couldn't find verified information…", never model memory.
 Hybrid beats dense (0.818) and BM25 (0.636) alone. Reranking the top 8 keeps Recall@5 while cutting rerank p50 from ≈3 s
 to 1.16 s (`rerank_budget.md`). **Calibration** (`make calibrate`, `calibration.md`): threshold −0.8 → F1 0.906
 (precision 0.936, recall 0.879) against 12 out-of-domain negatives. In-process eval on the deployed configuration:
-Recall@5 0.909, MRR@10 0.851.
+Recall@5 0.894, MRR@10 0.846.
 
 ## 7. MiniMax-M3 integration
 
@@ -218,7 +218,9 @@ curl -s -X POST http://localhost:8000/v1/chat -H 'Content-Type: application/json
   -d '{"message": "When will the money from yesterday'\''s sales be deposited?", "user_id": "cliente1988"}'
 docker compose up -d --wait api   # back to jwt
 ```
-Every command above was executed against the stack on 2026-10-19 (200 · 200 turn 2 · 403 · 200 in demo mode).
+Every command above was executed against the stack on 2026-10-19 (200 · 200 turn 2 · 403 · 200 in demo mode); the
+full manual HTTP validation (20 challenge questions, 4-turn coreference across two API restarts, HITL reply, approval
+approve/reject, 403/404, injection) passed in both modes on 2026-10-20.
 
 ## 13. Quick start
 
@@ -239,6 +241,10 @@ plugin **from download.docker.com** (removes conflicting distro packages; falls 
 not published one for 26.04 yet) and uv, then verifies (`docker run hello-world`). Idempotent, fail-fast, opens no ports.
 Tested twice in a clean `ubuntu:26.04` container (locally and in CI). Then `cp .env.example .env && make verify`.
 
+Scaling: `make scale-test` (2 replicas behind nginx on :8080), or the plain Compose form
+`API_PORT=8000-8001 docker compose --profile proxy up -d --scale api=2` — the single-replica stack keeps a fixed
+port 8000, so the replicas need a port range ([ADR 014](docs/adr/014-scaling-command-and-published-port.md)).
+
 ## 15. Configuration
 
 Every variable is documented, grouped and commented in [`.env.example`](.env.example) and validated by the typed
@@ -256,8 +262,10 @@ and wildcard CORS, and force-disables debug endpoints; `safe_dict()` is the only
 | `make test-live` | real MiniMax-M3 / Tavily (skips with a message without keys) |
 | `make coverage` | gate ≥ 85% of `app/` |
 
-Latest local run: **150 offline tests passed** (56 unit, 29 integration, 10 orchestration, 34 security, 11 multi-turn,
-10 HITL), **9 E2E + 1 scale** passed against the stack, **5 live** passed; coverage **89.7%**. Strategy and how the
+Latest run (2026-10-20, commit `e28b2b2`): **191 offline tests passed, 0 failed** (91 unit, 29 integration,
+12 orchestration, 35 security, 11 multi-turn, 13 HITL); **9 E2E + 1 scale** passed against the stack (`make verify`,
+`make scale-test`); **5 live** passed (`make test-live`); `make test-docker` 166 passed (the same offline suite in the
+Dockerfile `test` stage; the docs-contract test checks only the README there); coverage **90.9%** (gate 85%). Strategy and how the
 orchestration is integration-tested: [`docs/TESTING_GUIDE.md`](docs/TESTING_GUIDE.md).
 
 ## 17. Evaluation
@@ -278,10 +286,21 @@ make eval-live   # MiniMax-M3 + Tavily → evaluation/results/live-latest.{md,js
 
 | case pass | intent | routing | tools | escalation | guardrail block | false block | citation faithfulness | hallucination | multi-turn | HITL | supervisor | Recall@5 / MRR |
 |---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| 0.976 | 0.991 | 0.991 | 1.000 | 0.991 | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 | 1.000 | 0.909 / 0.851 |
+| 0.976 | 0.991 | 0.991 | 1.000 | 0.991 | 1.000 | 0.000 | 1.000 | 0.000 | 1.000 | 1.000 | 1.000 | 0.894 / 0.846 |
 
 <!-- LIVE_RESULTS_START -->
-**Live (MiniMax-M3)** — pending.
+**Live (MiniMax-M3 + Tavily, 2026-10-20, commit `e28b2b2`, concurrency 2, 1,308 s, strict gate PASS)** —
+`evaluation/results/live-latest.md`:
+
+| case pass | intent | routing | tools | escalation | guardrail block | false block | citation presence / faithfulness | claim recall | hallucination | answer language | multi-turn | carry-over | HITL | supervisor |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
+| 0.976 | 0.973 | 1.000 | 1.000 | 1.000 | 1.000 | 0.000 | 1.000 / 1.000 | 0.887 | 0.000 | 0.991 | 0.941 | 1.000 | 1.000 | 0.833 |
+
+Latency p50 5.8 s / p95 30.3 s; 2.7 LLM calls, 5,901 tokens and **$0.0022** per case on average. Live misses: three
+intent labels where MiniMax chose `customer_settlement` over `customer_transaction`/`getnet_how_to` (routing is still
+correct: both use the same specialists), one multi-turn turn with the same confusion, and one supervisor scenario where
+the LLM supervisor was consulted once although the deterministic result was already sufficient. History: the first
+live run (2026-10-19) scored HITL 0.71 and exposed bugs fixed since (listed in `docs/PROGRESS.md`, phase 16–17).
 <!-- LIVE_RESULTS_END -->
 
 LLM judge (optional, probabilistic, not a gate): MiniMax-M3 at temperature 0 on 30 labeled answers → accuracy 1.000,
@@ -322,11 +341,29 @@ Outbox retries with backoff and dead-letters; graceful shutdown (60 s) drains in
 ## 21. Performance and cost per workflow
 
 <!-- PERF_START -->
-Pending live measurement.
+Measured in the final live evaluation (MiniMax-M3, 2026-10-20, 126 single-turn cases grouped by routed intent;
+CPU-only host, concurrency 2):
+
+| workflow | cases | p50 latency | p95 latency | LLM calls (mean) | tokens (mean) | USD per request (mean) |
+|---|---:|---:|---:|---:|---:|---:|
+| Getnet knowledge (RAG) | 60 | 5.8 s | 13.4 s | 2.0 | 3,644 | $0.0013 |
+| customer data (tools) | 16 | 11.6 s | 29.9 s | 5.1 | 11,517 | $0.0042 |
+| blocked by guardrail | 15 | 0.1 s | 0.1 s | 0.0 | 0 | $0.0000 |
+| troubleshooting (Workflow 2) | 11 | 21.2 s | 38.3 s | 7.0 | 15,953 | $0.0059 |
+| external info (web) | 9 | 2.8 s | 11.3 s | 1.1 | 3,062 | $0.0011 |
+| settlement (Workflow 1) | 8 | 14.8 s | 36.3 s | 6.1 | 15,798 | $0.0058 |
+| unsupported / clarify | 4 | 0.9 s | 2.1 s | 0.5 | 978 | $0.0003 |
+| human escalation | 2 | 2.3 s | 3.1 s | 1.0 | 672 | $0.0003 |
+
+Cost uses MiniMax-M3 list prices ($0.30/M input, $1.20/M output tokens). CPU reranking is ≈1.1 s of every retrieval.
+Troubleshooting p95 was 116 s before LLM-proposed supervisor steps were capped at one per turn
+([ADR 010](docs/adr/010-supervisor-bounded-replanning.md): supervisor vs static fan-out measured live).
 <!-- PERF_END -->
 
 ## 22. Limitations
 
+- Live intent labels confuse `customer_settlement` with `customer_transaction` on "my sales yesterday" phrasing
+  (2–3 of 126 cases per run); routing and tools are unaffected because both intents use the same specialists.
 - Offline evaluation uses a deterministic test double for the LLM; it measures the deterministic system, not MiniMax
   quality (see the live results). Golden and judge labels are drafts pending human confirmation.
 - CPU reranking dominates latency (~1 s per retrieval); a GPU or smaller reranker would cut it further.

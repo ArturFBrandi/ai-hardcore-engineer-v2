@@ -33,7 +33,7 @@ timers: the worker takes an injectable clock.
 ```bash
 make test               # all offline suites (starts datastores via docker compose; needs only uv + docker)
 make test-unit | test-integration | test-orchestration | test-security | test-multiturn | test-hitl
-make coverage           # gate: >= 85% of app/ (measured 89.7%)
+make coverage           # gate: >= 85% of app/ (measured 90.9% on 2026-10-20)
 make test-docker        # whole offline suite inside the Dockerfile `test` stage
 make up && make test-e2e        # E2E against the containerized stack (use LLM_PROVIDER=fake for offline)
 make scale-test         # 2 API replicas behind nginx

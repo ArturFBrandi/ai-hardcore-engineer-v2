@@ -153,7 +153,7 @@ eval: setup datastores ## Offline evaluation (fake LLM) with --strict gates → 
 	$(UV) run python -m evaluation.run_eval --strict
 
 eval-live: setup datastores ## Live evaluation against MiniMax-M3 + Tavily → evaluation/results/live-latest.{json,md}
-	$(UV) run $(ENVFILE) python -m evaluation.run_eval --mode live
+	$(UV) run $(ENVFILE) python -m evaluation.run_eval --mode live --concurrency 2
 
 calibrate: setup datastores ## Sweep RAG thresholds on the golden set → evaluation/results/calibration.md
 	$(UV) run python -m evaluation.calibrate

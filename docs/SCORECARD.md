@@ -4,7 +4,8 @@ Every claim points to a file, a test, a command or a measured result. Numbers co
 
 ## Business & Challenge Fit (10%)
 - All 10 challenge scenarios × PT/EN are evaluation cases (`evaluation/dataset.json`, ids `challenge-*`) and run in
-  `make demo-scenarios` (table printed by `scripts/demo.py`). Offline: 20/20 routed correctly; live: see `evaluation/results/live-latest.md`.
+  `make demo-scenarios` (table printed by `scripts/demo.py`). Offline: 20/20 routed correctly; manual HTTP validation
+  2026-10-20: all 20 answered with sources in both `AUTH_MODE=jwt` (33/33 checks) and `AUTH_MODE=demo` (32/32).
 - Multi-turn experience: `tests/multiturn/test_memory.py` (11 tests), 17 scripted conversations in `evaluation/multiturn.json` (offline pass rate 1.0).
 - Demo surfaces: customer chat `/ui` (agents, route source, confidence, case status, citations, live SSE human replies),
   operator console `/operator`, `make operator`, `make demo-conversation`.
@@ -18,7 +19,8 @@ Every claim points to a file, a test, a command or a measured result. Numbers co
   contradiction) in `app/orchestration/supervisor.py`; eval supervisor suite 6/6.
 - Bounded replanning: step budget, visit cap, fingerprints, recursion limit; property test (150 random sequences);
   `test_supervisor_step_budget_enforced`; regression `test_failed_specialist_node_cannot_loop_the_supervisor`.
-- ADR 010 (supervisor vs static fan-out vs swarm).
+- ADR 010: supervisor vs static fan-out measured live (3/3 vs 0/4 model-filtered troubleshooting answers; 2.2× latency),
+  leading to a cap of one LLM-proposed step per turn (`test_llm_supervisor_proposals_are_capped_per_turn`).
 
 ## Context, Knowledge & RAG (10%)
 - Hybrid dense + BM25 with RRF (ADR 003); reranker chosen by measurement (ADR 006, `evaluation/results/retrieval_benchmark.md`,
@@ -26,7 +28,7 @@ Every claim points to a file, a test, a command or a measured result. Numbers co
 - JS-page coverage: render profile + 74 discovered Get Ajuda articles (ADR 013); PDF manuals (4).
 - Citations with provenance (`title, url, category, retrieved_at`), faithfulness = 1.0 (offline eval; cited URLs ⊆ evidence given).
 - Untrusted evidence: `test_injection_planted_in_retrieved_evidence_is_data`; numeric grounding `test_hallucinated_numbers_are_not_delivered`.
-- Retrieval metrics on the deployed config: Recall@5 0.909, MRR@10 0.851 (`evaluation/results/latest.md`).
+- Retrieval metrics on the deployed config: Recall@5 0.894, MRR@10 0.846 (`evaluation/results/latest.md`).
 
 ## Tool & Action Engineering (10%)
 - 7 typed read tools, idempotent `create_support_case`, approval-gated `request_terminal_replacement`
@@ -54,7 +56,8 @@ Every claim points to a file, a test, a command or a measured result. Numbers co
 - One-command tests: `make test` (only uv + docker), `make verify`, `make test-docker`.
 - 126 single-turn cases, 17 multi-turn, 7 HITL, 6 supervisor, 68 golden items with atomic facts + traps and a labeling protocol.
 - Deterministic metrics (`evaluation/metrics.py`), thresholds + baseline deltas + `--strict` in CI (`suites` job).
-- Judge calibration (`evaluation/results/judge_calibration.md`), live eval (`make eval-live`, scheduled `live.yml`).
+- Judge calibration (`evaluation/results/judge_calibration.md`), live eval (`make eval-live`, scheduled `live.yml`):
+  2026-10-20 case pass 0.976, hallucination 0.0, citation faithfulness 1.0, HITL 1.0, $0.0022 per case.
 
 ## Observability, Reliability & Cost (7%)
 - Correlated logs/traces/metrics; dashboards, alert rules and screenshots in `docs/observability/`; `docs/SLO.md`.
@@ -62,11 +65,11 @@ Every claim points to a file, a test, a command or a measured result. Numbers co
 - Timeouts/retries/breakers/degradation: provider unit tests, `test_llm_outage_degrades_to_deterministic_paths`, E2E outages (Qdrant, Redis, PostgreSQL).
 
 ## Production Engineering (6%)
-- CI: `.github/workflows/ci.yml` (lint+mypy strict, unit, suites+coverage 89.7%+eval, image+Trivy+SBOM+E2E+scale,
+- CI: `.github/workflows/ci.yml` (lint+mypy strict, unit, suites+coverage 90.9%+eval, image+Trivy+SBOM+E2E+scale,
   security, bootstrap on ubuntu:26.04, snapshot artifact) — green; `live.yml` skips cleanly without secrets.
 - Alembic migrations (`alembic check` = no drift), seeding separate; non-root image pinned by digest, 833 MB, models in a
   checksum-verified volume (ADR 012); no correctness-relevant per-process state (ADR 002); horizontal-scaling test.
 
 ## Engineering Judgment (8%)
-- 13 ADRs with measured evidence (`docs/adr/`), deterministic code where better (dates, slots, priority, decision model,
+- 14 ADRs with measured evidence (`docs/adr/`), deterministic code where better (dates, slots, priority, decision model,
   coverage guard, settlement policy query), honest limitations (README §22), measured trade-offs (e5-large vs MiniLM, rerank budget).

@@ -43,12 +43,16 @@ A new session must be able to continue from this file alone. Read `docs/initial-
 | Security tooling | done | `./scripts/security_scan.sh` passed (pip-audit 0 vulns, Bandit Medium+ 0, gitleaks history clean, Trivy 0 fixable HIGH/CRITICAL) |
 | 15 Docs | done | README (curl examples executed 2026-10-19: jwt 200/200/403/404, demo 200), ARCHITECTURE, THREAT_MODEL, SLO, TESTING_GUIDE, VIDEO_SCRIPT, SCORECARD, ADRs 001–013; `pytest tests/unit/test_dev_interface.py` (Makefile/README targets) passed |
 | 16 Live-eval fixes | done | live eval 1 (commit 7cd9132): HITL 0.71 (replacement not proposed by MiniMax), EN follow-up query in English → no evidence, "ajuda" → human. Fixed: deterministic replacement proposal on explicit request, vague-message clarify rule, PT query safeguard, supervisor rationale clipping. Offline 159 passed; eval strict PASS; CI 39359865008 green |
+| 17 Adversarial QA + final validation | done | Fixed and covered by regression tests: NUL byte → 500 (`test_control_characters_are_stripped_not_a_500`), unpaginated operator queue (`test_operator_queue_is_paginated_and_priority_ordered`), English follow-up query + broadened retry (`test_broadened_troubleshooting_retry_uses_the_topic_query`), supervisor LLM steps capped (`test_llm_supervisor_proposals_are_capped_per_turn`; troubleshooting p95 116 s → 38 s live), web citations for "insufficient" answers, operator-reply numbers in grounding (`test_next_turn_can_repeat_numbers_from_the_operator_reply`), flaky parallel test (models warmed in fixture), Makefile missing in test image, demo-conversation on approval cases, proxy healthcheck; ADR 014 (scale command). |
+| Final validation (2026-10-20) | done | From `docker compose down -v`: build --no-cache, up, migrate, seed, ingest-snapshot, smoke, `make test` (pass), `make test-docker` 166 passed, `make eval` strict PASS, `make verify` PASSED, `make ingest` (150 pages, 147 docs, 925 chunks), demo-scenarios 20/20 answered, demo-conversation OK, `make scale-test` 1 passed, `API_PORT=8000-8001 docker compose --profile proxy up -d --scale api=2` healthy, `make llm-test` PASS, `make test-live` 5 passed, `make eval-live` strict PASS (commit e28b2b2). Manual HTTP: jwt 33/33, demo 32/32; outages MiniMax/web/Qdrant/PostgreSQL/Redis graceful. `make coverage` 90.89%, 191 passed. |
 
 ## Open issues
-- Offline retrieval Recall@5 is 0.894 (matches the standalone benchmark for MiniLM + jina top-8); an earlier baseline recorded 0.909.
-- Live eval rerun pending after the fixes (Tavily was unreachable during the first run; reachable again at 02:30 UTC).
+- Live intent confusion customer_settlement vs customer_transaction on "my sales yesterday" phrasings (2–3/126 per run); routing unaffected.
+- Golden/judge labels are drafts pending human confirmation (documented).
+- Video link placeholder in README (to be recorded by the author).
 - Get Ajuda hubs are JS-rendered: article URLs discovered via Playwright render and listed in `sources.yaml` `discovered_seeds`.
 - Host port 5432 is used by another local project → compose publishes datastores on 127.0.0.1:55432/56333/56379.
+- `make eval-live` must run alone at concurrency 2: MiniMax returns HTTP 429 at 4 and the breaker opens.
 
 ## Next step
-- Record live eval + per-workflow cost in README; run `python -m evaluation.orchestration_compare --live` for ADR 010; then the Final Validation Procedure from `docker compose down -v`, adversarial QA, repository review, completion report.
+- Done. Maintenance only: keep CI green; re-run `make eval-live` after prompt/model changes and update README §17/§21.
