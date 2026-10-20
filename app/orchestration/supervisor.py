@@ -224,6 +224,10 @@ def is_ambiguous(state: AgentState) -> bool:
     return weak and has_data
 
 
+def llm_steps(state: AgentState) -> int:
+    return sum(1 for st in (state.get("plan") or {}).get("steps", []) if st.get("origin") == "supervisor_llm")
+
+
 def proposal_to_step(p: SupervisorProposal, state: AgentState) -> PlanStep | None:
     next_id = len((state.get("plan") or {}).get("steps", []))
     if p.decision == "knowledge":

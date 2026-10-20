@@ -120,6 +120,9 @@ class Settings(BaseSettings):
     troubleshooting_max_attempts: int = Field(default=3, ge=1, le=10)
     supervisor_max_steps: int = Field(default=3, ge=1, le=8)
     supervisor_llm_enabled: bool = True
+    # LLM-proposed extra steps per turn (deterministic triggers use supervisor_max_steps). Measured: each extra
+    # Knowledge round costs ~10-15 s with MiniMax-M3 (evaluation/results/orchestration_compare.md).
+    supervisor_max_llm_steps: int = Field(default=1, ge=0, le=8)
     customer_support_max_tool_rounds: int = Field(default=4, ge=1, le=8)
     graph_recursion_limit: int = Field(default=40, ge=10, le=200)
 

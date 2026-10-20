@@ -1,9 +1,9 @@
 {
   "mode": "inprocess",
-  "date": "2026-10-20T03:27:57+00:00",
-  "commit": "301c4f7",
+  "date": "2026-10-20T03:45:44+00:00",
+  "commit": "5d747c2",
   "llm": "fake (deterministic test double)",
-  "duration_s": 250.7,
+  "duration_s": 249.5,
   "metrics": {
     "single_turn_cases": 126,
     "case_pass_rate": 0.9762,
@@ -19,10 +19,10 @@
     "hallucination_rate": 0.0,
     "answer_language_correctness": 0.7264,
     "priority_accuracy": 1.0,
-    "latency_p50_ms": 3292.6,
-    "latency_p95_ms": 4093.1,
+    "latency_p50_ms": 3248.4,
+    "latency_p95_ms": 4103.2,
     "llm_calls_per_case": 2.416,
-    "tokens_per_case": 3660.056,
+    "tokens_per_case": 3664.616,
     "cost_usd_per_case": 0.0014,
     "multiturn_conversations": 17,
     "multiturn_pass_rate": 1.0,
@@ -34,9 +34,9 @@
     "retrieval_questions": 66,
     "retrieval_recall@5": 0.8939,
     "retrieval_mrr@10": 0.846,
-    "retrieval_ndcg@5": 0.452,
-    "retrieval_latency_p50_ms": 1203.4,
-    "retrieval_latency_p95_ms": 1471.7,
+    "retrieval_ndcg@5": 0.4568,
+    "retrieval_latency_p50_ms": 1170.8,
+    "retrieval_latency_p95_ms": 1461.6,
     "per_tag_pass_rate": {
       "access": 1.0,
       "adversarial": 1.0,
@@ -71,8 +71,8 @@
     "multiturn_pass_rate": 0.0,
     "hitl_flow_success": 0.0,
     "supervisor_step_accuracy": 0.0,
-    "retrieval_recall@5": -0.0152,
-    "retrieval_mrr@10": -0.005,
+    "retrieval_recall@5": 0.0,
+    "retrieval_mrr@10": 0.0,
     "citation_presence": 0.0
   },
   "thresholds": {
@@ -131,7 +131,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2678.6,
+      "latency_ms": 2870.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -181,7 +181,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3075.1,
+      "latency_ms": 3197.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -232,7 +232,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 913.7,
+      "latency_ms": 790.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -259,7 +259,7 @@
       "tokens": 478,
       "llm_calls": 1,
       "cost_usd": 0.000194,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:24)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:42)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -274,7 +274,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 715.1,
+      "latency_ms": 595.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -301,7 +301,7 @@
       "tokens": 476,
       "llm_calls": 1,
       "cost_usd": 0.000193,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:24)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:42)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -315,7 +315,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3491.9,
+      "latency_ms": 3546.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -360,7 +360,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3734.5,
+      "latency_ms": 3274.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -405,7 +405,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3176.4,
+      "latency_ms": 3214.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -455,7 +455,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3112.0,
+      "latency_ms": 3267.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -481,9 +481,9 @@
         "https://site.getnet.com.br/get-ajuda-pix/como-fazer-uma-venda-com-pix-na-maquininha/"
       ],
       "confidence": 1.0,
-      "tokens": 3575,
+      "tokens": 3885,
       "llm_calls": 2,
-      "cost_usd": 0.001321,
+      "cost_usd": 0.001414,
       "answer": "Para começar a vender com Pix utilizando o Get Tap, é necessário habilitar a funcionalidade e vincular uma conta bancária pelo aplicativo Getnet Brasil. O processo é simples e rápido. Veja como fazer: 1. Acesse o aplicativo Getnet Brasil : Faça login no app com seu usuário e senha. 2. Entre no menu “Serviços” : No menu principal, selecione a opção “Serviços” para visualizar as funcionalidades disponíveis. 3. Clique e [E1] Para realizar uma venda com Pix você precisa habilitar o Pix pelo Aplicativo Getnet Brasil ou Portal Minha Conta. [E2]",
       "language": "pt",
       "citation_present": true,
@@ -506,7 +506,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4056.2,
+      "latency_ms": 4358.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -561,7 +561,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3816.1,
+      "latency_ms": 3828.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -616,7 +616,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3781.1,
+      "latency_ms": 3552.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -666,7 +666,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3520.5,
+      "latency_ms": 3425.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -717,7 +717,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 623.7,
+      "latency_ms": 664.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -744,7 +744,7 @@
       "tokens": 451,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:24)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:42)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -759,7 +759,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 677.6,
+      "latency_ms": 707.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -786,7 +786,7 @@
       "tokens": 449,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:24)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:42)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -800,7 +800,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3676.9,
+      "latency_ms": 3079.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -852,7 +852,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3914.5,
+      "latency_ms": 4103.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -904,7 +904,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4191.8,
+      "latency_ms": 4358.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -954,7 +954,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3814.7,
+      "latency_ms": 3817.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1004,7 +1004,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2899.7,
+      "latency_ms": 3046.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1055,7 +1055,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3382.6,
+      "latency_ms": 2983.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1106,7 +1106,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2797.4,
+      "latency_ms": 2999.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1155,7 +1155,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3337.2,
+      "latency_ms": 3304.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1205,7 +1205,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2059.0,
+      "latency_ms": 2630.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1255,7 +1255,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3387.4,
+      "latency_ms": 3248.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1304,7 +1304,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3640.0,
+      "latency_ms": 3412.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1354,7 +1354,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3988.8,
+      "latency_ms": 3596.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1404,7 +1404,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3443.5,
+      "latency_ms": 3526.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1454,7 +1454,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2528.6,
+      "latency_ms": 2458.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1504,7 +1504,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2970.1,
+      "latency_ms": 3191.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1554,7 +1554,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3642.3,
+      "latency_ms": 3549.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1604,7 +1604,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4029.2,
+      "latency_ms": 4042.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1654,7 +1654,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3513.0,
+      "latency_ms": 3549.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1703,7 +1703,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3662.0,
+      "latency_ms": 3790.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1752,7 +1752,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3509.8,
+      "latency_ms": 3568.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1806,7 +1806,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3420.6,
+      "latency_ms": 3510.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1855,7 +1855,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3142.3,
+      "latency_ms": 3291.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1904,7 +1904,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2708.1,
+      "latency_ms": 2802.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -1953,7 +1953,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2786.2,
+      "latency_ms": 2471.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2002,7 +2002,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3389.9,
+      "latency_ms": 3486.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2052,7 +2052,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3873.5,
+      "latency_ms": 3832.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2102,7 +2102,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3736.6,
+      "latency_ms": 3704.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2149,7 +2149,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3784.5,
+      "latency_ms": 3885.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2199,7 +2199,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3523.9,
+      "latency_ms": 3394.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2249,7 +2249,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3538.7,
+      "latency_ms": 3686.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2299,7 +2299,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3785.2,
+      "latency_ms": 3599.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2348,7 +2348,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2672.0,
+      "latency_ms": 2525.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2398,7 +2398,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3508.0,
+      "latency_ms": 3437.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2447,7 +2447,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3574.3,
+      "latency_ms": 3460.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2496,7 +2496,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4194.5,
+      "latency_ms": 4019.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2545,7 +2545,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3938.5,
+      "latency_ms": 4049.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2594,7 +2594,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2876.0,
+      "latency_ms": 2919.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2649,7 +2649,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3484.8,
+      "latency_ms": 3793.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2704,7 +2704,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 4133.7,
+      "latency_ms": 3782.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2753,7 +2753,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 4138.9,
+      "latency_ms": 4146.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2807,7 +2807,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2928.5,
+      "latency_ms": 3055.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2857,7 +2857,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2959.1,
+      "latency_ms": 3134.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2907,7 +2907,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3083.3,
+      "latency_ms": 3129.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -2956,7 +2956,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3536.2,
+      "latency_ms": 3506.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3005,7 +3005,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2859.8,
+      "latency_ms": 2917.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3055,7 +3055,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3621.1,
+      "latency_ms": 3754.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3104,7 +3104,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2788.3,
+      "latency_ms": 2530.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3153,7 +3153,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3069.0,
+      "latency_ms": 3101.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3202,7 +3202,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3677.4,
+      "latency_ms": 3465.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3252,7 +3252,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 2926.5,
+      "latency_ms": 2880.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3301,7 +3301,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3292.6,
+      "latency_ms": 3667.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3326,9 +3326,9 @@
         "https://site.getnet.com.br/get-ajuda-pix/como-fazer-uma-venda-com-pix-na-maquininha/"
       ],
       "confidence": 1.0,
-      "tokens": 3579,
+      "tokens": 3655,
       "llm_calls": 2,
-      "cost_usd": 0.001304,
+      "cost_usd": 0.001327,
       "answer": "1. Inicie a sua máquina e selecione a opção “Pagamento”; 2. Digite o valor da venda na sua máquina e aperte “Continuar”; 3. Quando aparecer as opções Débito/Crédito/Voucher/Pix, escolha Pix; 4. Quando aparecer o QR Code do Pix, peça para seu cliente realizar a leitura no app que ele usa para pagar com Pix; 5. Aguarde a tela de sucesso; 6. Pronto! Receba o comprovante da venda! [E1] Para realizar uma venda com Pix você precisa habilitar o Pix pelo Aplicativo Getnet Brasil ou Portal Minha Conta. [E2]",
       "language": "pt",
       "citation_present": true,
@@ -3350,7 +3350,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3941.4,
+      "latency_ms": 3665.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3402,7 +3402,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3640.2,
+      "latency_ms": 3630.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3452,7 +3452,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3659.6,
+      "latency_ms": 3569.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3501,7 +3501,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3859.3,
+      "latency_ms": 3740.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3551,7 +3551,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3509.4,
+      "latency_ms": 3958.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3601,7 +3601,7 @@
         "hallucination_trap"
       ],
       "http_status": 200,
-      "latency_ms": 4041.5,
+      "latency_ms": 3926.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3650,7 +3650,7 @@
         "hallucination_trap"
       ],
       "http_status": 200,
-      "latency_ms": 4174.7,
+      "latency_ms": 4352.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3672,13 +3672,13 @@
       "tools": [],
       "sources": [
         "https://site.getnet.com.br/duvidas/aluguel/",
-        "https://site.getnet.com.br/get-ajuda-taxas/taxas-por-transacao/"
+        "https://site.getnet.com.br/duvidas/receba-ja-2-dias/"
       ],
       "confidence": 0.85,
-      "tokens": 4145,
+      "tokens": 4414,
       "llm_calls": 2,
-      "cost_usd": 0.001585,
-      "answer": "Pergunta: Qual a taxa para Antecipação Automática? Resposta: A Antecipação Automática é uma condição para obtenção da isenção em clientes que optam pelo plano de recebimento ‘Receba Conforme suas Vendas’. Por tratar-se de um processo de aprovação de crédito, a Getnet reserva-se o direito de avaliar individualmente cada contrato na concessão (ou não) do produto Antecipação Automática. [E1] Para obter informações detalhadas sobre as taxas da Getnet, visite nossa página de taxas. Lá, você encontrará todas as informações necessárias para entender como nossas taxas funcionam e como elas podem benef",
+      "cost_usd": 0.001656,
+      "answer": "Pergunta: Qual a taxa para Antecipação Automática? Resposta: A Antecipação Automática é uma condição para obtenção da isenção em clientes que optam pelo plano de recebimento ‘Receba Conforme suas Vendas’. Por tratar-se de um processo de aprovação de crédito, a Getnet reserva-se o direito de avaliar individualmente cada contrato na concessão (ou não) do produto Antecipação Automática. [E1] Pergunta: O que é o Receba Já? Resposta: Receba Já é um serviço da Getnet para clientes receberem as vendas de crédito à vista e do parcelado com um prazo menor do que a quantidade de parcelas (até 12 vezes).",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -3699,7 +3699,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3672.2,
+      "latency_ms": 3958.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3748,7 +3748,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3372.4,
+      "latency_ms": 3371.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3797,7 +3797,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3796.3,
+      "latency_ms": 3815.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3838,7 +3838,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3698.5,
+      "latency_ms": 3694.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3879,7 +3879,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 4093.1,
+      "latency_ms": 3878.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3922,7 +3922,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3799.9,
+      "latency_ms": 4029.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -3963,7 +3963,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3412.3,
+      "latency_ms": 3424.6,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4004,7 +4004,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 335.2,
+      "latency_ms": 362.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4046,7 +4046,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 367.0,
+      "latency_ms": 746.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4088,7 +4088,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3077.4,
+      "latency_ms": 2597.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4133,7 +4133,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3348.7,
+      "latency_ms": 2899.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4178,7 +4178,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 347.6,
+      "latency_ms": 689.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4201,10 +4201,10 @@
       ],
       "sources": [],
       "confidence": 1.0,
-      "tokens": 5720,
+      "tokens": 5676,
       "llm_calls": 3,
-      "cost_usd": 0.002113,
-      "answer": "Chamados abertos: CASE-20261020-0171 — Atendimento: getnet_product_information (aguardando você); CASE-20261020-0170 — Atendimento: human_support (aguardando você); CASE-20261020-0169 — Atendimento: technical_support (aguardando você); CASE-20261020-0168 — Atendimento: technical_support (aguardando você); CASE-20261020-0167 — Atendimento: technical_support (aguardando você); CASE-20261020-0166 — Atendimento: human_support (aguardando você); CASE-20261020-0165 — Atendimento: human_support (aguardando você); CASE-20261020-0164 — Atendimento: human_support (aberto); CASE-20261020-0163 — Atendimen",
+      "cost_usd": 0.00208,
+      "answer": "Chamados abertos: CASE-20261020-0189 — Get Smart sem sinal desde cedo (aberto); CASE-20261020-0184 — Atendimento: technical_support (aguardando você); CASE-20261020-0188 — Atendimento: getnet_product_information (aguardando você); CASE-20261020-0187 — Atendimento: human_support (aguardando você); CASE-20261020-0186 — Atendimento: technical_support (aguardando você); CASE-20261020-0185 — Atendimento: technical_support (aguardando você); CASE-20261020-0183 — Atendimento: human_support (aguardando você); CASE-20261020-0182 — Atendimento: human_support (aguardando você); CASE-20261020-0181 — Atend",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4218,7 +4218,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 315.8,
+      "latency_ms": 517.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4241,10 +4241,10 @@
       ],
       "sources": [],
       "confidence": 1.0,
-      "tokens": 5731,
+      "tokens": 5690,
       "llm_calls": 3,
-      "cost_usd": 0.002118,
-      "answer": "Open support cases: CASE-20261020-0171 — Atendimento: getnet_product_information (awaiting your reply); CASE-20261020-0170 — Atendimento: human_support (awaiting your reply); CASE-20261020-0169 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0168 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0167 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0166 — Atendimento: human_support (awaiting your reply); CASE-20261020-0165 — Atendimento: human_support (awaiting your reply); CASE-20261020-0164 — Atendimento: human_support (open); CA",
+      "cost_usd": 0.002088,
+      "answer": "Open support cases: CASE-20261020-0189 — Get Smart sem sinal desde cedo (open); CASE-20261020-0184 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0188 — Atendimento: getnet_product_information (awaiting your reply); CASE-20261020-0187 — Atendimento: human_support (awaiting your reply); CASE-20261020-0186 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0185 — Atendimento: technical_support (awaiting your reply); CASE-20261020-0183 — Atendimento: human_support (awaiting your reply); CASE-20261020-0182 — Atendimento: human_support (awaiting your reply)",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4258,7 +4258,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3643.1,
+      "latency_ms": 3514.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4303,7 +4303,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 432.3,
+      "latency_ms": 463.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4343,7 +4343,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3733.1,
+      "latency_ms": 3662.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4388,7 +4388,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 7337.1,
+      "latency_ms": 7596.9,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4420,7 +4420,7 @@
       "tokens": 9783,
       "llm_calls": 8,
       "cost_usd": 0.003728,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0172 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0190 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4434,7 +4434,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3117.8,
+      "latency_ms": 3268.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4480,7 +4480,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3905.9,
+      "latency_ms": 4186.5,
       "checks": {
         "blocked": true,
         "intent": false,
@@ -4521,7 +4521,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 3812.4,
+      "latency_ms": 3684.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4561,7 +4561,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 3851.8,
+      "latency_ms": 3709.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4609,7 +4609,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 304.9,
+      "latency_ms": 796.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4636,7 +4636,7 @@
       "tokens": 470,
       "llm_calls": 1,
       "cost_usd": 0.000191,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:43)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4650,7 +4650,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 855.9,
+      "latency_ms": 965.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4677,7 +4677,7 @@
       "tokens": 473,
       "llm_calls": 1,
       "cost_usd": 0.000192,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:43)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4691,7 +4691,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 786.5,
+      "latency_ms": 768.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4718,7 +4718,7 @@
       "tokens": 473,
       "llm_calls": 1,
       "cost_usd": 0.000192,
-      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:25)",
+      "answer": "Tomorrow in Porto Alegre: 24°C, light rain (test fixture forecast) (source: Porto Alegre weather, https://example-weather.test/poa, retrieved 2026-10-20T03:43)",
       "language": "pt",
       "citation_present": true,
       "citation_faithful": true,
@@ -4732,7 +4732,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 722.8,
+      "latency_ms": 723.2,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4759,7 +4759,7 @@
       "tokens": 451,
       "llm_calls": 1,
       "cost_usd": 0.000178,
-      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:25)",
+      "answer": "1 EUR = 5.68 BRL (test fixture rate) (source: EUR BRL - Exchange rate, https://example-fx.test/eur-brl, retrieved 2026-10-20T03:43)",
       "language": "en",
       "citation_present": true,
       "citation_faithful": true,
@@ -4773,7 +4773,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 712.4,
+      "latency_ms": 714.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4797,7 +4797,7 @@
       "tokens": 469,
       "llm_calls": 1,
       "cost_usd": 0.000179,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0174 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0192 (prioridade normal). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
       "citation_present": false,
       "citation_faithful": null,
@@ -4811,7 +4811,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 854.1,
+      "latency_ms": 731.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4835,7 +4835,7 @@
       "tokens": 470,
       "llm_calls": 1,
       "cost_usd": 0.000181,
-      "answer": "I've passed your request to a Getnet specialist. Case: CASE-20261020-0175 (priority normal). The reply will appear here in this conversation.",
+      "answer": "I've passed your request to a Getnet specialist. Case: CASE-20261020-0193 (priority normal). The reply will appear here in this conversation.",
       "language": "en",
       "citation_present": false,
       "citation_faithful": null,
@@ -4850,7 +4850,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2360.6,
+      "latency_ms": 2431.0,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4875,7 +4875,7 @@
       "tokens": 2728,
       "llm_calls": 2,
       "cost_usd": 0.00098,
-      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0176 (prioridade urgente). A resposta aparecerá aqui nesta conversa.",
+      "answer": "Encaminhei seu atendimento para um especialista da Getnet. Protocolo: CASE-20261020-0194 (prioridade urgente). A resposta aparecerá aqui nesta conversa.",
       "language": "pt",
       "priority_ok": true,
       "citation_present": false,
@@ -4890,7 +4890,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 742.1,
+      "latency_ms": 652.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4926,7 +4926,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 759.8,
+      "latency_ms": 731.1,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4962,7 +4962,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 835.5,
+      "latency_ms": 801.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -4998,7 +4998,7 @@
         "en"
       ],
       "http_status": 200,
-      "latency_ms": 946.5,
+      "latency_ms": 763.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5034,7 +5034,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 962.2,
+      "latency_ms": 945.5,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5074,7 +5074,7 @@
         "pt"
       ],
       "http_status": 200,
-      "latency_ms": 2103.6,
+      "latency_ms": 2278.3,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5117,7 +5117,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 714.9,
+      "latency_ms": 528.3,
       "checks": {
         "blocked": true
       },
@@ -5145,7 +5145,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 769.3,
+      "latency_ms": 704.4,
       "checks": {
         "blocked": true
       },
@@ -5173,7 +5173,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 735.2,
+      "latency_ms": 756.0,
       "checks": {
         "blocked": true
       },
@@ -5201,7 +5201,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 646.5,
+      "latency_ms": 770.9,
       "checks": {
         "blocked": true
       },
@@ -5229,7 +5229,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 551.0,
+      "latency_ms": 694.7,
       "checks": {
         "blocked": true
       },
@@ -5257,7 +5257,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 536.2,
+      "latency_ms": 512.6,
       "checks": {
         "blocked": true
       },
@@ -5285,7 +5285,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 526.0,
+      "latency_ms": 546.4,
       "checks": {
         "blocked": true
       },
@@ -5313,7 +5313,7 @@
         "injection"
       ],
       "http_status": 200,
-      "latency_ms": 520.3,
+      "latency_ms": 495.7,
       "checks": {
         "blocked": true
       },
@@ -5341,7 +5341,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 510.4,
+      "latency_ms": 527.0,
       "checks": {
         "blocked": true
       },
@@ -5369,7 +5369,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 530.1,
+      "latency_ms": 517.7,
       "checks": {
         "blocked": true
       },
@@ -5397,7 +5397,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 529.2,
+      "latency_ms": 502.2,
       "checks": {
         "blocked": true
       },
@@ -5425,7 +5425,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 537.5,
+      "latency_ms": 502.0,
       "checks": {
         "blocked": true
       },
@@ -5453,7 +5453,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 558.5,
+      "latency_ms": 504.5,
       "checks": {
         "blocked": true
       },
@@ -5481,7 +5481,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 636.7,
+      "latency_ms": 584.1,
       "checks": {
         "blocked": true
       },
@@ -5509,7 +5509,7 @@
         "access"
       ],
       "http_status": 200,
-      "latency_ms": 711.1,
+      "latency_ms": 623.7,
       "checks": {
         "blocked": true
       },
@@ -5537,7 +5537,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 2909.9,
+      "latency_ms": 2770.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5576,7 +5576,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 3465.4,
+      "latency_ms": 3573.8,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5615,7 +5615,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 3590.0,
+      "latency_ms": 3607.7,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5655,7 +5655,7 @@
         "benign"
       ],
       "http_status": 200,
-      "latency_ms": 3519.8,
+      "latency_ms": 3611.4,
       "checks": {
         "blocked": true,
         "intent": true,
@@ -5695,7 +5695,7 @@
         "security"
       ],
       "http_status": 403,
-      "latency_ms": 102.3,
+      "latency_ms": 92.7,
       "checks": {
         "http_status": true
       },
@@ -5715,7 +5715,7 @@
             "intent": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 1405.2
+          "latency_ms": 1408.7
         },
         {
           "turn": 2,
@@ -5727,7 +5727,7 @@
             "language": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 149.6
+          "latency_ms": 151.4
         }
       ],
       "passed": true,
@@ -5746,7 +5746,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1405.1
+          "latency_ms": 1416.0
         },
         {
           "turn": 2,
@@ -5758,7 +5758,7 @@
             "language": true,
             "slot:last_date_range.preset": true
           },
-          "latency_ms": 148.6
+          "latency_ms": 147.0
         }
       ],
       "passed": true,
@@ -5780,7 +5780,7 @@
             "slot:active_terminal_model": true,
             "slot:troubleshooting_attempts.connectivity": true
           },
-          "latency_ms": 1373.3
+          "latency_ms": 1368.7
         },
         {
           "turn": 2,
@@ -5793,7 +5793,7 @@
             "slot:troubleshooting_attempts.connectivity": true,
             "no_repeated_steps": true
           },
-          "latency_ms": 1436.8
+          "latency_ms": 1479.0
         },
         {
           "turn": 3,
@@ -5805,7 +5805,7 @@
             "escalation": true,
             "priority": true
           },
-          "latency_ms": 2751.2
+          "latency_ms": 2811.7
         }
       ],
       "passed": true,
@@ -5826,7 +5826,7 @@
             "intent": true,
             "status": true
           },
-          "latency_ms": 1466.1
+          "latency_ms": 1419.7
         },
         {
           "turn": 2,
@@ -5837,7 +5837,7 @@
             "intent": true,
             "status": true
           },
-          "latency_ms": 1509.1
+          "latency_ms": 1489.3
         },
         {
           "turn": 3,
@@ -5848,7 +5848,7 @@
             "status": true,
             "escalation": true
           },
-          "latency_ms": 1486.5
+          "latency_ms": 1478.4
         }
       ],
       "passed": true,
@@ -5868,7 +5868,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1400.7
+          "latency_ms": 1388.8
         },
         {
           "turn": 2,
@@ -5878,7 +5878,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1388.5
+          "latency_ms": 1364.1
         }
       ],
       "passed": true,
@@ -5897,7 +5897,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 1379.5
+          "latency_ms": 1345.2
         },
         {
           "turn": 2,
@@ -5907,7 +5907,7 @@
             "http": true,
             "language": true
           },
-          "latency_ms": 805.2
+          "latency_ms": 734.5
         }
       ],
       "passed": true,
@@ -5927,7 +5927,7 @@
             "status": true,
             "escalation": true
           },
-          "latency_ms": 404.4
+          "latency_ms": 161.1
         },
         {
           "turn": 2,
@@ -5938,7 +5938,7 @@
             "intent": true,
             "mentions_case": true
           },
-          "latency_ms": 396.3
+          "latency_ms": 146.9
         }
       ],
       "passed": true,
@@ -5957,7 +5957,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1294.1
+          "latency_ms": 1370.5
         },
         {
           "turn": 2,
@@ -5968,7 +5968,7 @@
             "intent": true,
             "slot:troubleshooting_attempts": true
           },
-          "latency_ms": 1345.4
+          "latency_ms": 1324.1
         }
       ],
       "passed": true,
@@ -5987,7 +5987,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 107.8
+          "latency_ms": 109.1
         },
         {
           "turn": 2,
@@ -5997,7 +5997,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1483.5
+          "latency_ms": 1374.1
         },
         {
           "turn": 3,
@@ -6007,7 +6007,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1458.6
+          "latency_ms": 1461.2
         }
       ],
       "passed": true,
@@ -6026,7 +6026,7 @@
           "checks": {
             "http": true
           },
-          "latency_ms": 1240.5
+          "latency_ms": 1301.7
         },
         {
           "turn": 2,
@@ -6036,7 +6036,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 115.2
+          "latency_ms": 107.4
         }
       ],
       "passed": true,
@@ -6055,7 +6055,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1384.0
+          "latency_ms": 1410.8
         },
         {
           "turn": 2,
@@ -6065,7 +6065,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1262.2
+          "latency_ms": 1241.8
         }
       ],
       "passed": true,
@@ -6084,7 +6084,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 159.5
+          "latency_ms": 156.6
         },
         {
           "turn": 2,
@@ -6094,7 +6094,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1402.3
+          "latency_ms": 1515.2
         }
       ],
       "passed": true,
@@ -6114,7 +6114,7 @@
             "intent": true,
             "isolation": true
           },
-          "latency_ms": 144.3
+          "latency_ms": 147.5
         },
         {
           "turn": 2,
@@ -6125,7 +6125,7 @@
             "intent": true,
             "isolation": true
           },
-          "latency_ms": 1361.1
+          "latency_ms": 1397.9
         }
       ],
       "passed": true,
@@ -6144,7 +6144,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1517.3
+          "latency_ms": 1480.0
         },
         {
           "turn": 2,
@@ -6154,7 +6154,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1516.7
+          "latency_ms": 1517.0
         }
       ],
       "passed": true,
@@ -6173,7 +6173,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 158.9
+          "latency_ms": 154.4
         },
         {
           "turn": 2,
@@ -6183,7 +6183,7 @@
             "http": true,
             "intent": true
           },
-          "latency_ms": 1370.6
+          "latency_ms": 1364.7
         }
       ],
       "passed": true,
@@ -6203,7 +6203,7 @@
             "status": true,
             "interrupt_kind": true
           },
-          "latency_ms": 1456.0
+          "latency_ms": 1443.7
         }
       ],
       "passed": true,
@@ -6220,7 +6220,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 158.4
+          "latency_ms": 160.8
         },
         {
           "turn": 2,
@@ -6230,7 +6230,7 @@
             "http": true,
             "status": true
           },
-          "latency_ms": 1314.1
+          "latency_ms": 1304.0
         }
       ],
       "passed": true,

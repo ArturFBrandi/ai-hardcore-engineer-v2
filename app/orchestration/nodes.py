@@ -22,7 +22,14 @@ from app.orchestration.decision import decide
 from app.orchestration.routing import detect_lang
 from app.orchestration.runtime import GraphContext, event, node
 from app.orchestration.state import AgentState, ConversationSlots, Plan, PlanStep
-from app.orchestration.supervisor import SupervisorProposal, evaluate, is_ambiguous, proposal_to_step, step_fingerprint
+from app.orchestration.supervisor import (
+    SupervisorProposal,
+    evaluate,
+    is_ambiguous,
+    llm_steps,
+    proposal_to_step,
+    step_fingerprint,
+)
 
 
 @node("load_memory")
@@ -95,6 +102,7 @@ async def supervisor_node(state: AgentState, *, runtime: Runtime[GraphContext]) 
         and budget_ok
         and is_ambiguous(state)
         and added < ctx.settings.supervisor_max_steps
+        and llm_steps(state) < ctx.settings.supervisor_max_llm_steps
     ):
         try:
             findings = {

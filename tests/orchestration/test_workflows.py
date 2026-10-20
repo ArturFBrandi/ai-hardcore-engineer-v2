@@ -140,3 +140,21 @@ async def test_failed_specialist_node_cannot_loop_the_supervisor(turn, container
     assert s["final_answer"]
     assert any(e.startswith("knowledge:") for e in s["errors"])
     assert s["supervisor_steps"] <= container.settings.supervisor_max_steps
+
+
+async def test_llm_supervisor_proposals_are_capped_per_turn(turn, fake_llm) -> None:  # type: ignore[no-untyped-def]
+    # Live measurement showed each LLM-proposed Knowledge round adds ~10-15 s; at most one per turn.
+    weak = '{"answer": "Não encontrei detalhes suficientes.", "used_evidence": [], "insufficient": true}'
+    fake_llm.script("knowledge_rag", *[weak] * 6)
+    fake_llm.script(
+        "supervisor",
+        *[
+            f'{{"decision": "knowledge", "reason": "try again", "query": "prazo repasse variante {i}"}}'
+            for i in range(5)
+        ],
+    )
+    r = await turn("When will the money from yesterday's sales be deposited?")
+    s = r.state
+    assert len(fake_llm.calls_for("supervisor")) <= 1
+    assert sum(st.get("origin") == "supervisor_llm" for st in s["plan"]["steps"]) <= 1
+    assert s["status"] in ("answered", "awaiting_human")
